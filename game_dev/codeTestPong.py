@@ -24,6 +24,32 @@ padB.shapesize(stretch_wid=4, stretch_len=1)
 padB.penup()
 padB.goto(375, 0)
 
+#Ball
+ball = t.Turtle()
+ball.speed(0)
+ball.shape("square")
+ball.color("blue")
+ball.penup()
+ball.goto(0, 0)
+
+#Function 
+def Shoot():
+    bullet = t.Turtle()
+    x = padA.xcor()
+    x += 20
+    y = padA.ycor()
+    y += 20
+    bullet.speed(2)
+    bullet.shape("circle")
+    bullet.color("white")
+    bullet.penup()
+    bullet.goto(x,y)
+
+
+#Keybinding
+window.listen()
+window.onkeypress(Shoot,"space")
+
 #Main game loop
 while True:
     window.update()
