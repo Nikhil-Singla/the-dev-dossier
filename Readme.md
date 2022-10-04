@@ -1,4 +1,4 @@
-# Demo  
+# Demo Game 
 
-Trying out new stuff  
-First Github attempt  
+Attempting to use Version Control through Visual Code while 
+working on my own project to create a tower defense game.
