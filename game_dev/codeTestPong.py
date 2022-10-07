@@ -1,19 +1,19 @@
 import turtle as t
 
 window = t.Screen()
-window.title("Trial Game")
+window.title("Pong Practice")
 window.bgcolor("black")
 window.setup(width=800, height=600)
-window.tracer(0)
+window.tracer(0) ## Stops window from updating
 
 #A Bar
-padA = t.Turtle()
-padA.speed(0)
+padA = t.Turtle() ## Create Turtle Item
+padA.speed(0) ## Speed of the object
 padA.shape("square")
 padA.color("red")
-padA.shapesize(stretch_wid=4, stretch_len=1)
-padA.penup()
-padA.goto(-375, 0)
+padA.shapesize(stretch_wid=4, stretch_len=1) ## Multiple the dimensions to strech
+padA.penup() ## Prevent drawing while the object is being moved
+padA.goto(-375, 0) ## move the object to this point at the start of the game.
 
 #B Bar
 padB = t.Turtle()
