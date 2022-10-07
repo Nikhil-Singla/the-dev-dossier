@@ -1,4 +1,5 @@
 import turtle as t
+from random import randint
 ## import time
 window = t.Screen()
 window.title("Pong Practice")
@@ -6,8 +7,11 @@ window.bgcolor("black")
 window.setup(width=800, height=600)
 window.tracer(0) ## Stops window from updating
 
-scoreA = 0
-scoreB = 0
+def dec():
+    global scoreA
+    scoreA = 0
+    global scoreB
+    scoreB = 0
 
 # Pen
 pen = t.Turtle()
@@ -43,8 +47,8 @@ ball.shape("circle") ## Different Ball Shape
 ball.color("blue")
 ball.penup()
 ball.goto(0, 0)
-ball.dx = 2
-ball.dy = 2 ## Testing Change (Might edit, Default = 2)
+ball.dx = 2.5
+ball.dy = 2.5 ## Testing Change (Might edit, Default = 2)
 
 #Function 
 def padA_up():
@@ -87,17 +91,18 @@ def ball_move():
     ball.sety(ball.ycor() + ball.dy)
 
 def win_check():
+    global scoreA 
+    global scoreB
     if ball.xcor() > 385:
-        ball.goto(0, 0)
+        ball.goto(randint(-50, 50), randint(-200, 200))
         ball.dx *= -1
-        pen.clear()
-        ## scoreA += 1 
+        pen.clear() 
+        scoreA += 1 
         pen.write("Player A: {}     Player B: {}".format(scoreA, scoreB), align = "center", font=("Comic-Sans", 24, "normal"))
-
     if ball.xcor() < -385:
-        ball.goto(0, 0)
-        ball.dx *= 1
-        ## scoreB += 1
+        ball.goto(randint(-50, 50), randint(-200, 200))
+        ball.dx *= -1
+        scoreB += 1
         pen.clear()
         pen.write("Player A: {}     Player B: {}".format(scoreA, scoreB), align = "center", font=("Comic-Sans", 24, "normal"))
 
@@ -108,12 +113,6 @@ def check_col():
     if ((ball.xcor() < -350) and (ball.xcor() > -370) and (ball.ycor() > padA.ycor() - 43) and (ball.ycor() < padA.ycor()+43)):
         ball.dx *= -1 ## Change the direction of ball
         ball.setx(ball.xcor() + ball.dx + 3)
-
-window.listen()
-window.onkeypress(padA_up, "w")
-window.onkeypress(padA_down, "s")
-window.onkeypress(padB_up, "Up")
-window.onkeypress(padB_down, "Down")
 
 ##def Shoot():
   ##  bullet = t.Turtle()
@@ -130,6 +129,10 @@ window.onkeypress(padB_down, "Down")
 
 #Keybinding
 window.listen()
+window.onkeypress(padA_up, "w")
+window.onkeypress(padA_down, "s")
+window.onkeypress(padB_up, "Up")
+window.onkeypress(padB_down, "Down")
 
 #Main game loop
 def game():
@@ -138,6 +141,7 @@ def game():
     win_check()
     check_col()
 
+dec()
 while True:
     ## start = time.time()
     t.ontimer(game(),1)
