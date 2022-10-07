@@ -33,6 +33,24 @@ ball.penup()
 ball.goto(0, 0)
 
 #Function 
+def padA_up():
+    y = padA.ycor() ## Getting the y coordinate of turtle object
+    if y >= 250: ## The paddle has center of 40 pixels and window size is 300 pixels either direction
+        return
+    y += 20 ## Add 20 pixels to y
+    padA.sety(y) ## Sets the y coordinate to 20
+
+def padA_down():
+    y = padA.ycor() ## Getting the y coordinate of turtle object
+    if y <= -250: ## The paddle has center of 40 pixels and window size is 300 pixels either direction
+        return
+    y -= 20 ## Add 20 pixels to y
+    padA.sety(y) ## Sets the y coordinate to 20
+
+window.listen()
+window.onkeypress(padA_up, "w")
+window.onkeypress(padA_down, "s")
+
 ##def Shoot():
   ##  bullet = t.Turtle()
   ##  x = padA.xcor()
