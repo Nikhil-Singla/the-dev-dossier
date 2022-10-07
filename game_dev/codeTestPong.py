@@ -7,11 +7,13 @@ window.bgcolor("black")
 window.setup(width=800, height=600)
 window.tracer(0) ## Stops window from updating
 
-def dec():
+def dec_global():
     global scoreA
     scoreA = 0
     global scoreB
     scoreB = 0
+    global swap_side
+    swap_side = 1
 
 # Pen
 pen = t.Turtle()
@@ -47,8 +49,14 @@ ball.shape("circle") ## Different Ball Shape
 ball.color("blue")
 ball.penup()
 ball.goto(0, 0)
-ball.dx = 2.5
-ball.dy = 2.5 ## Testing Change (Might edit, Default = 2)
+
+def ball_start():
+    global swap_side
+    a = randint(1,2)
+    b = randint(1,2)
+    ball.dx = 2.5*(swap_side if a%2==0 else swap_side*-1)
+    ball.dy = 2.5*(swap_side if b%2==0 else swap_side*-1) 
+    swap_side *= -1
 
 #Function 
 def padA_up():
@@ -86,21 +94,23 @@ def ball_move():
     if ball.ycor() < -285: ## Bottom Correction
         ball.sety(-285)
         ball.dy *= -1
-        
     ball.setx(ball.xcor() + ball.dx)
     ball.sety(ball.ycor() + ball.dy)
 
 def win_check():
     global scoreA 
     global scoreB
+
     if ball.xcor() > 385:
         ball.goto(randint(-50, 50), randint(-200, 200))
+        ball_start()
         ball.dx *= -1
         pen.clear() 
         scoreA += 1 
         pen.write("Player A: {}     Player B: {}".format(scoreA, scoreB), align = "center", font=("Comic-Sans", 24, "normal"))
     if ball.xcor() < -385:
         ball.goto(randint(-50, 50), randint(-200, 200))
+        ball_start()
         ball.dx *= -1
         scoreB += 1
         pen.clear()
@@ -141,10 +151,17 @@ def game():
     win_check()
     check_col()
 
-dec()
+def inc_speed():
+    ball.dx *= 1.0005
+    ball.dy *= 1.0005
+
+dec_global()
+ball_start()
+
 while True:
     ## start = time.time()
     t.ontimer(game(),1)
+    t.ontimer(inc_speed, 1000)
     ## end = time.time()
     ## tyme = end - start
     ## print(tyme)
