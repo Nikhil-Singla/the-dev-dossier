@@ -13,42 +13,41 @@ padA.shape("square")
 padA.color("red")
 padA.shapesize(stretch_wid=4, stretch_len=1) ## Multiple the dimensions to strech
 padA.penup() ## Prevent drawing while the object is being moved
-padA.goto(-375, 0) ## move the object to this point at the start of the game.
+padA.goto(-375, 0) ## Move the object to this point at the start of the game.
 
 #B Bar
-padB = t.Turtle()
+padB = t.Turtle() 
 padB.speed(0)
 padB.shape("square")
 padB.color("red")
 padB.shapesize(stretch_wid=4, stretch_len=1)
 padB.penup()
-padB.goto(375, 0)
+padB.goto(375, 0) ## Start object to the other side of Paddle A
 
 #Ball
-ball = t.Turtle()
+ball = t.Turtle() ## Ball Object
 ball.speed(0)
-ball.shape("square")
+ball.shape("circle") ## Different Ball Shape
 ball.color("blue")
 ball.penup()
 ball.goto(0, 0)
 
 #Function 
-def Shoot():
-    bullet = t.Turtle()
-    x = padA.xcor()
-    x += 20
-    y = padA.ycor()
-    y += 20
-    bullet.speed(2)
-    bullet.shape("circle")
-    bullet.color("white")
-    bullet.penup()
-    bullet.goto(x,y)
-
+##def Shoot():
+  ##  bullet = t.Turtle()
+  ##  x = padA.xcor()
+  ##  x += 20
+  ##  y = padA.ycor()
+  ##  y += 20
+  ##  bullet.speed(2)
+  ##  bullet.shape("circle")
+  ##  bullet.color("white")
+  ##  bullet.penup()
+  ##  bullet.goto(x,y)
+## Will define this later when doing own update
 
 #Keybinding
 window.listen()
-window.onkeypress(Shoot,"space")
 
 #Main game loop
 while True:
