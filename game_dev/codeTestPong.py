@@ -70,8 +70,8 @@ def ball_move():
     if ball.ycor() < -285: ## Bottom Correction
         ball.sety(-285)
         ball.dy *= -1 
-    ball.setx(ball.xcor() + 0.05*ball.dx)
-    ball.sety(ball.ycor() + 0.05*ball.dy)
+    ball.setx(ball.xcor() + 0.04*ball.dx)
+    ball.sety(ball.ycor() + 0.04*ball.dy)
 
 def win_check():
     if ball.xcor() > 385:
@@ -80,6 +80,14 @@ def win_check():
     if ball.xcor() < -385:
         ball.goto(0, 0)
         ball.dx = 1
+
+def check_col():
+    if ((ball.xcor() > 350) and (ball.xcor() < 360) and (ball.ycor() > padB.ycor() - 43) and (ball.ycor() < padB.ycor()+43)): ## Tried using range function here, did not work out lol
+        ball.dx *= -1
+        ball.setx(ball.xcor() + ball.dx - 3)
+    if ((ball.xcor() < -350) and (ball.xcor() > -360) and (ball.ycor() > padA.ycor() - 43) and (ball.ycor() < padA.ycor()+43)):
+        ball.dx *= -1 ## Change the direction of ball
+        ball.setx(ball.xcor() + ball.dx + 3)
 
 window.listen()
 window.onkeypress(padA_up, "w")
@@ -108,3 +116,4 @@ while True:
     window.update()
     ball_move()
     win_check()
+    check_col()
