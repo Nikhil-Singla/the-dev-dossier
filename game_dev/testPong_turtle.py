@@ -117,10 +117,10 @@ def win_check():
         pen.write("Player A: {}     Player B: {}".format(scoreA, scoreB), align = "center", font=("Comic-Sans", 24, "normal"))
 
 def check_col():
-    if ((ball.xcor() > 350) and (ball.xcor() < 370) and (ball.ycor() > padB.ycor() - 43) and (ball.ycor() < padB.ycor()+43)): ## Tried using range function here, did not work out lol
+    if ((ball.xcor() > 350) and (ball.xcor() < 370) and (ball.ycor() > padB.ycor() - 60) and (ball.ycor() < padB.ycor()+60)): ## Tried using range function here, did not work out lol
         ball.dx *= -1
         ball.setx(ball.xcor() + ball.dx - 3)
-    if ((ball.xcor() < -350) and (ball.xcor() > -370) and (ball.ycor() > padA.ycor() - 43) and (ball.ycor() < padA.ycor()+43)):
+    if ((ball.xcor() < -350) and (ball.xcor() > -370) and (ball.ycor() > padA.ycor() - 60) and (ball.ycor() < padA.ycor()+60)):
         ball.dx *= -1 ## Change the direction of ball
         ball.setx(ball.xcor() + ball.dx + 3)
 
