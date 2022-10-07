@@ -139,10 +139,11 @@ def check_col():
   ##  bullet.goto(x,y)
 ## Will define this later when doing own update
 
-def pause():
+def exit():
     global gameState
     gameState = not gameState
     return gameState
+
 
 #Keybinding
 window.listen()
@@ -150,7 +151,7 @@ window.onkeypress(padA_up, "w")
 window.onkeypress(padA_down, "s")
 window.onkeypress(padB_up, "Up")
 window.onkeypress(padB_down, "Down")
-window.onkeypress(pause, "Escape")
+window.onkeypress(exit, "Escape")
 
 #Main game loop
 def game():
@@ -167,12 +168,10 @@ dec_global()
 ball_start()
 
 while gameState:
-    while gameState:
-        ## start = time.time()
-        t.ontimer(game(),1)
-        t.ontimer(inc_speed, 1000)
-        ## end = time.time()
-        ## tyme = end - start
-        ## print(tyme)
-        ## time.sleep(min(abs(0.02-tyme), 0.02))
-    input("PAUSED.\nPress Esc to unpause. Press any other key to exit. . .")
+    ## start = time.time()
+    t.ontimer(game(),1)
+    t.ontimer(inc_speed, 1000)
+    ## end = time.time()
+    ## tyme = end - start
+    ## print(tyme)
+    ## time.sleep(min(abs(0.02-tyme), 0.02))
