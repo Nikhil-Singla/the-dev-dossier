@@ -1,3 +1,10 @@
 <img class="lnXdpd" alt="Google" data-atf="1" data-frt="0" src="https://www.akc.org/wp-content/uploads/2017/11/Carolina-Dog-standing-outdoors.jpg" srcset="" width="272" height="92">
+
 Changing Googles Image: To note that srcset also had to be deleted before the change could be visibile
 Name suggests that Google was picking images from a set of different images whose reference had to be deleted?
+
+Console ->
+const ourImage = document.querySelector("img") 
+ourImage.setAttribute('src', 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/golden-retriever-royalty-free-image-506756303-1560962726.jpg?crop=0.672xw:1.00xh;0.166xw,0&resize=640:*')
+
+## Using console we can edit the webpage
