@@ -56,8 +56,8 @@ def ball_start():
     global swap_side
     a = randint(1,2)
     b = randint(1,2)
-    ball.dx = 0.5*(swap_side if a%2==0 else swap_side*-1)
-    ball.dy = 0.5*(swap_side if b%2==0 else swap_side*-1) 
+    ball.dx = 2.5*(swap_side if a%2==0 else swap_side*-1)
+    ball.dy = 2.5*(swap_side if b%2==0 else swap_side*-1) 
     swap_side *= -1
 
 #Function 
@@ -161,8 +161,8 @@ def game():
     check_col()
 
 def inc_speed():
-    ball.dx *= 1.00005
-    ball.dy *= 1.00005
+    ball.dx *= 1.0005
+    ball.dy *= 1.0005
 
 dec_global()
 ball_start()
