@@ -1,0 +1,3 @@
+<img class="lnXdpd" alt="Google" data-atf="1" data-frt="0" src="https://www.akc.org/wp-content/uploads/2017/11/Carolina-Dog-standing-outdoors.jpg" srcset="" width="272" height="92">
+Changing Googles Image: To note that srcset also had to be deleted before the change could be visibile
+Name suggests that Google was picking images from a set of different images whose reference had to be deleted?
