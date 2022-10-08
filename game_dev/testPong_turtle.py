@@ -140,38 +140,38 @@ def check_col():
 ## Will define this later when doing own update
 
 def exit():
-    global gameState
-    gameState = not gameState
-    return gameState
+    global gameState ## For the exit loop. Needs to be declared before
+    gameState = not gameState ## Change the game state
+    return gameState ## Function return
 
 
 #Keybinding
 window.listen()
-window.onkeypress(padA_up, "w")
-window.onkeypress(padA_down, "s")
-window.onkeypress(padB_up, "Up")
-window.onkeypress(padB_down, "Down")
-window.onkeypress(exit, "Escape")
+window.onkeypress(padA_up, "w") ## Left side Paddle UP
+window.onkeypress(padA_down, "s") ## Left down
+window.onkeypress(padB_up, "Up") ## Right Up
+window.onkeypress(padB_down, "Down") ## Right down
+window.onkeypress(exit, "Escape") ## Exit Menu
 
 #Main game loop
-def game():
-    window.update()
-    ball_move()
-    win_check()
-    check_col()
+def game(): ## Loop that runs while gamestate is on.
+    window.update() ## Update the Frame
+    ball_move() ## Move the ball
+    win_check() ## Function to check if someone won
+    check_col() ## Function to check collision
 
-def inc_speed():
+def inc_speed(): ## Increase ball speed as game goes on
     ball.dx *= 1.0005
     ball.dy *= 1.0005
 
-dec_global()
-ball_start()
+dec_global() ## Calling the function to declare the global variables
+ball_start() ## Starting the ball movement
 
-while gameState:
-    ## start = time.time()
-    t.ontimer(game(),1)
-    t.ontimer(inc_speed, 1000)
-    ## end = time.time()
-    ## tyme = end - start
-    ## print(tyme)
-    ## time.sleep(min(abs(0.02-tyme), 0.02))
+while gameState: ## For the exit menu
+            ## start = time.time()
+    t.ontimer(game(),1) ## Trying to have constant ticks
+    t.ontimer(inc_speed, 2000) ## Increasing the ball speed every other second
+            ## end = time.time()
+            ## tyme = end - start
+            ## print(tyme)
+            ## time.sleep(min(abs(0.02-tyme), 0.02))
