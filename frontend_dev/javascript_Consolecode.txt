@@ -8,5 +8,4 @@ const clickFunction = function() {
 	console.log('Random color generated')
 }
 pageBody.onclick = clickFunction;
-
 ## END CODE ##
