@@ -1,13 +1,17 @@
-import turtle as t
-from random import randint
 ## import time
-window = t.Screen()
-window.title("Pong Practice")
-window.bgcolor("black")
+
+import turtle as t ## Game creation
+
+from random import randint ## Importing for random start.
+
+
+window = t.Screen() ## Main screen
+window.title("Pong Practice") ## Title
+window.bgcolor("black") 
 window.setup(width=800, height=600)
 window.tracer(0) ## Stops window from updating
 
-def dec_global():
+def dec_global(): ## Declaration of global variables to be used later
     global scoreA
     scoreA = 0
     global scoreB
@@ -18,13 +22,13 @@ def dec_global():
     gameState = True
 
 # Pen
-pen = t.Turtle()
+pen = t.Turtle() ## Created to write the score
 pen.speed(0)
 pen.color("white")
 pen.penup()
 pen.hideturtle()
 pen.goto(0, 230)
-pen.write("Player A: 0     Player B: 0", align = "center", font=("Comic-Sans", 24, "normal"))
+pen.write("Player A: 0     Player B: 0", align = "center", font=("Comic-Sans", 24, "normal")) ## Initial Score
 
 #A Bar
 padA = t.Turtle() ## Create Turtle Item
@@ -49,16 +53,16 @@ ball = t.Turtle() ## Ball Object
 ball.speed(0)
 ball.shape("circle") ## Different Ball Shape
 ball.color("blue")
-ball.penup()
+ball.penup() ## So that the ball doesn't trace path by drawing
 ball.goto(0, 0)
 
 def ball_start():
-    global swap_side
+    global swap_side ## Randomize the side to which the ball begins
     a = randint(1,2)
     b = randint(1,2)
-    ball.dx = 2.5*(swap_side if a%2==0 else swap_side*-1)
+    ball.dx = 2.5*(swap_side if a%2==0 else swap_side*-1) ## !! Note separatation from the change in y
     ball.dy = 2.5*(swap_side if b%2==0 else swap_side*-1) 
-    swap_side *= -1
+    swap_side *= -1 ## Alternating swap_side value
 
 #Function 
 def padA_up():
@@ -96,12 +100,12 @@ def ball_move():
     if ball.ycor() < -285: ## Bottom Correction
         ball.sety(-285)
         ball.dy *= -1
-    ball.setx(ball.xcor() + ball.dx)
-    ball.sety(ball.ycor() + ball.dy)
+    ball.setx(ball.xcor() + ball.dx) ## Ball's constant speed
+    ball.sety(ball.ycor() + ball.dy) ## Ball's constant speed in y direction
 
 def win_check():
     global scoreA 
-    global scoreB
+    global scoreB ## Calling the predefined global variables to take prio this local
 
     if ball.xcor() > 385:
         ball.goto(randint(-50, 50), randint(-200, 200))
