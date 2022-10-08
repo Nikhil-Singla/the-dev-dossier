@@ -1,0 +1,12 @@
+## Code to randomize color on clicking body
+const pageBody = document.querySelector('body')
+const clickFunction = function() {
+	const colors = ["green", "red", "black", "brown", "blue", "#000545"];
+	const customIndex = Math.floor(Math.random() * colors.length); //Math.random only gives a number between 0 and 1
+	const choiceColor = colors[customIndex];
+	pageBody.style.backgroundColor = choiceColor;
+	console.log('Random color generated')
+}
+pageBody.onclick = clickFunction;
+
+## END CODE ##
