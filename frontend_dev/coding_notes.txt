@@ -17,7 +17,17 @@ function changeImgURL(url)
 }
 changeImgURL('https://img.freepik.com/free-photo/group-portrait-adorable-puppies_53876-64778.jpg?w=2000')
 clear()
+
 ## SPOT THE ERROR(s) 
     function changeImgURL(url) 
     {document.querySelector('img').setAttribute('src', url)}
     changeImgURL(https://img.freepik.com/free-photo/group-portrait-adorable-puppies_53876-64778.jpg?w=2000)
+
+## More Console Testing ->
+const myDate = new Date();
+myDate.toISOString();
+-> '2022-10-10T09:56:18.995Z' ## This standardization was done by ISO standardization. Similar to ECMA
+
+## Programming Language:
+Group of tokens/Symbols that are compiled by a compiler to give rise to softwares.
+Runtimes are different and their codes are different due to syntax differences.
