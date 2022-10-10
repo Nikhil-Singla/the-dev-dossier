@@ -25,15 +25,23 @@ font = pygame.font.Font('freesansbold.ttf', 16) ## Font
 
 timer = pygame.time.Clock() ## Help run our game at 60 FPS
 
-def draw_Box(color, x_coord):
+## Game Variables
+boxCount = 2
+boxOne = 1
+boxTwo = 2
+boxThree = 3
+boxFour = 4
+boxFive = 5
+
+def draw_Box(color, x_coord, value):
     pygame.draw.rect(screen, color, [x_coord, 500, 100, 100], 2)
+    value_text = font.render(str(value), True, white)
+    screen.blit(value_text, (x_coord+45, 545))
 
 def draw_endBox(color, x_coord):
     pygame.draw.rect(screen, color, [x_coord, 500, 100, 100], 2)
     pygame.draw.line(screen, color, (x_coord+50, 525), (x_coord+50, 575), 3)
     pygame.draw.line(screen, color, (x_coord+25, 550), (x_coord+75, 550), 3)
-
-boxCount = 2
 
 gameState = True ## Game Running
 while gameState:
@@ -43,10 +51,9 @@ while gameState:
             gameState = False
     screen.fill(background) ## Have our initial background on the screen
     
-    draw_Box(white, 100)
-    draw_Box(white, 250)
-    draw_Box(white, 400)
-    draw_endBox(white, 400)
+    draw_Box(white, 100, boxOne)
+    draw_Box(red, 250, boxTwo)
+    draw_endBox(green, 400)
 
     pygame.display.flip() ## Update the content of the entire display
 pygame.quit() ## Uninitialize all pygame modules
