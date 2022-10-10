@@ -61,7 +61,7 @@ def draw_Box(color, y_cord, value, draw, length, speed):
         score += value
     pygame.draw.rect(screen, color, [70, y_cord-15, 200, 30], 2)
     pygame.draw.rect(screen, color, [70, y_cord-15, length, 30])
-    pygame.draw.circle(screen, color, (30, y_cord), 20, 5)
+    task = pygame.draw.circle(screen, color, (30, y_cord), 20, 5)
     value_text = font.render(str(value), True, white)
     screen.blit(value_text, (16, y_cord-10))
     return task, length, draw
@@ -74,11 +74,11 @@ while gameState:
             gameState = False
     screen.fill(background) ## Have our initial background on the screen
     
-    draw_Box(white, 100, boxOne)
-    draw_Box(red, 200, boxTwo)
-    draw_Box(aqua, 300, boxThree)
-    draw_Box(metallic, 400, boxFour)
-    draw_Box(navy, 500, boxFive)
+    task1, length_One, draw_One = draw_Box(white, 100, boxOne, draw_One, length_One, speed_One)
+    task2, length_One, draw_One = draw_Box(red, 200, boxTwo, draw_Two, length_Two, speed_Two)
+    task3, length_One, draw_One = draw_Box(aqua, 300, boxThree, draw_Three, length_Three, speed_Three)
+    task4, length_One, draw_One = draw_Box(metallic, 400, boxFour, draw_Four, length_Four, speed_Four)
+    task5, length_One, draw_One = draw_Box(navy, 500, boxFive, draw_Five, length_Five, speed_Five)
     pygame.display.flip() ## Update the content of the entire display
 
 pygame.quit() ## Uninitialize all pygame modules
