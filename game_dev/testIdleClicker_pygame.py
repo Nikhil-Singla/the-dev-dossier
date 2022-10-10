@@ -16,18 +16,22 @@ green = (0, 255, 0)
 white = (255, 255, 255)
 ## End Palette
 
-screen = pygame.dislpay.set_mode([1080, 720])
+screen = pygame.display.set_mode([1080, 720])
 pygame.display.set_caption('Idle Turret Maker')
 
 background = black
-frameRate = 60
-font = pygame.font.Font('comic.ttf', '16')
+frameRate = 60 
+font = pygame.font.Font('freesansbold.ttf', 16)
+
+timer = pygame.time.Clock() ## Help run our game at 60 FPS
 
 gameState = True ## Game Running
 while gameState:
-
+    timer.tick(frameRate) ## Tick at the specified framerate
     for event in pygame.event.get():
-        if event.type() == pygame.QUIT: ## Different from quit(). Here, its an event
+        if event.type == pygame.QUIT: ## Different from quit(). Here, its an event
             gameState = False
+    screen.fill(background) ## Have our initial background on the screen
 
+    pygame.display.flip() ## Flip everything on the screen
 pygame.quit() ## Uninitialize all pygame modules
