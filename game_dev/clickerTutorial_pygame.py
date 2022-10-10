@@ -72,13 +72,27 @@ while gameState:
     for event in pygame.event.get():
         if event.type == pygame.QUIT: ## Different from quit(). Here, its an event
             gameState = False
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if task1.collidepoint(event.pos):
+                draw_One = True
+            if task2.collidepoint(event.pos):
+                draw_Two = True
+            if task3.collidepoint(event.pos):
+                draw_Three = True
+            if task4.collidepoint(event.pos):
+                draw_Four = True
+            if task5.collidepoint(event.pos):
+                draw_Five = True
     screen.fill(background) ## Have our initial background on the screen
     
     task1, length_One, draw_One = draw_Box(white, 100, boxOne, draw_One, length_One, speed_One)
-    task2, length_One, draw_One = draw_Box(red, 200, boxTwo, draw_Two, length_Two, speed_Two)
-    task3, length_One, draw_One = draw_Box(aqua, 300, boxThree, draw_Three, length_Three, speed_Three)
-    task4, length_One, draw_One = draw_Box(metallic, 400, boxFour, draw_Four, length_Four, speed_Four)
-    task5, length_One, draw_One = draw_Box(navy, 500, boxFive, draw_Five, length_Five, speed_Five)
+    task2, length_Two, draw_Two = draw_Box(red, 200, boxTwo, draw_Two, length_Two, speed_Two)
+    task3, length_Three, draw_Three = draw_Box(aqua, 300, boxThree, draw_Three, length_Three, speed_Three)
+    task4, length_Four, draw_Four = draw_Box(metallic, 400, boxFour, draw_Four, length_Four, speed_Four)
+    task5, length_Five, draw_Five = draw_Box(navy, 500, boxFive, draw_Five, length_Five, speed_Five)
+
+    display_score = font.render('Money: $'+str(round(score,2)), True, white, black)
+    screen.blit(display_score, (10,5))
     pygame.display.flip() ## Update the content of the entire display
 
 pygame.quit() ## Uninitialize all pygame modules
