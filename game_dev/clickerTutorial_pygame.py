@@ -26,6 +26,7 @@ font = pygame.font.Font('freesansbold.ttf', 16) ## Font
 timer = pygame.time.Clock() ## Help run our game at 60 FPS
 
 ## Game Variables
+
 boxOne = 1
 boxTwo = 2
 boxThree = 3
@@ -37,6 +38,18 @@ draw_Two = False
 draw_Three = False
 draw_Four = False
 draw_Five = False
+length_One = 0
+length_Two = 0
+length_Three = 0
+length_Four = 0
+length_Five = 0
+speed_One = 5
+speed_Two = 4
+speed_Three = 3
+speed_Four = 2
+speed_Five = 1
+
+## End Game Variables
 
 def draw_Box(color, y_cord, value, draw, length, speed):
     global score
