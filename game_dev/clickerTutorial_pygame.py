@@ -58,16 +58,16 @@ manOneOwn = False
 manOneCost = 100
 twoCost = 2
 manTwoOwn = False
-manTwoCost = 200
+manTwoCost = 500
 threeCost = 3
 manThreeOwn = False
-manThreeCost = 300
+manThreeCost = 1000
 fourCost = 4
 manFourOwn = False
-manFourCost = 400
+manFourCost = 3000
 fiveCost = 5
 manFiveOwn = False
-manFiveCost = 500
+manFiveCost = 5000
 
 ## End Manager Variables
 
@@ -86,14 +86,14 @@ def draw_Box(color, y_cord, value, draw, length, speed):
     screen.blit(value_text, (16, y_cord-10))
     return task, length, draw
 
-def newButton(color, x_coord, cost, owned):
-    color_button = pygame.draw.rect(screen, color, [x_coord, 340, 50, 30])
+def newButton(color, x_coord, cost, manCost, owned):
+    color_button = pygame.draw.rect(screen, color, [x_coord, 550, 50, 30])
     color_cost = font.render(str(round(cost, 2)), True, black)
     screen.blit(color_cost, (x_coord+6, 350))
     if not owned:
-        managerButton = pygame.draw.rect(screen, color, [x_coord, 405, 50, 30])
-        managerText = font.render(str(round(cost, 2)), True, black)
-        screen.blit(managerText, (x_coord+6, 410))
+        managerButton = pygame.draw.rect(screen, color, [x_coord, 600, 50, 30])
+        managerText = font.render(str(round(manCost, 2)), True, black)
+        screen.blit(managerText, (x_coord+6, 605))
     return color_button, managerButton
 
 gameState = True ## Game Running
@@ -118,8 +118,9 @@ while gameState:
     task1, length_One, draw_One = draw_Box(white, 100, boxOne, draw_One, length_One, speed_One)
     task2, length_Two, draw_Two = draw_Box(red, 200, boxTwo, draw_Two, length_Two, speed_Two)
     task3, length_Three, draw_Three = draw_Box(aqua, 300, boxThree, draw_Three, length_Three, speed_Three)
-    task4, length_Four, draw_Four = draw_Box(metallic, 400, boxFour, draw_Four, length_Four, speed_Four)
+    task4, length_Four, draw_Four = draw_Box(orange, 400, boxFour, draw_Four, length_Four, speed_Four)
     task5, length_Five, draw_Five = draw_Box(navy, 500, boxFive, draw_Five, length_Five, speed_Five)
+    buy1, manBuy1 = newButton(white, 10, oneCost, manOneCost, manOneOwn)
 
     display_score = font.render('Money: $'+str(round(score,2)), True, white, black)
     screen.blit(display_score, (10,5))
