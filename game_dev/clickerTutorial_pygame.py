@@ -91,9 +91,9 @@ def newButton(color, x_coord, cost, manCost, owned):
     color_cost = font.render(str(round(cost, 2)), True, black)
     screen.blit(color_cost, (x_coord+6, 350))
     if not owned:
-        managerButton = pygame.draw.rect(screen, color, [x_coord, 650, 50, 30])
+        managerButton = pygame.draw.rect(screen, color, [x_coord, 670, 50, 30])
         managerText = font.render(str(round(manCost, 2)), True, black)
-        screen.blit(managerText, (x_coord+6, 655))
+        screen.blit(managerText, (x_coord+6, 675))
     return color_button, managerButton
 
 gameState = True ## Game Running
@@ -121,13 +121,17 @@ while gameState:
     task4, length_Four, draw_Four = draw_Box(orange, 400, boxFour, draw_Four, length_Four, speed_Four)
     task5, length_Five, draw_Five = draw_Box(navy, 500, boxFive, draw_Five, length_Five, speed_Five)
     buy1, manBuy1 = newButton(white, 10, oneCost, manOneCost, manOneOwn)
-    buy2, manBuy2 = newButton(red, 80, oneCost, manOneCost, manOneOwn)
-    buy3, manBuy3 = newButton(aqua, 150, oneCost, manOneCost, manOneOwn)
-    buy4, manBuy4 = newButton(orange, 220, oneCost, manOneCost, manOneOwn)
-    buy5, manBuy5 = newButton(navy, 290, oneCost, manOneCost, manOneOwn)
+    buy2, manBuy2 = newButton(red, 80, twoCost, manTwoCost, manTwoOwn)
+    buy3, manBuy3 = newButton(aqua, 150, threeCost, manThreeCost, manThreeOwn)
+    buy4, manBuy4 = newButton(orange, 220, fourCost, manFourCost, manFourOwn)
+    buy5, manBuy5 = newButton(navy, 290, fiveCost, manFiveCost, manFiveOwn)
 
     display_score = font.render('Money: $'+str(round(score,2)), True, white, black)
     screen.blit(display_score, (10,5))
+    buyMore = font.render('Buy More: ', True, white)
+    screen.blit(buyMore, (10, 580))
+    buyMoreMan = font.render('Buy Managers: ', True, white)
+    screen.blit(buyMoreMan, (10, 650))
     pygame.display.flip() ## Update the content of the entire display
 
 pygame.quit() ## Uninitialize all pygame modules
