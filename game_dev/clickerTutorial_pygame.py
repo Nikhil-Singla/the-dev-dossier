@@ -51,6 +51,26 @@ speed_Five = 1
 
 ## End Game Variables
 
+## Manager Variables
+
+oneCost = 1
+manOneOwn = False
+manOneCost = 100
+twoCost = 2
+manTwoOwn = False
+manTwoCost = 200
+threeCost = 3
+manThreeOwn = False
+manThreeCost = 300
+fourCost = 4
+manFourOwn = False
+manFourCost = 400
+fiveCost = 5
+manFiveOwn = False
+manFiveCost = 500
+
+## End Manager Variables
+
 def draw_Box(color, y_cord, value, draw, length, speed):
     global score
     if draw and length < 200:
@@ -65,6 +85,16 @@ def draw_Box(color, y_cord, value, draw, length, speed):
     value_text = font.render(str(value), True, white)
     screen.blit(value_text, (16, y_cord-10))
     return task, length, draw
+
+def newButton(color, x_coord, cost, owned):
+    color_button = pygame.draw.rect(screen, color, [x_coord, 340, 50, 30])
+    color_cost = font.render(str(round(cost, 2)), True, black)
+    screen.blit(color_cost, (x_coord+6, 350))
+    if not owned:
+        managerButton = pygame.draw.rect(screen, color, [x_coord, 405, 50, 30])
+        managerText = font.render(str(round(cost, 2)), True, black)
+        screen.blit(managerText, (x_coord+6, 410))
+    return color_button, managerButton
 
 gameState = True ## Game Running
 while gameState:
