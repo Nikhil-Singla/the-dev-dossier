@@ -1,6 +1,8 @@
 ## To use Python in CMD, use py instead of python
 ## Idle clicker game, Turret Auto Tower Defense
 
+## Army Simulator Game
+
 import pygame  
 pygame.init()
 
@@ -25,23 +27,25 @@ font = pygame.font.Font('freesansbold.ttf', 16) ## Font
 
 timer = pygame.time.Clock() ## Help run our game at 60 FPS
 
-## Game Variables
-boxCount = 2
-boxOne = 1
-boxTwo = 2
-boxThree = 3
-boxFour = 4
-boxFive = 5
+## Army Stats
 
-def draw_Box(color, x_coord, value):
-    pygame.draw.rect(screen, color, [x_coord, 500, 100, 100], 2)
-    value_text = font.render(str(value), True, white)
-    screen.blit(value_text, (x_coord+45, 545))
+## Soldier
+healthOne = 100
+attackOne = 10
+defenseOne = 10
+speedMod = 1
 
-def draw_endBox(color, x_coord):
-    pygame.draw.rect(screen, color, [x_coord, 500, 100, 100], 2)
-    pygame.draw.line(screen, color, (x_coord+50, 525), (x_coord+50, 575), 3)
-    pygame.draw.line(screen, color, (x_coord+25, 550), (x_coord+75, 550), 3)
+## Archer
+healthTwo = 100
+attackTwo = 40
+defenseOne = 5
+speedMod = 0
+
+## Cavalry
+healthThree = 150
+attackThree = 20
+defenseThree = 5
+speedMod = 2
 
 gameState = True ## Game Running
 while gameState:
@@ -51,9 +55,5 @@ while gameState:
             gameState = False
     screen.fill(background) ## Have our initial background on the screen
     
-    draw_Box(white, 100, boxOne)
-    draw_Box(red, 250, boxTwo)
-    draw_endBox(green, 400)
-
     pygame.display.flip() ## Update the content of the entire display
 pygame.quit() ## Uninitialize all pygame modules
