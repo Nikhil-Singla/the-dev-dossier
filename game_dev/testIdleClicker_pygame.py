@@ -68,6 +68,12 @@ def fightTurn(health, speed, attack, defense):
 def statDisplay(listVar, index, stat, name):
     listVar.insert(index, font.render(name+str(round(stat)), True, white, black))
 
+def choose_fighterButton():
+    fighterButton = pygame.draw.rect(screen, aqua, [400, 50, 130, 30])
+    buttonText = font.render(('Choose your fighter: '), True, white)
+    screen.blit(buttonText, (406, 50))
+    return fighterButton
+
 """"
 healthOne = 100
 attackOne = 10
@@ -90,6 +96,7 @@ while gameState:
         if event.type == pygame.QUIT: ## Different from quit(). Here, its an event
             gameState = False
     screen.fill(background) ## Have our initial background on the screen
+
     for i in range(0,3):
         statDisplay(displayStat1, i, healthMod[i], 'HP :')
         statDisplay(displayStat2, i, attackMod[i], 'ATK:')
@@ -102,5 +109,6 @@ while gameState:
         screen.blit(displayStat3[i], (10+70*i,65))
         screen.blit(displayStat4[i], (10+70*i,95))
 
+    choose_fighterButton()
     pygame.display.flip() ## Update the content of the entire display
 pygame.quit() ## Uninitialize all pygame modules
