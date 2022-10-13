@@ -27,25 +27,29 @@ font = pygame.font.Font('freesansbold.ttf', 16) ## Font
 
 timer = pygame.time.Clock() ## Help run our game at 60 FPS
 
-## Army Stats
+## Army Stats: [Soldier, Archer, Cavalry]
 
-## Soldier
+healthMod = [100, 100, 150]
+attackMod = [10, 40, 20]
+defenseMod = [10, 5, 5]
+speedMod = [1, 0, 2]
+
+statList = [healthMod, attackMod, defenseMod, speedMod]
+
+""""
 healthOne = 100
 attackOne = 10
 defenseOne = 10
 speedMod = 1
-
-## Archer
 healthTwo = 100
 attackTwo = 40
 defenseOne = 5
 speedMod = 0
-
-## Cavalry
 healthThree = 150
 attackThree = 20
 defenseThree = 5
 speedMod = 2
+"""
 
 gameState = True ## Game Running
 while gameState:
