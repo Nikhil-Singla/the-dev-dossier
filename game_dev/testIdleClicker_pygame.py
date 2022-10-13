@@ -29,12 +29,25 @@ timer = pygame.time.Clock() ## Help run our game at 60 FPS
 
 ## Army Stats: [Soldier, Archer, Cavalry]
 
-healthMod = [100, 100, 150]
-attackMod = [10, 40, 20]
+healthMod = [100, 100, 100]
+attackMod = [10, 50, 25]
 defenseMod = [10, 5, 5]
 speedMod = [1, 0, 2]
 
+## (-> = trumps)
+## Infantry -> Archer -> Cavalry -> Infantry 
+
 statList = [healthMod, attackMod, defenseMod, speedMod]
+
+def turnAttack(attack, speed):
+    dmgDealt = max(attack*speed, attack+speed)
+    return dmgDealt
+
+def turnDefens(defense, speed):
+    dmgBlocked = min(speed*defense, speed+defense)
+    return dmgBlocked
+
+def fightTurn(health, speed, attack, defense):
 
 """"
 healthOne = 100
