@@ -18,21 +18,29 @@ green = (0, 255, 0)
 white = (255, 255, 255)
 ## End Palette
 
+## Global Variables
 screen = pygame.display.set_mode([1080, 720]) ## Resolution
 pygame.display.set_caption('Idle Turret Maker') ## Title of the game
 
 background = black ## Variable that can be edited later
 frameRate = 60  ## Framerate 
-font = pygame.font.Font('freesansbold.ttf', 16) ## Font
+font = pygame.font.Font('freesansbold.ttf', 12) ## Font
 
 timer = pygame.time.Clock() ## Help run our game at 60 FPS
+
+displayStat1 = []
+displayStat2 = []
+displayStat3 = []
+displayStat4 = []
+## Global Variables END
+
 
 ## Army Stats: [Soldier, Archer, Cavalry]
 
 healthMod = [100, 100, 100]
-attackMod = [10, 50, 25]
-defenseMod = [10, 5, 5]
-speedMod = [1, 0, 2]
+attackMod = [10, 10, 10]
+defenseMod = [10, 10, 10]
+speedMod = [1, 1, 1]
 
 ## (-> = trumps)
 ## Infantry -> Archer -> Cavalry -> Infantry 
@@ -43,11 +51,22 @@ def turnAttack(attack, speed):
     dmgDealt = max(attack*speed, attack+speed)
     return dmgDealt
 
-def turnDefens(defense, speed):
+def turnDefense(defense, speed):
     dmgBlocked = min(speed*defense, speed+defense)
     return dmgBlocked
 
+def healthLeft(health, block, taken):
+    health = health - (taken - block)
+    return health
+
 def fightTurn(health, speed, attack, defense):
+    attack = turnAttack(attack, speed)
+    defend = turnDefense(defense, speed)
+    health = healthLeft(health, defend, attack)
+    return health
+
+def statDisplay(listVar, index, stat, name):
+    listVar.insert(index, font.render(name+str(round(stat)), True, white, black))
 
 """"
 healthOne = 100
@@ -71,6 +90,17 @@ while gameState:
         if event.type == pygame.QUIT: ## Different from quit(). Here, its an event
             gameState = False
     screen.fill(background) ## Have our initial background on the screen
-    
+    for i in range(0,3):
+        statDisplay(displayStat1, i, healthMod[i], 'HP :')
+        statDisplay(displayStat2, i, attackMod[i], 'ATK:')
+        statDisplay(displayStat3, i, defenseMod[i], 'DEF:')
+        statDisplay(displayStat4, i, speedMod[i], 'SPD:')
+
+    for i in range(0,3):
+        screen.blit(displayStat1[i], (10+70*i,5))
+        screen.blit(displayStat2[i], (10+70*i,35))
+        screen.blit(displayStat3[i], (10+70*i,65))
+        screen.blit(displayStat4[i], (10+70*i,95))
+
     pygame.display.flip() ## Update the content of the entire display
 pygame.quit() ## Uninitialize all pygame modules
