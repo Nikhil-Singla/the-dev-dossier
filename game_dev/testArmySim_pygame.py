@@ -1,6 +1,5 @@
 ## To use Python in CMD, use py instead of python
-## Idle clicker game, Turret Auto Tower Defense
-
+## Auto Battler
 ## Army Simulator Game
 
 import pygame  
@@ -20,7 +19,7 @@ white = (255, 255, 255)
 
 ## Global Variables
 screen = pygame.display.set_mode([1080, 720]) ## Resolution
-pygame.display.set_caption('Idle Turret Maker') ## Title of the game
+pygame.display.set_caption('Army Sim') ## Title of the game
 
 background = black ## Variable that can be edited later
 frameRate = 60  ## Framerate 
@@ -57,6 +56,8 @@ def turnDefense(defense, speed):
 
 def healthLeft(health, block, taken):
     health = health - (taken - block)
+    if(health < 0):
+        health = 0
     return health
 
 def fightTurn(health, speed, attack, defense):
@@ -69,9 +70,18 @@ def statDisplay(listVar, index, stat, name):
     listVar.insert(index, font.render(name+str(round(stat)), True, white, black))
 
 def choose_fighterButton():
-    fighterButton = pygame.draw.rect(screen, aqua, [400, 50, 130, 30])
+    fighterButton = pygame.draw.rect(screen, aqua, [400, 50, 150, 25])
     buttonText = font.render(('Choose your fighter: '), True, white)
     screen.blit(buttonText, (406, 50))
+    warOne = pygame.draw.rect(screen, red, [395, 75, 50, 25])
+    warTwo = pygame.draw.rect(screen, red, [450, 75, 50, 25])
+    warThree = pygame.draw.rect(screen, red, [505, 75, 50, 25])
+    buttonText = font.render(('Warrior'), True, black)
+    screen.blit(buttonText, (397, 77))
+    buttonText = font.render(('Archer'), True, black)
+    screen.blit(buttonText, (452, 77))
+    buttonText = font.render(('Cavalry'), True, black)
+    screen.blit(buttonText, (507, 77))
     return fighterButton
 
 """"
