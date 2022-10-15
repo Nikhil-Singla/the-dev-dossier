@@ -104,10 +104,12 @@ def printBattle(fightList):
         statDisplay(displayStat2, i, attackMod[i], 'ATK:')
         statDisplay(displayStat3, i, defenseMod[i], 'DEF:')
         statDisplay(displayStat4, i, speedMod[i], 'SPD:')
-        screen.blit(displayStat1.pop(), (100+70*j,200))
-        screen.blit(displayStat2.pop(), (100+70*j,240))
-        screen.blit(displayStat3.pop(), (100+70*j,280))
-        screen.blit(displayStat4.pop(), (100+70*j,320))
+        screen.blit(displayStat1.pop(), (300*j,200))
+        screen.blit(displayStat2.pop(), (300*j,240))
+        versus = font.render(('VERSUS'), True, white)
+        screen.blit(versus, (450, 265))
+        screen.blit(displayStat3.pop(), (300*j,280))
+        screen.blit(displayStat4.pop(), (300*j,320))
         j -= 1
 
 """"
@@ -133,6 +135,17 @@ while gameState:
     for event in pygame.event.get():
         if event.type == pygame.QUIT: ## Different from quit(). Here, its an event
             gameState = False
+        if event.type == pygame.MOUSEBUTTONUP:
+            pos = pygame.mouse.get_pos() 
+            if infantry.collidepoint(pos):
+                selectedFighter.append(2)
+                selectionCount += 1
+            if archer.collidepoint(pos):
+                selectedFighter.append(1)
+                selectionCount += 1
+            if cavalry.collidepoint(pos):
+                selectedFighter.append(0)
+                selectionCount += 1
 
     for i in range(0,3):
         statDisplay(displayStat1, i, healthMod[i], 'HP :')
@@ -151,24 +164,13 @@ while gameState:
     infantry, archer, cavalry = choose_fighterButton()
 
     if selectionCount==2:
+        print(selectionCount)
         beginBattle = True
         selectionCount = 0
 
     if beginBattle:
         printBattle(selectedFighter)
         beginBattle = False
-
-    if event.type == pygame.MOUSEBUTTONUP:
-        pos = pygame.mouse.get_pos() 
-        if infantry.collidepoint(pos):
-            selectedFighter.append(2)
-            selectionCount += 1
-        if archer.collidepoint(pos):
-            selectedFighter.append(1)
-            selectionCount += 1
-        if cavalry.collidepoint(pos):
-            selectedFighter.append(0)
-            selectionCount += 1
     
     pygame.display.flip() ## Update the content of the entire display
 
