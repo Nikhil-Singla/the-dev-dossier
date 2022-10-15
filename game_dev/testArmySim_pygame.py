@@ -1,6 +1,7 @@
 ## To use Python in CMD, use py instead of python
 ## Auto Battler
 ## Army Simulator Game
+## Credits: Me <3
 
 import pygame  
 pygame.init()
@@ -27,6 +28,7 @@ font = pygame.font.Font('freesansbold.ttf', 12) ## Font
 
 timer = pygame.time.Clock() ## Help run our game at 60 FPS
 
+## Stat list will be used later to display the four types of stats on screen of each of the troops
 displayStat1 = []
 displayStat2 = []
 displayStat3 = []
@@ -44,7 +46,7 @@ speedMod = [1, 1, 1]
 ## (-> = trumps)
 ## Infantry -> Archer -> Cavalry -> Infantry 
 
-statList = [healthMod, attackMod, defenseMod, speedMod]
+statList = [healthMod, attackMod, defenseMod, speedMod] ## Put the stats into a 2D Array for ease of access
 
 def turnAttack(attack, speed):
     dmgDealt = max(attack*speed, attack+speed)
@@ -55,24 +57,28 @@ def turnDefense(defense, speed):
     return dmgBlocked
 
 def healthLeft(health, block, taken):
-    health = health - (taken - block)
-    if(health < 0):
+    health = health - (taken - block) ## Health is just damage minus whatever is blocked
+    if(health < 0): ## KO condition
         health = 0
     return health
 
 def fightTurn(health, speed, attack, defense):
+    ## Fighting turn where we get attack, defense and return remaining health of troop after
     attack = turnAttack(attack, speed)
     defend = turnDefense(defense, speed)
     health = healthLeft(health, defend, attack)
     return health
 
 def statDisplay(listVar, index, stat, name):
+    ## Inserting the stats (value) into a specified list (listVar) along with their (index) and (name)
     listVar.insert(index, font.render(name+str(round(stat)), True, white, black))
 
 def choose_fighterButton():
-    fighterButton = pygame.draw.rect(screen, aqua, [400, 50, 150, 25])
+    ## Drawing Fighter Button
+    pygame.draw.rect(screen, aqua, [400, 50, 150, 25])
     buttonText = font.render(('Choose your fighter: '), True, white)
     screen.blit(buttonText, (406, 50))
+    ## Drawing Troop Selection Buttons
     warOne = pygame.draw.rect(screen, red, [395, 75, 50, 25])
     warTwo = pygame.draw.rect(screen, red, [450, 75, 50, 25])
     warThree = pygame.draw.rect(screen, red, [505, 75, 50, 25])
@@ -82,7 +88,8 @@ def choose_fighterButton():
     screen.blit(buttonText, (452, 77))
     buttonText = font.render(('Cavalry'), True, black)
     screen.blit(buttonText, (507, 77))
-    return fighterButton
+    ## Returning the pygame buttons to select troops
+    return warOne, warTwo, warThree
 
 """"
 healthOne = 100
@@ -118,7 +125,6 @@ while gameState:
         screen.blit(displayStat2[i], (10+70*i,35))
         screen.blit(displayStat3[i], (10+70*i,65))
         screen.blit(displayStat4[i], (10+70*i,95))
-
-    choose_fighterButton()
+    infantry, archer, cavalry = choose_fighterButton()
     pygame.display.flip() ## Update the content of the entire display
 pygame.quit() ## Uninitialize all pygame modules
