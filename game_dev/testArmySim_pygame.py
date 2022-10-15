@@ -43,6 +43,7 @@ displayStat4 = []
 
 ## Army Stats: [Soldier, Archer, Cavalry]
 
+nameMod = ['Soldier', 'Archer', 'Cavalry']
 healthMod = [100, 200, 300]
 attackMod = [10, 20, 30]
 defenseMod = [30, 20, 10]
@@ -97,7 +98,7 @@ def choose_fighterButton():
     return warOne, warTwo, warThree
 
 def printBattle(fightList):
-    j = 2
+    j = len(fightList)
     while fightList:
         i = fightList.pop()
         statDisplay(displayStat1, i, healthMod[i], 'HP :')
@@ -106,10 +107,10 @@ def printBattle(fightList):
         statDisplay(displayStat4, i, speedMod[i], 'SPD:')
         screen.blit(displayStat1.pop(), (300*j,200))
         screen.blit(displayStat2.pop(), (300*j,240))
-        versus = font.render(('VERSUS'), True, white)
-        screen.blit(versus, (450, 265))
         screen.blit(displayStat3.pop(), (300*j,280))
         screen.blit(displayStat4.pop(), (300*j,320))
+        versus = font.render(('VERSUS'), True, white)
+        screen.blit(versus, (450, 265))
         j -= 1
 
 """"
