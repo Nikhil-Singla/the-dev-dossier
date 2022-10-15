@@ -22,6 +22,11 @@ white = (255, 255, 255)
 screen = pygame.display.set_mode([1080, 720]) ## Resolution
 pygame.display.set_caption('Army Sim') ## Title of the game
 
+selectionCount = 0
+selectedFighter = []
+fightResult = []
+beginBattle = False
+
 background = black ## Variable that can be edited later
 frameRate = 60  ## Framerate 
 font = pygame.font.Font('freesansbold.ttf', 12) ## Font
@@ -38,10 +43,10 @@ displayStat4 = []
 
 ## Army Stats: [Soldier, Archer, Cavalry]
 
-healthMod = [100, 100, 100]
-attackMod = [10, 10, 10]
-defenseMod = [10, 10, 10]
-speedMod = [1, 1, 1]
+healthMod = [100, 200, 300]
+attackMod = [10, 20, 30]
+defenseMod = [30, 20, 10]
+speedMod = [3, 2, 1]
 
 ## (-> = trumps)
 ## Infantry -> Archer -> Cavalry -> Infantry 
@@ -91,6 +96,20 @@ def choose_fighterButton():
     ## Returning the pygame buttons to select troops
     return warOne, warTwo, warThree
 
+def printBattle(fightList):
+    j = 2
+    while fightList:
+        i = fightList.pop()
+        statDisplay(displayStat1, i, healthMod[i], 'HP :')
+        statDisplay(displayStat2, i, attackMod[i], 'ATK:')
+        statDisplay(displayStat3, i, defenseMod[i], 'DEF:')
+        statDisplay(displayStat4, i, speedMod[i], 'SPD:')
+        screen.blit(displayStat1.pop(), (100+70*j,200))
+        screen.blit(displayStat2.pop(), (100+70*j,240))
+        screen.blit(displayStat3.pop(), (100+70*j,280))
+        screen.blit(displayStat4.pop(), (100+70*j,320))
+        j -= 1
+
 """"
 healthOne = 100
 attackOne = 10
@@ -107,12 +126,13 @@ speedMod = 2
 """
 
 gameState = True ## Game Running
+screen.fill(background) ## Have our initial background on the screen
+
 while gameState:
     timer.tick(frameRate) ## Tick at the specified framerate
     for event in pygame.event.get():
         if event.type == pygame.QUIT: ## Different from quit(). Here, its an event
             gameState = False
-    screen.fill(background) ## Have our initial background on the screen
 
     for i in range(0,3):
         statDisplay(displayStat1, i, healthMod[i], 'HP :')
@@ -121,10 +141,35 @@ while gameState:
         statDisplay(displayStat4, i, speedMod[i], 'SPD:')
 
     for i in range(0,3):
-        screen.blit(displayStat1[i], (10+70*i,5))
-        screen.blit(displayStat2[i], (10+70*i,35))
-        screen.blit(displayStat3[i], (10+70*i,65))
-        screen.blit(displayStat4[i], (10+70*i,95))
+        screen.blit(displayStat1.pop(), (10+70*i,5))
+        screen.blit(displayStat2.pop(), (10+70*i,35))
+        screen.blit(displayStat3.pop(), (10+70*i,65))
+        screen.blit(displayStat4.pop(), (10+70*i,95))
+
+##    if selectionCount!=0:
+##        print(selectionCount)
     infantry, archer, cavalry = choose_fighterButton()
+
+    if selectionCount==2:
+        beginBattle = True
+        selectionCount = 0
+
+    if beginBattle:
+        printBattle(selectedFighter)
+        beginBattle = False
+
+    if event.type == pygame.MOUSEBUTTONUP:
+        pos = pygame.mouse.get_pos() 
+        if infantry.collidepoint(pos):
+            selectedFighter.append(2)
+            selectionCount += 1
+        if archer.collidepoint(pos):
+            selectedFighter.append(1)
+            selectionCount += 1
+        if cavalry.collidepoint(pos):
+            selectedFighter.append(0)
+            selectionCount += 1
+    
     pygame.display.flip() ## Update the content of the entire display
+
 pygame.quit() ## Uninitialize all pygame modules
