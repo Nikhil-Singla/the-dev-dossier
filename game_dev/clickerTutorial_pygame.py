@@ -32,7 +32,7 @@ boxTwo = 2
 boxThree = 3
 boxFour = 4
 boxFive = 5
-score = 90
+score = 9990
 draw_One = False
 draw_Two = False
 draw_Three = False
@@ -103,6 +103,15 @@ while gameState:
     timer.tick(frameRate) ## Tick at the specified framerate
     if manOneOwn and not draw_One:
         draw_One = True
+    if manTwoOwn and not draw_Two:
+        draw_Two = True
+    if manThreeOwn and not draw_Three:
+        draw_Three = True
+    if manFourOwn and not draw_Four:
+        draw_Four = True
+    if manFiveOwn and not draw_Five:
+        draw_Five = True
+    
     for event in pygame.event.get():
         if event.type == pygame.QUIT: ## Different from quit(). Here, its an event
             gameState = False
@@ -120,7 +129,19 @@ while gameState:
             if manBuy1.collidepoint(event.pos) and score >= manOneCost and not manOneOwn:
                 manOneOwn = True
                 score -= manOneCost
-
+            if manBuy2.collidepoint(event.pos) and score >= manTwoCost and not manTwoOwn:
+                manTwoOwn = True
+                score -= manTwoCost
+            if manBuy3.collidepoint(event.pos) and score >= manThreeCost and not manThreeOwn:
+                manThreeOwn = True
+                score -= manThreeCost
+            if manBuy4.collidepoint(event.pos) and score >= manFourCost and not manFourOwn:
+                manFourOwn = True
+                score -= manFourCost
+            if manBuy5.collidepoint(event.pos) and score >= manFiveCost and not manFiveOwn:
+                manFiveOwn = True
+                score -= manFiveCost
+            
     screen.fill(background) ## Have our initial background on the screen
     
     task1, length_One, draw_One = draw_Box(white, 100, boxOne, draw_One, length_One, speed_One)
