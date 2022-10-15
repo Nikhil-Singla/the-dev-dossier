@@ -150,6 +150,42 @@ while gameState:
                     boxOne += 2
                     score -= oneCost
                     oneCost *= 1.1
+            if buy2.collidepoint(event.pos) and score >= twoCost:
+                if twoCost < 1000:
+                    boxTwo += 1.5
+                    score -= twoCost
+                    twoCost *= 1.35
+                else:
+                    boxTwo += 3
+                    score -= twoCost
+                    twoCost *= 1.25
+            if buy3.collidepoint(event.pos) and score >= threeCost:
+                if threeCost < 1500:
+                    boxThree += 5
+                    score -= threeCost
+                    threeCost *= 1.5
+                else:
+                    boxThree += 10
+                    score -= threeCost
+                    threeCost *= 1.4
+            if buy4.collidepoint(event.pos) and score >= fourCost:
+                if fourCost < 2000:
+                    boxFour += 30
+                    score -= fourCost
+                    fourCost *= 1.8
+                else:
+                    boxFour += 40
+                    score -= fourCost
+                    fourCost *= 1.6
+            if buy5.collidepoint(event.pos) and score >= fiveCost:
+                if fiveCost < 5000:
+                    boxFive += 100
+                    score -= fiveCost
+                    fiveCost *= 2
+                else:
+                    boxFive += 200
+                    score -= fiveCost
+                    fiveCost *= 1.6
             
             
     screen.fill(background) ## Have our initial background on the screen
