@@ -1,5 +1,6 @@
 ## To use Python in CMD, use py instead of python
-## Idle clicker game, Turret Auto Tower Defense
+## Idle clicker game
+## Following tutorial by : LeMaster Tech on YouTube
 
 import pygame  
 pygame.init()
