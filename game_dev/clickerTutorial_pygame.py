@@ -82,7 +82,7 @@ def draw_Box(color, y_cord, value, draw, length, speed):
     pygame.draw.rect(screen, color, [70, y_cord-15, 200, 30], 2)
     pygame.draw.rect(screen, color, [70, y_cord-15, length, 30])
     task = pygame.draw.circle(screen, color, (30, y_cord), 20, 5)
-    value_text = font.render(str(value), True, white)
+    value_text = font.render(str(round(value,1)), True, white)
     screen.blit(value_text, (16, y_cord-10))
     return task, length, draw
 
