@@ -88,11 +88,11 @@ def draw_Box(color, y_cord, value, draw, length, speed):
 
 def newButton(color, x_coord, cost, manCost, owned):
     color_button = pygame.draw.rect(screen, color, [x_coord, 600, 50, 30])
-    color_cost = font.render(str(round(cost, 2)), True, black)
-    screen.blit(color_cost, (x_coord+6, 350))
+    color_cost = font.render(str(round(cost,1)), True, black)
+    screen.blit(color_cost, (x_coord+6, 605))
     if not owned:
         managerButton = pygame.draw.rect(screen, color, [x_coord, 670, 50, 30])
-        managerText = font.render(str(round(manCost, 2)), True, black)
+        managerText = font.render(str(round(manCost,1)), True, black)
         screen.blit(managerText, (x_coord+6, 675))
     else:
         managerButton = pygame.draw.rect(screen, black, [x_coord, 670, 50, 30])
