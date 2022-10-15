@@ -32,7 +32,7 @@ boxTwo = 2
 boxThree = 3
 boxFour = 4
 boxFive = 5
-score = 9990
+score = 9000
 draw_One = False
 draw_Two = False
 draw_Three = False
@@ -141,6 +141,16 @@ while gameState:
             if manBuy5.collidepoint(event.pos) and score >= manFiveCost and not manFiveOwn:
                 manFiveOwn = True
                 score -= manFiveCost
+            if buy1.collidepoint(event.pos) and score >= oneCost:
+                if oneCost < 500:
+                    boxOne += 1
+                    score -= oneCost
+                    oneCost *= 1.2
+                else:
+                    boxOne += 2
+                    score -= oneCost
+                    oneCost *= 1.1
+            
             
     screen.fill(background) ## Have our initial background on the screen
     
