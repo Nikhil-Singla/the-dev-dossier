@@ -32,7 +32,7 @@ boxTwo = 2
 boxThree = 3
 boxFour = 4
 boxFive = 5
-score = 0
+score = 90
 draw_One = False
 draw_Two = False
 draw_Three = False
@@ -94,11 +94,15 @@ def newButton(color, x_coord, cost, manCost, owned):
         managerButton = pygame.draw.rect(screen, color, [x_coord, 670, 50, 30])
         managerText = font.render(str(round(manCost, 2)), True, black)
         screen.blit(managerText, (x_coord+6, 675))
+    else:
+        managerButton = pygame.draw.rect(screen, black, [x_coord, 670, 50, 30])
     return color_button, managerButton
 
 gameState = True ## Game Running
 while gameState:
     timer.tick(frameRate) ## Tick at the specified framerate
+    if manOneOwn and not draw_One:
+        draw_One = True
     for event in pygame.event.get():
         if event.type == pygame.QUIT: ## Different from quit(). Here, its an event
             gameState = False
@@ -113,6 +117,10 @@ while gameState:
                 draw_Four = True
             if task5.collidepoint(event.pos):
                 draw_Five = True
+            if manBuy1.collidepoint(event.pos) and score >= manOneCost and not manOneOwn:
+                manOneOwn = True
+                score -= manOneCost
+
     screen.fill(background) ## Have our initial background on the screen
     
     task1, length_One, draw_One = draw_Box(white, 100, boxOne, draw_One, length_One, speed_One)
