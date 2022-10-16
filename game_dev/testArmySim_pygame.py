@@ -42,6 +42,8 @@ displayStat1 = []
 displayStat2 = []
 displayStat3 = []
 displayStat4 = []
+display = [displayName, displayStat1, displayStat2, displayStat3, displayStat4]
+nameScheme = [' ', 'HP :', 'ATK:', 'DEF:', 'SPD:']
 ## Global Variables END
 
 
@@ -56,7 +58,7 @@ speedMod = [3, 2, 1]
 ## (-> = trumps)
 ## Infantry -> Archer -> Cavalry -> Infantry 
 
-statList = [healthMod, attackMod, defenseMod, speedMod] ## Put the stats into a 2D Array for ease of access
+statList = [nameMod, healthMod, attackMod, defenseMod, speedMod] ## Put the stats into a 2D Array for ease of access
 
 def turnAttack(attack, speed):
     dmgDealt = max(attack*speed, attack+speed)
@@ -107,7 +109,7 @@ def choose_fighterButton():
 def fight(fighterOne, fighterTwo):
     tempHealth = healthMod.copy()
     while(not(tempHealth[fighterOne] == 0) and not(tempHealth[fighterTwo] == 0)):
-        print(tempHealth[fighterOne])
+        ## print(tempHealth[fighterOne])
         tempHealth[fighterOne], tempHealth[fighterTwo] = fightTurn(tempHealth[fighterOne], speedMod[fighterOne], speedMod[fighterTwo], attackMod[fighterTwo], defenseMod[fighterOne]), fightTurn(tempHealth[fighterTwo], speedMod[fighterTwo], speedMod[fighterOne], attackMod[fighterOne], defenseMod[fighterTwo]) 
 
 def printBattle(fightList):
@@ -115,7 +117,8 @@ def printBattle(fightList):
     temp = fightList.copy()
     while temp:
         i = temp.pop()
-        statDisplay(displayName, i, nameMod[i], " ")
+        
+        statDisplay(displayName, i, nameMod[i], ' ')
         statDisplay(displayStat1, i, healthMod[i], 'HP :')
         statDisplay(displayStat2, i, attackMod[i], 'ATK:')
         statDisplay(displayStat3, i, defenseMod[i], 'DEF:')
@@ -132,7 +135,8 @@ def printBattle(fightList):
     fighterOne = fightList.pop()
     fighterTwo = fightList.pop()
     fight(fighterOne, fighterTwo)        
-""""
+
+"""
 healthOne = 100
 attackOne = 10
 defenseOne = 10
@@ -168,25 +172,33 @@ while gameState:
                 selectionCount += 1
 
     for i in range(0,3):
-        statDisplay(displayName, i, nameMod[i], ' ')
+        for j in range(0, len(display)):
+            statDisplay(display[j], i, statList[j][i], nameScheme[j])
+        
+        #display = [displayName, displayStat1, displayStat2, displayStat3, displayStat4]
+        #nameScheme = [' ', 'HP :', 'ATK:', 'DEF:', 'SPD:']
+        #statList = [nameMod, healthMod, attackMod, defenseMod, speedMod]
+        """statDisplay(displayName, i, nameMod[i], ' ')
         statDisplay(displayStat1, i, healthMod[i], 'HP :')
         statDisplay(displayStat2, i, attackMod[i], 'ATK:')
         statDisplay(displayStat3, i, defenseMod[i], 'DEF:')
-        statDisplay(displayStat4, i, speedMod[i], 'SPD:')
+        statDisplay(displayStat4, i, speedMod[i], 'SPD:')"""
 
     for i in range(0,3):
-        screen.blit(displayName.pop(), (10+70*i,5))
+        for j in range(0, len(display)):
+            screen.blit(display[j].pop(), (10+70*i,5+30*j))
+        
+        """screen.blit(displayName.pop(), (10+70*i,5))
         screen.blit(displayStat1.pop(), (10+70*i,35))
         screen.blit(displayStat2.pop(), (10+70*i,65))
         screen.blit(displayStat3.pop(), (10+70*i,95))
-        screen.blit(displayStat4.pop(), (10+70*i,125))
+        screen.blit(displayStat4.pop(), (10+70*i,125))"""
 
 ##    if selectionCount!=0:
 ##        print(selectionCount)
     infantry, archer, cavalry = choose_fighterButton()
 
     if selectionCount==2:
-        print(selectionCount)
         beginBattle = True
         selectionCount = 0
 
