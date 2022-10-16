@@ -31,9 +31,13 @@ background = black ## Variable that can be edited later
 frameRate = 60  ## Framerate 
 font = pygame.font.Font('freesansbold.ttf', 12) ## Font
 
+timer_interval = 1000 # 0.5 seconds
+timer_event = pygame.USEREVENT + 1
+
 timer = pygame.time.Clock() ## Help run our game at 60 FPS
 
 ## Stat list will be used later to display the four types of stats on screen of each of the troops
+displayName = []
 displayStat1 = []
 displayStat2 = []
 displayStat3 = []
@@ -43,7 +47,7 @@ displayStat4 = []
 
 ## Army Stats: [Soldier, Archer, Cavalry]
 
-nameMod = ['Soldier', 'Archer', 'Cavalry']
+nameMod = ['Cavalry', 'Archer', 'Warrior']
 healthMod = [100, 200, 300]
 attackMod = [10, 20, 30]
 defenseMod = [30, 20, 10]
@@ -68,16 +72,19 @@ def healthLeft(health, block, taken):
         health = 0
     return health
 
-def fightTurn(health, speed, attack, defense):
+def fightTurn(health, speedOwn, speedOther, attack, defense):
     ## Fighting turn where we get attack, defense and return remaining health of troop after
-    attack = turnAttack(attack, speed)
-    defend = turnDefense(defense, speed)
+    attack = turnAttack(attack, speedOther)
+    defend = turnDefense(defense, speedOwn)
     health = healthLeft(health, defend, attack)
     return health
 
-def statDisplay(listVar, index, stat, name):
+def statDisplay(listVar, index, stat, name=''):
     ## Inserting the stats (value) into a specified list (listVar) along with their (index) and (name)
-    listVar.insert(index, font.render(name+str(round(stat)), True, white, black))
+    if type(stat) == int:
+        stat = round(stat) 
+    listVar.insert(index, font.render(name+str(stat), True, white, black))
+
 
 def choose_fighterButton():
     ## Drawing Fighter Button
@@ -97,14 +104,23 @@ def choose_fighterButton():
     ## Returning the pygame buttons to select troops
     return warOne, warTwo, warThree
 
+def fight(fighterOne, fighterTwo):
+    tempHealth = healthMod.copy()
+    while(not(tempHealth[fighterOne] == 0) and not(tempHealth[fighterTwo] == 0)):
+        print(tempHealth[fighterOne])
+        tempHealth[fighterOne], tempHealth[fighterTwo] = fightTurn(tempHealth[fighterOne], speedMod[fighterOne], speedMod[fighterTwo], attackMod[fighterTwo], defenseMod[fighterOne]), fightTurn(tempHealth[fighterTwo], speedMod[fighterTwo], speedMod[fighterOne], attackMod[fighterOne], defenseMod[fighterTwo]) 
+
 def printBattle(fightList):
     j = len(fightList)
-    while fightList:
-        i = fightList.pop()
+    temp = fightList.copy()
+    while temp:
+        i = temp.pop()
+        statDisplay(displayName, i, nameMod[i], " ")
         statDisplay(displayStat1, i, healthMod[i], 'HP :')
         statDisplay(displayStat2, i, attackMod[i], 'ATK:')
         statDisplay(displayStat3, i, defenseMod[i], 'DEF:')
         statDisplay(displayStat4, i, speedMod[i], 'SPD:')
+        screen.blit(displayName.pop(), (300*j,160))
         screen.blit(displayStat1.pop(), (300*j,200))
         screen.blit(displayStat2.pop(), (300*j,240))
         screen.blit(displayStat3.pop(), (300*j,280))
@@ -113,6 +129,9 @@ def printBattle(fightList):
         screen.blit(versus, (450, 265))
         j -= 1
 
+    fighterOne = fightList.pop()
+    fighterTwo = fightList.pop()
+    fight(fighterOne, fighterTwo)        
 """"
 healthOne = 100
 attackOne = 10
@@ -149,16 +168,18 @@ while gameState:
                 selectionCount += 1
 
     for i in range(0,3):
+        statDisplay(displayName, i, nameMod[i], ' ')
         statDisplay(displayStat1, i, healthMod[i], 'HP :')
         statDisplay(displayStat2, i, attackMod[i], 'ATK:')
         statDisplay(displayStat3, i, defenseMod[i], 'DEF:')
         statDisplay(displayStat4, i, speedMod[i], 'SPD:')
 
     for i in range(0,3):
-        screen.blit(displayStat1.pop(), (10+70*i,5))
-        screen.blit(displayStat2.pop(), (10+70*i,35))
-        screen.blit(displayStat3.pop(), (10+70*i,65))
-        screen.blit(displayStat4.pop(), (10+70*i,95))
+        screen.blit(displayName.pop(), (10+70*i,5))
+        screen.blit(displayStat1.pop(), (10+70*i,35))
+        screen.blit(displayStat2.pop(), (10+70*i,65))
+        screen.blit(displayStat3.pop(), (10+70*i,95))
+        screen.blit(displayStat4.pop(), (10+70*i,125))
 
 ##    if selectionCount!=0:
 ##        print(selectionCount)
