@@ -117,24 +117,31 @@ def printBattle(fightList):
     temp = fightList.copy()
     while temp:
         i = temp.pop()
+        for k in range(0, len(display)):
+            statDisplay(display[k], i, statList[k][i], nameScheme[k])
+
+        #statDisplay(displayName, i, nameMod[i], ' ')
+        #statDisplay(displayStat1, i, healthMod[i], 'HP :')
+        #statDisplay(displayStat2, i, attackMod[i], 'ATK:')
+        #statDisplay(displayStat3, i, defenseMod[i], 'DEF:')
+        #statDisplay(displayStat4, i, speedMod[i], 'SPD:')
         
-        statDisplay(displayName, i, nameMod[i], ' ')
-        statDisplay(displayStat1, i, healthMod[i], 'HP :')
-        statDisplay(displayStat2, i, attackMod[i], 'ATK:')
-        statDisplay(displayStat3, i, defenseMod[i], 'DEF:')
-        statDisplay(displayStat4, i, speedMod[i], 'SPD:')
-        screen.blit(displayName.pop(), (300*j,160))
-        screen.blit(displayStat1.pop(), (300*j,200))
-        screen.blit(displayStat2.pop(), (300*j,240))
-        screen.blit(displayStat3.pop(), (300*j,280))
-        screen.blit(displayStat4.pop(), (300*j,320))
+        for k in range(0, len(display)):
+            screen.blit(display[k].pop(), (300*j,120+40*k))
+
+        #screen.blit(displayName.pop(), (300*j,160))
+        #screen.blit(displayStat1.pop(), (300*j,200))
+        #screen.blit(displayStat2.pop(), (300*j,240))
+        #screen.blit(displayStat3.pop(), (300*j,280))
+        #screen.blit(displayStat4.pop(), (300*j,320))
+
         versus = font.render(('VERSUS'), True, white)
         screen.blit(versus, (450, 265))
         j -= 1
 
     fighterOne = fightList.pop()
     fighterTwo = fightList.pop()
-    fight(fighterOne, fighterTwo)        
+    ##fight(fighterOne, fighterTwo)        
 
 """
 healthOne = 100
