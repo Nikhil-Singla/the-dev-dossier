@@ -127,7 +127,7 @@ def printBattle(fightList):
         #statDisplay(displayStat4, i, speedMod[i], 'SPD:')
         
         for k in range(0, len(display)):
-            screen.blit(display[k].pop(), (300*j,120+40*k))
+            screen.blit(display[k].pop(), (300*j,185+40*k))
 
         #screen.blit(displayName.pop(), (300*j,160))
         #screen.blit(displayStat1.pop(), (300*j,200))
@@ -168,7 +168,12 @@ while gameState:
             gameState = False
         if event.type == pygame.MOUSEBUTTONUP:
             pos = pygame.mouse.get_pos() 
-            if infantry.collidepoint(pos):
+            for troop in range(0, len(unit)):
+                if unit[troop].collidepoint(pos):
+                    selectedFighter.append(troop)
+                    selectionCount += 1
+
+            """if infantry.collidepoint(pos):
                 selectedFighter.append(2)
                 selectionCount += 1
             if archer.collidepoint(pos):
@@ -176,7 +181,7 @@ while gameState:
                 selectionCount += 1
             if cavalry.collidepoint(pos):
                 selectedFighter.append(0)
-                selectionCount += 1
+                selectionCount += 1"""
 
     for i in range(0,3):
         for j in range(0, len(display)):
@@ -204,6 +209,8 @@ while gameState:
 ##    if selectionCount!=0:
 ##        print(selectionCount)
     infantry, archer, cavalry = choose_fighterButton()
+
+    unit = [cavalry, archer, infantry]
 
     if selectionCount==2:
         beginBattle = True
