@@ -69,9 +69,16 @@ def turnDefense(defense, speed):
     return dmgBlocked
 
 def healthLeft(health, block, taken):
-    health = health - (taken - block) ## Health is just damage minus whatever is blocked
+    if block > taken:
+        return health
+
+    health = health - abs(taken - block) ## Health is just damage minus whatever is blocked
+    if(taken - block < 0):
+        health -= 1
+
     if(health < 0): ## KO condition
         health = 0
+    
     return health
 
 def fightTurn(health, speedOwn, speedOther, attack, defense):
@@ -109,7 +116,7 @@ def choose_fighterButton():
 def fight(fighterOne, fighterTwo):
     tempHealth = healthMod.copy()
     while(not(tempHealth[fighterOne] == 0) and not(tempHealth[fighterTwo] == 0)):
-        ## print(tempHealth[fighterOne])
+        print(tempHealth[fighterTwo])
         tempHealth[fighterOne], tempHealth[fighterTwo] = fightTurn(tempHealth[fighterOne], speedMod[fighterOne], speedMod[fighterTwo], attackMod[fighterTwo], defenseMod[fighterOne]), fightTurn(tempHealth[fighterTwo], speedMod[fighterTwo], speedMod[fighterOne], attackMod[fighterOne], defenseMod[fighterTwo]) 
 
 def printBattle(fightList):
@@ -141,7 +148,7 @@ def printBattle(fightList):
 
     fighterOne = fightList.pop()
     fighterTwo = fightList.pop()
-    ##fight(fighterOne, fighterTwo)        
+    fight(fighterOne, fighterTwo)        
 
 """
 healthOne = 100
