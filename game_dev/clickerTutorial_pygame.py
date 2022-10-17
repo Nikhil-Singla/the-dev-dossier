@@ -1,5 +1,6 @@
 ## To use Python in CMD, use py instead of python
-## Idle clicker game, Turret Auto Tower Defense
+## Idle clicker game
+## Following tutorial by : LeMaster Tech on YouTube
 
 import pygame  
 pygame.init()
@@ -32,7 +33,7 @@ boxTwo = 2
 boxThree = 3
 boxFour = 4
 boxFive = 5
-score = 0
+score = 9000
 draw_One = False
 draw_Two = False
 draw_Three = False
@@ -82,23 +83,36 @@ def draw_Box(color, y_cord, value, draw, length, speed):
     pygame.draw.rect(screen, color, [70, y_cord-15, 200, 30], 2)
     pygame.draw.rect(screen, color, [70, y_cord-15, length, 30])
     task = pygame.draw.circle(screen, color, (30, y_cord), 20, 5)
-    value_text = font.render(str(value), True, white)
+    value_text = font.render(str(round(value,1)), True, white)
     screen.blit(value_text, (16, y_cord-10))
     return task, length, draw
 
 def newButton(color, x_coord, cost, manCost, owned):
     color_button = pygame.draw.rect(screen, color, [x_coord, 600, 50, 30])
-    color_cost = font.render(str(round(cost, 2)), True, black)
-    screen.blit(color_cost, (x_coord+6, 350))
+    color_cost = font.render(str(round(cost,1)), True, black)
+    screen.blit(color_cost, (x_coord+6, 605))
     if not owned:
         managerButton = pygame.draw.rect(screen, color, [x_coord, 670, 50, 30])
-        managerText = font.render(str(round(manCost, 2)), True, black)
+        managerText = font.render(str(round(manCost,1)), True, black)
         screen.blit(managerText, (x_coord+6, 675))
+    else:
+        managerButton = pygame.draw.rect(screen, black, [x_coord, 670, 50, 30])
     return color_button, managerButton
 
 gameState = True ## Game Running
 while gameState:
     timer.tick(frameRate) ## Tick at the specified framerate
+    if manOneOwn and not draw_One:
+        draw_One = True
+    if manTwoOwn and not draw_Two:
+        draw_Two = True
+    if manThreeOwn and not draw_Three:
+        draw_Three = True
+    if manFourOwn and not draw_Four:
+        draw_Four = True
+    if manFiveOwn and not draw_Five:
+        draw_Five = True
+    
     for event in pygame.event.get():
         if event.type == pygame.QUIT: ## Different from quit(). Here, its an event
             gameState = False
@@ -113,6 +127,68 @@ while gameState:
                 draw_Four = True
             if task5.collidepoint(event.pos):
                 draw_Five = True
+            if manBuy1.collidepoint(event.pos) and score >= manOneCost and not manOneOwn:
+                manOneOwn = True
+                score -= manOneCost
+            if manBuy2.collidepoint(event.pos) and score >= manTwoCost and not manTwoOwn:
+                manTwoOwn = True
+                score -= manTwoCost
+            if manBuy3.collidepoint(event.pos) and score >= manThreeCost and not manThreeOwn:
+                manThreeOwn = True
+                score -= manThreeCost
+            if manBuy4.collidepoint(event.pos) and score >= manFourCost and not manFourOwn:
+                manFourOwn = True
+                score -= manFourCost
+            if manBuy5.collidepoint(event.pos) and score >= manFiveCost and not manFiveOwn:
+                manFiveOwn = True
+                score -= manFiveCost
+            if buy1.collidepoint(event.pos) and score >= oneCost:
+                if oneCost < 500:
+                    boxOne += 1
+                    score -= oneCost
+                    oneCost *= 1.2
+                else:
+                    boxOne += 2
+                    score -= oneCost
+                    oneCost *= 1.1
+            if buy2.collidepoint(event.pos) and score >= twoCost:
+                if twoCost < 1000:
+                    boxTwo += 1.5
+                    score -= twoCost
+                    twoCost *= 1.35
+                else:
+                    boxTwo += 3
+                    score -= twoCost
+                    twoCost *= 1.25
+            if buy3.collidepoint(event.pos) and score >= threeCost:
+                if threeCost < 1500:
+                    boxThree += 5
+                    score -= threeCost
+                    threeCost *= 1.5
+                else:
+                    boxThree += 10
+                    score -= threeCost
+                    threeCost *= 1.4
+            if buy4.collidepoint(event.pos) and score >= fourCost:
+                if fourCost < 2000:
+                    boxFour += 30
+                    score -= fourCost
+                    fourCost *= 1.8
+                else:
+                    boxFour += 40
+                    score -= fourCost
+                    fourCost *= 1.6
+            if buy5.collidepoint(event.pos) and score >= fiveCost:
+                if fiveCost < 5000:
+                    boxFive += 100
+                    score -= fiveCost
+                    fiveCost *= 2
+                else:
+                    boxFive += 200
+                    score -= fiveCost
+                    fiveCost *= 1.6
+            
+            
     screen.fill(background) ## Have our initial background on the screen
     
     task1, length_One, draw_One = draw_Box(white, 100, boxOne, draw_One, length_One, speed_One)
