@@ -127,20 +127,20 @@ def printBattle(fightList):
         for k in range(0, len(display)):
             statDisplay(display[k], i, statList[k][i], nameScheme[k])
 
-        #statDisplay(displayName, i, nameMod[i], ' ')
-        #statDisplay(displayStat1, i, healthMod[i], 'HP :')
-        #statDisplay(displayStat2, i, attackMod[i], 'ATK:')
-        #statDisplay(displayStat3, i, defenseMod[i], 'DEF:')
+       #statDisplay(displayName, i, nameMod[i], ' ')
+       #statDisplay(displayStat1, i, healthMod[i], 'HP :')
+       #statDisplay(displayStat2, i, attackMod[i], 'ATK:')
+       #statDisplay(displayStat3, i, defenseMod[i], 'DEF:')
         #statDisplay(displayStat4, i, speedMod[i], 'SPD:')
         
         for k in range(0, len(display)):
             screen.blit(display[k].pop(), (300*j,185+40*k))
 
-        #screen.blit(displayName.pop(), (300*j,160))
+       #screen.blit(displayName.pop(), (300*j,160))
         #screen.blit(displayStat1.pop(), (300*j,200))
         #screen.blit(displayStat2.pop(), (300*j,240))
-        #screen.blit(displayStat3.pop(), (300*j,280))
-        #screen.blit(displayStat4.pop(), (300*j,320))
+       #screen.blit(displayStat3.pop(), (300*j,280))
+       #screen.blit(displayStat4.pop(), (300*j,320))
 
         versus = font.render(('VERSUS'), True, white)
         screen.blit(versus, (450, 265))
@@ -151,18 +151,18 @@ def printBattle(fightList):
     fight(fighterOne, fighterTwo)        
 
 """
-healthOne = 100
-attackOne = 10
-defenseOne = 10
+healthOne = 14
+attackOne = 9
+defenseOne = 11
+speedMod = 8
+healthTwo = 9
+attackTwo = 12
+defenseOne = 19
+speedMod = 9
+healthThree = 14
+attackThree = 7
+defenseThree = 12
 speedMod = 1
-healthTwo = 100
-attackTwo = 40
-defenseOne = 5
-speedMod = 0
-healthThree = 150
-attackThree = 20
-defenseThree = 5
-speedMod = 2
 """
 
 gameState = True ## Game Running
@@ -198,9 +198,9 @@ while gameState:
         #nameScheme = [' ', 'HP :', 'ATK:', 'DEF:', 'SPD:']
         #statList = [nameMod, healthMod, attackMod, defenseMod, speedMod]
         """statDisplay(displayName, i, nameMod[i], ' ')
-        statDisplay(displayStat1, i, healthMod[i], 'HP :')
+       statDisplay(displayStat1, i, healthMod[i], 'HP :')
         statDisplay(displayStat2, i, attackMod[i], 'ATK:')
-        statDisplay(displayStat3, i, defenseMod[i], 'DEF:')
+      statDisplay(displayStat3, i, defenseMod[i], 'DEF:')
         statDisplay(displayStat4, i, speedMod[i], 'SPD:')"""
 
     for i in range(0,3):
