@@ -26,6 +26,7 @@ timer = pygame.time.Clock()                         ## Help run our game at 60 F
 
 list_P = []
 radius = 15
+particleCap = 10000
 
 class funcTimer():
     def __init__(self):
@@ -120,8 +121,9 @@ while gameState:
                 p.push(pos, radius)                ## Update the points list with the new points away from mouse by a fixed radius
                 pygame.draw.circle(screen, p.col, (p.x, p.y), 2) ## Draw the new points
   
-    if len(list_P) < 5000: ## Max Cap on particle count
-        list_P += create(200, [yellow, aqua])
+    if len(list_P) < particleCap: ## Max Cap on particle count
+        list_P += create(int(particleCap/10), [yellow, aqua])
+        #print(1)
 
     for particle in list_P:
             pygame.draw.circle(screen, particle.col, (particle.x, particle.y), 2) ## Drawing board of particles per frame
