@@ -27,15 +27,16 @@ font = pygame.font.Font('freesansbold.ttf', 16) ## Font
 timer = pygame.time.Clock() ## Help run our game at 60 FPS
 
 list_P = []
-radius = 30
+radius = 10
 
 class Particle():
     def __init__(self, color):
         self.x = random.randint(0, 500)
         self.y = random.randint(0, 500)
+        self.coords = [self.x, self.y]
         self.col = color
 
-
+## Below from Tutorial
 """def move(particle1, particle2, g):
     for i in range(0, len(particle1)):
         fx = 0
@@ -52,19 +53,24 @@ class Particle():
                 fy += (F*dy)
             a.x += fx
             a.y += fy"""
+## Tutorial End
 
 def create(number, color):
     particles = []
     for i in range(0, number):
         col = random.randint(0, 100)%len(color)
         particles.append(Particle(color[col]))
-    
     return particles
 
-def push(pos, p, radius = 30, g = -1):
+"""def move(particle1, particle2, gravity = 1):
+    for i in range(len(particle1)):
+        for j in range(len(particle2)):
+            push(particle1[i].coords, particle2[j], 10, gravity)"""
+
+def push(pos, p, radius = 30, g = 1):
     dx = p.x - pos[0]
     dy = p.y - pos[1]
-    dist = sqrt(dx*dx + dy*dy)
+    dist = sqrt(dx*dx + dy*dy + 0.1)
     dx /= dist
     dy /= dist
     diff = radius - dist
@@ -101,12 +107,16 @@ while gameState:
                 push(pos, p, radius)
                 pygame.draw.circle(screen, p.col, (p.x, p.y), 2)
   
-    if len(list_P) < 1000: ## Max Cap on particle count
+    if len(list_P) < 5000: ## Max Cap on particle count
         list_P += create(200, [yellow, aqua])
 
     for particle in list_P:
             pygame.draw.circle(screen, particle.col, (particle.x, particle.y), 2)
             ##if moveFunc == True:
+    
+    #for particle in list_P:
+            #move(list_P, list_P, 0.1)
+            #pygame.draw.circle(screen, particle.col, (particle.x, particle.y), 2)
 
     pygame.display.flip() ## Update the content of the entire display   
     timer.tick(frameRate) ## Tick at the specified framerate
