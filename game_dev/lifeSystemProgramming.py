@@ -28,6 +28,7 @@ timer = pygame.time.Clock() ## Help run our game at 60 FPS
 
 list_P = []
 radius = 30
+
 class Particle():
     def __init__(self, color):
         self.x = random.randint(0, 500)
@@ -60,19 +61,19 @@ def create(number, color):
     
     return particles
 
-def push(pos, p, radius):
+def push(pos, p, radius = 30, g = -1):
     dx = p.x - pos[0]
     dy = p.y - pos[1]
     dist = sqrt(dx*dx + dy*dy)
     dx /= dist
     dy /= dist
     diff = radius - dist
-    ## Equation of line = y - p.y = slope*(x - p.x)
+    ## In Vector Theory, Finding v / |v| and then using this unit vector and adding it to base one.
     if diff > 0:
-        print(pos)
-        p.x += diff*dx
-        p.y += diff*dy
-        
+    ## Attraction Force with gravity when g > 0
+        p.x += diff*dx*g
+        p.y += diff*dy*g
+    ## Repulsion Force with gravity when g < 0
 
 moveFunc = False
 gameState = True ## Game Running
@@ -99,13 +100,13 @@ while gameState:
             for p in list_P:
                 push(pos, p, radius)
                 pygame.draw.circle(screen, p.col, (p.x, p.y), 2)
-
+  
     if len(list_P) < 1000: ## Max Cap on particle count
         list_P += create(200, [yellow, aqua])
 
     for particle in list_P:
             pygame.draw.circle(screen, particle.col, (particle.x, particle.y), 2)
-##            if moveFunc == True:
+            ##if moveFunc == True:
 
     pygame.display.flip() ## Update the content of the entire display   
     timer.tick(frameRate) ## Tick at the specified framerate
