@@ -54,7 +54,7 @@ while gameState:
                 gameState = False
             if event.key == pygame.K_r:
                 screen.fill(background)
-    
+                list_P.clear()
     if len(list_P) < 1000: ## Max Cap on particle count
         list_P += create(200, [yellow, aqua])
 
