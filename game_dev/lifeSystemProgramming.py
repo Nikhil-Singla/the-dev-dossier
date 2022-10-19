@@ -27,6 +27,17 @@ timer = pygame.time.Clock()                         ## Help run our game at 60 F
 list_P = []
 radius = 15
 
+class funcTimer():
+    def __init__(self):
+        self.start = pygame.time.get_ticks()
+
+    def run(self, time):
+        self.cooldown = time # Cooldown has been time milliseconds since last
+        now = pygame.time.get_ticks()
+        if now - self.start >= self.cooldown:
+            self.start = now
+            return True
+        
 class Particle():
     def __init__(self, color):
         self.x = random.randint(0, 500)
@@ -34,7 +45,22 @@ class Particle():
         self.coords = [self.x, self.y]
         self.col = color
 
-## Below from Tutorial
+    def push(self, pos, radius = 30, g = 1):
+        dx = self.x - pos[0] ## Change in X between two points
+        dy = self.y - pos[1] ## Change in Y between two points
+        dist = sqrt(dx*dx + dy*dy + 0.1)
+        dx /= dist ## Unit Vector Form of X Cordinate
+        dy /= dist ## Unit Vector Form of Y Cordiate
+        diff = radius - dist ## Difference between 
+        ## In Vector Theory, Finding v / |v| and then using this unit vector and adding it to base one.
+        if diff > 0:
+        ## Attraction Force with gravity when g > 0
+            self.x += diff*dx*g
+            self.y += diff*dy*g
+        ## Repulsion Force with gravity when g < 0
+
+
+## Reference Move Function
 """def move(particle1, particle2, g):
     for i in range(0, len(particle1)):
         fx = 0
@@ -51,7 +77,7 @@ class Particle():
                 fy += (F*dy)
             a.x += fx
             a.y += fy"""
-## Tutorial End
+## End Reference
 
 def create(number, color):
     particles = []
@@ -66,23 +92,11 @@ def create(number, color):
         for j in range(len(particle2)):
             push(particle1[i].coords, particle2[j], 10, gravity)"""
 
-def push(pos, p, radius = 30, g = 1):
-    dx = p.x - pos[0] ## Change in X between two points
-    dy = p.y - pos[1] ## Change in Y between two points
-    dist = sqrt(dx*dx + dy*dy + 0.1)
-    dx /= dist ## Vector Form of X Cordinate
-    dy /= dist ## Vector Form of Y Cordiate
-    diff = radius - dist ## Difference between 
-    ## In Vector Theory, Finding v / |v| and then using this unit vector and adding it to base one.
-    if diff > 0:
-    ## Attraction Force with gravity when g > 0
-        p.x += diff*dx*g
-        p.y += diff*dy*g
-    ## Repulsion Force with gravity when g < 0
-
 moveFunc = False
 gameState = True        ## Game Running
 screen.fill(background) ## Have our initial background on the screen
+
+runTimer = funcTimer()
 
 while gameState:
     for event in pygame.event.get():
@@ -103,7 +117,7 @@ while gameState:
             pos = pygame.mouse.get_pos()            ## Get mouse position
             screen.fill(background)                 ## Reset print Screen
             for p in list_P:
-                push(pos, p, radius)                ## Update the points list with the new points away from mouse by a fixed radius
+                p.push(pos, radius)                ## Update the points list with the new points away from mouse by a fixed radius
                 pygame.draw.circle(screen, p.col, (p.x, p.y), 2) ## Draw the new points
   
     if len(list_P) < 5000: ## Max Cap on particle count
@@ -113,6 +127,11 @@ while gameState:
             pygame.draw.circle(screen, particle.col, (particle.x, particle.y), 2) ## Drawing board of particles per frame
             ##if moveFunc == True:
     
+    #print(1)
+    if(runTimer.run(1000)):
+        print(True)
+    #print(2)
+
     #for particle in list_P:
             #move(list_P, list_P, 0.1)
             #pygame.draw.circle(screen, particle.col, (particle.x, particle.y), 2)
