@@ -1,6 +1,4 @@
 ## Simulate life processes.
-
-from dis import dis
 import pygame, random
 from math import sqrt 
 
@@ -62,18 +60,19 @@ def create(number, color):
         particles.append(Particle(color[col]))
     return particles
 
+## Own code
 """def move(particle1, particle2, gravity = 1):
     for i in range(len(particle1)):
         for j in range(len(particle2)):
             push(particle1[i].coords, particle2[j], 10, gravity)"""
 
 def push(pos, p, radius = 30, g = 1):
-    dx = p.x - pos[0]
-    dy = p.y - pos[1]
+    dx = p.x - pos[0] ## Change in X between two points
+    dy = p.y - pos[1] ## Change in Y between two points
     dist = sqrt(dx*dx + dy*dy + 0.1)
-    dx /= dist
-    dy /= dist
-    diff = radius - dist
+    dx /= dist ## Vector Form of X Cordinate
+    dy /= dist ## Vector Form of Y Cordiate
+    diff = radius - dist ## Difference between 
     ## In Vector Theory, Finding v / |v| and then using this unit vector and adding it to base one.
     if diff > 0:
     ## Attraction Force with gravity when g > 0
@@ -90,28 +89,28 @@ while gameState:
         if event.type == pygame.QUIT: ## Different from quit(). Here, its an event
             gameState = False
 
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_ESCAPE:
+        elif event.type == pygame.KEYDOWN:      ## If a key is pressed
+            if event.key == pygame.K_ESCAPE:    ## If its the escape key
                 gameState = False
-            if event.key == pygame.K_r:
-                screen.fill(background)
-                list_P.clear()
-                moveFunc = False
-            if event.key == pygame.K_s:
-                moveFunc = True
+            if event.key == pygame.K_r: ## If its the R key
+                screen.fill(background) ## Wipe the screen
+                list_P.clear()          ## Empty out the points list
+                moveFunc = False        ## Future implementation of auto moving partciiles
+            if event.key == pygame.K_s: ## If Key is "S"
+                moveFunc = True         ## Start the move function simulation
 
-        elif event.type == pygame.MOUSEBUTTONUP:
-            pos = pygame.mouse.get_pos() 
-            screen.fill(background)
+        elif event.type == pygame.MOUSEBUTTONUP:    ## IF clicked
+            pos = pygame.mouse.get_pos()            ## Get mouse position
+            screen.fill(background)                 ## Reset print Screen
             for p in list_P:
-                push(pos, p, radius)
-                pygame.draw.circle(screen, p.col, (p.x, p.y), 2)
+                push(pos, p, radius)                ## Update the points list with the new points away from mouse by a fixed radius
+                pygame.draw.circle(screen, p.col, (p.x, p.y), 2) ## Draw the new points
   
     if len(list_P) < 5000: ## Max Cap on particle count
         list_P += create(200, [yellow, aqua])
 
     for particle in list_P:
-            pygame.draw.circle(screen, particle.col, (particle.x, particle.y), 2)
+            pygame.draw.circle(screen, particle.col, (particle.x, particle.y), 2) ## Drawing board of particles per frame
             ##if moveFunc == True:
     
     #for particle in list_P:
