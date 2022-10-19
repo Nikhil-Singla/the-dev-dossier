@@ -26,7 +26,7 @@ font = pygame.font.Font('freesansbold.ttf', 16) ## Font
 timer = pygame.time.Clock() ## Help run our game at 60 FPS
 
 list_P = []
-
+radius = 30
 class Particle():
     def __init__(self, color):
         self.x = random.randint(0, 500)
@@ -59,6 +59,14 @@ def create(number, color):
     
     return particles
 
+def push(pos, p, radius):
+    dx = p.x - pos[0]
+    dy = p.y - pos[1]
+    dist = sqrt(dx*dx + dy*dy)
+    if dist < radius:
+        p.x += 50
+        p.y += 50
+
 moveFunc = False
 gameState = True ## Game Running
 screen.fill(background) ## Have our initial background on the screen
@@ -67,6 +75,7 @@ while gameState:
     for event in pygame.event.get():
         if event.type == pygame.QUIT: ## Different from quit(). Here, its an event
             gameState = False
+
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 gameState = False
@@ -74,15 +83,21 @@ while gameState:
                 screen.fill(background)
                 list_P.clear()
                 moveFunc = False
-
             if event.key == pygame.K_s:
                 moveFunc = True
+
+        elif event.type == pygame.MOUSEBUTTONUP:
+            pos = pygame.mouse.get_pos() 
+            screen.fill(background)
+            for p in list_P:
+                push(pos, p, radius)
+                pygame.draw.circle(screen, p.col, (p.x, p.y), 2)
 
     if len(list_P) < 1000: ## Max Cap on particle count
         list_P += create(200, [yellow, aqua])
 
-    for p in list_P:
-            pygame.draw.circle(screen, p.col, (p.x, p.y), 2)
+    for particle in list_P:
+            pygame.draw.circle(screen, particle.col, (particle.x, particle.y), 2)
 ##            if moveFunc == True:
 
     pygame.display.flip() ## Update the content of the entire display   
