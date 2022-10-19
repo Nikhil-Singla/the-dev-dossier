@@ -23,6 +23,8 @@ frameRate = 60  ## Framerate
 font = pygame.font.Font('freesansbold.ttf', 16) ## Font
 timer = pygame.time.Clock() ## Help run our game at 60 FPS
 
+list_P = []
+
 class Particle():
     def __init__(self, color):
         self.x = random.randint(0, 500)
@@ -53,7 +55,11 @@ while gameState:
             if event.key == pygame.K_r:
                 screen.fill(background)
     
-    list_P = create(200, yellow)
+    if len(list_P) < 1000: ## Max Cap on particle count
+        list_P += create(200, [yellow, aqua])
+
+    for p in list_P:
+            pygame.draw.circle(screen, p.col, (p.x, p.y), 2)
 
     pygame.display.flip() ## Update the content of the entire display   
     timer.tick(frameRate) ## Tick at the specified framerate
