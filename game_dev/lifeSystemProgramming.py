@@ -13,6 +13,7 @@ metallic = (198,226,255)
 red = (255, 0, 0)
 green = (0, 255, 0)
 white = (255, 255, 255)
+yellow = (255,255,0)
 ## End Palette
 
 screen = pygame.display.set_mode([500, 500]) ## Resolution
@@ -38,3 +39,24 @@ def create(number, color):
         particles.append(Particle(color[col]))
 
     return particles
+
+gameState = True ## Game Running
+screen.fill(background) ## Have our initial background on the screen
+
+while gameState:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT: ## Different from quit(). Here, its an event
+            gameState = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                gameState = False
+            if event.key == pygame.K_r:
+                screen.fill(background)
+    
+    list_P = create(200, yellow)
+
+    pygame.display.flip() ## Update the content of the entire display   
+    timer.tick(frameRate) ## Tick at the specified framerate
+    
+
+pygame.quit()
