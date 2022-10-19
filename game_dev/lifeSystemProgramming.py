@@ -1,5 +1,6 @@
 ## Simulate life processes.
 
+from dis import dis
 import pygame, random
 from math import sqrt 
 
@@ -63,9 +64,15 @@ def push(pos, p, radius):
     dx = p.x - pos[0]
     dy = p.y - pos[1]
     dist = sqrt(dx*dx + dy*dy)
-    if dist < radius:
-        p.x += 50
-        p.y += 50
+    dx /= dist
+    dy /= dist
+    diff = radius - dist
+    ## Equation of line = y - p.y = slope*(x - p.x)
+    if diff > 0:
+        print(pos)
+        p.x += diff*dx
+        p.y += diff*dy
+        
 
 moveFunc = False
 gameState = True ## Game Running
