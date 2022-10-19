@@ -23,9 +23,18 @@ font = pygame.font.Font('freesansbold.ttf', 16) ## Font
 timer = pygame.time.Clock() ## Help run our game at 60 FPS
 
 class Particle():
-    def __init__(self, color, startx=500, starty=500):
-        self.x = random.randint(0, starty)
-        self.y = random.randint(0, starty)
+    def __init__(self, color):
+        self.x = random.randint(0, 500)
+        self.y = random.randint(0, 500)
         self.col = color
-        self.dx = 2
-        self.dy = 2
+        self.dx = 0
+        self.dy = 0
+    
+        
+def create(number, color):
+    particles = []
+    for i in range(0, number):
+        col = random.randint(0, 100)%len(color)
+        particles.append(Particle(color[col]))
+
+    return particles
