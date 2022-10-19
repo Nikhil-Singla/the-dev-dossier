@@ -17,12 +17,12 @@ white = (255, 255, 255)
 yellow = (255,255,0)
 ## End Palette
 
-screen = pygame.display.set_mode([500, 500]) ## Resolution
-pygame.display.set_caption('Particle Simulator') ## Title of the game
-background = black  ## Variable that can be edited later
-frameRate = 60  ## Framerate 
-font = pygame.font.Font('freesansbold.ttf', 16) ## Font
-timer = pygame.time.Clock() ## Help run our game at 60 FPS
+screen = pygame.display.set_mode([500, 500])        ## Resolution
+pygame.display.set_caption('Particle Simulator')    ## Title of the game
+background = black                                  ## Variable that can be edited later
+frameRate = 60                                      ## Framerate 
+font = pygame.font.Font('freesansbold.ttf', 16)     ## Font
+timer = pygame.time.Clock()                         ## Help run our game at 60 FPS
 
 list_P = []
 radius = 15
@@ -81,7 +81,7 @@ def push(pos, p, radius = 30, g = 1):
     ## Repulsion Force with gravity when g < 0
 
 moveFunc = False
-gameState = True ## Game Running
+gameState = True        ## Game Running
 screen.fill(background) ## Have our initial background on the screen
 
 while gameState:
