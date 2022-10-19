@@ -1,6 +1,8 @@
 ## Simulate life processes.
 
 import pygame, random
+from math import sqrt 
+
 pygame.init()
 
 ## Color Palette = (R, G, B) values
@@ -30,18 +32,34 @@ class Particle():
         self.x = random.randint(0, 500)
         self.y = random.randint(0, 500)
         self.col = color
-        self.dx = 0
-        self.dy = 0
-    
-        
+
+
+"""def move(particle1, particle2, g):
+    for i in range(0, len(particle1)):
+        fx = 0
+        fy = 0
+        for j in range(0, len(particle2)):
+            a = particle1[i]
+            b = particle2[j]
+            dx = a.x - b.x
+            dy = a.y - b.y
+            dist = sqrt(dx*dx + dy*dy)
+            if dist > 0:
+                F = g * (1/dist)
+                fx += (F*dx)
+                fy += (F*dy)
+            a.x += fx
+            a.y += fy"""
+
 def create(number, color):
     particles = []
     for i in range(0, number):
         col = random.randint(0, 100)%len(color)
         particles.append(Particle(color[col]))
-
+    
     return particles
 
+moveFunc = False
 gameState = True ## Game Running
 screen.fill(background) ## Have our initial background on the screen
 
@@ -55,11 +73,17 @@ while gameState:
             if event.key == pygame.K_r:
                 screen.fill(background)
                 list_P.clear()
+                moveFunc = False
+
+            if event.key == pygame.K_s:
+                moveFunc = True
+
     if len(list_P) < 1000: ## Max Cap on particle count
         list_P += create(200, [yellow, aqua])
 
     for p in list_P:
             pygame.draw.circle(screen, p.col, (p.x, p.y), 2)
+##            if moveFunc == True:
 
     pygame.display.flip() ## Update the content of the entire display   
     timer.tick(frameRate) ## Tick at the specified framerate
