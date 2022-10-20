@@ -26,7 +26,8 @@ timer = pygame.time.Clock()                         ## Help run our game at 60 F
 
 list_P = []
 radius = 15
-particleCap = 500
+particleCap = 50
+sizeCircle = 5
 
 class funcTimer():
     def __init__(self):
@@ -53,6 +54,13 @@ class Particle():
         dx /= dist ## Unit Vector Form of X Cordinate
         dy /= dist ## Unit Vector Form of Y Cordiate
         diff = radius - dist ## Difference between 
+        if dist < 5:
+            g *= -1
+
+        if self.x <= 0 or self.x >= 500:
+            self.x = 250 + (self.x * 0.1)
+        if self.y <= 0 or self.y >= 500:
+            self.y = 250 + (self.y * 0.1)
         ## In Vector Theory, Finding v / |v| and then using this unit vector and adding it to base one.
         if diff > 0:
         ## Attraction Force with gravity when g > 0
@@ -94,7 +102,7 @@ def move(list, gravity = 1):
     global g
     for i in range(len(list)):
         for j in range(len(list)):
-            list[i].push(list[j].coords, 20, g)
+            list[i].push(list[j].coords, 500, g)
     g *= -1
 
 
@@ -122,24 +130,24 @@ while gameState:
             screen.fill(background)                 ## Reset print Screen
             for p in list_P:
                 p.push(pos, radius)                ## Update the points list with the new points away from mouse by a fixed radius
-                pygame.draw.circle(screen, p.col, (p.x, p.y), 2) ## Draw the new points
+                pygame.draw.circle(screen, p.col, (p.x, p.y), sizeCircle) ## Draw the new points
   
     if len(list_P) < particleCap: ## Max Cap on particle count
         list_P += create(int(particleCap/10), [yellow, aqua])
 
     if moveFunc == True:
-        if(runTimer.run(1000)):
+        if(runTimer.run(200)):
             move(list_P)
             screen.fill(background)
             for particle in list_P:
-                pygame.draw.circle(screen, particle.col, (particle.x, particle.y), 2) ## Drawing board of particles per frame
+                pygame.draw.circle(screen, particle.col, (particle.x, particle.y), sizeCircle) ## Drawing board of particles per frame
     else:
         for particle in list_P:
-            pygame.draw.circle(screen, particle.col, (particle.x, particle.y), 2) ## Drawing board of particles per frame
+            pygame.draw.circle(screen, particle.col, (particle.x, particle.y), sizeCircle) ## Drawing board of particles per frame
 
     #for particle in list_P:
             #move(list_P, list_P, 0.1)
-            #pygame.draw.circle(screen, particle.col, (particle.x, particle.y), 2)
+            #pygame.draw.circle(screen, particle.col, (particle.x, particle.y), sizeCircle)
 
     pygame.display.flip() ## Update the content of the entire display   
     timer.tick(frameRate) ## Tick at the specified framerate
