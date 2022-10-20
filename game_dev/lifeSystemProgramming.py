@@ -26,7 +26,7 @@ timer = pygame.time.Clock()                         ## Help run our game at 60 F
 
 list_P = []
 radius = 15
-particleCap = 10000
+particleCap = 500
 
 class funcTimer():
     def __init__(self):
@@ -61,7 +61,7 @@ class Particle():
         ## Repulsion Force with gravity when g < 0
 
 
-## Reference Move Function
+## Reference Move Function Code
 """def move(particle1, particle2, g):
     for i in range(0, len(particle1)):
         fx = 0
@@ -87,11 +87,16 @@ def create(number, color):
         particles.append(Particle(color[col]))
     return particles
 
+g = 0.2
+
 ## Own code
-"""def move(particle1, particle2, gravity = 1):
-    for i in range(len(particle1)):
-        for j in range(len(particle2)):
-            push(particle1[i].coords, particle2[j], 10, gravity)"""
+def move(list, gravity = 1):
+    global g
+    for i in range(len(list)):
+        for j in range(len(list)):
+            list[i].push(list[j].coords, 20, g)
+    g *= -1
+
 
 moveFunc = False
 gameState = True        ## Game Running
@@ -103,7 +108,6 @@ while gameState:
     for event in pygame.event.get():
         if event.type == pygame.QUIT: ## Different from quit(). Here, its an event
             gameState = False
-
         elif event.type == pygame.KEYDOWN:      ## If a key is pressed
             if event.key == pygame.K_ESCAPE:    ## If its the escape key
                 gameState = False
@@ -113,7 +117,6 @@ while gameState:
                 moveFunc = False        ## Future implementation of auto moving partciiles
             if event.key == pygame.K_s: ## If Key is "S"
                 moveFunc = True         ## Start the move function simulation
-
         elif event.type == pygame.MOUSEBUTTONUP:    ## IF clicked
             pos = pygame.mouse.get_pos()            ## Get mouse position
             screen.fill(background)                 ## Reset print Screen
@@ -123,16 +126,16 @@ while gameState:
   
     if len(list_P) < particleCap: ## Max Cap on particle count
         list_P += create(int(particleCap/10), [yellow, aqua])
-        #print(1)
 
-    for particle in list_P:
+    if moveFunc == True:
+        if(runTimer.run(1000)):
+            move(list_P)
+            screen.fill(background)
+            for particle in list_P:
+                pygame.draw.circle(screen, particle.col, (particle.x, particle.y), 2) ## Drawing board of particles per frame
+    else:
+        for particle in list_P:
             pygame.draw.circle(screen, particle.col, (particle.x, particle.y), 2) ## Drawing board of particles per frame
-            ##if moveFunc == True:
-    
-    #print(1)
-    if(runTimer.run(1000)):
-        print(True)
-    #print(2)
 
     #for particle in list_P:
             #move(list_P, list_P, 0.1)
