@@ -1,4 +1,5 @@
 ## Simulate life processes.
+from operator import length_hint
 import pygame, random
 from math import sqrt 
 
@@ -17,7 +18,10 @@ white = (255, 255, 255)
 yellow = (255,255,0)
 ## End Palette
 
-screen = pygame.display.set_mode([500, 500])        ## Resolution
+length = 300
+breadth = 300
+
+screen = pygame.display.set_mode([length, breadth]) ## Resolution
 pygame.display.set_caption('Particle Simulator')    ## Title of the game
 background = black                                  ## Variable that can be edited later
 frameRate = 60                                      ## Framerate 
@@ -27,7 +31,7 @@ timer = pygame.time.Clock()                         ## Help run our game at 60 F
 list_P = []
 radius = 15
 particleCap = 50
-sizeCircle = 5
+sizeCircle = 2
 
 class funcTimer():
     def __init__(self):
@@ -42,8 +46,8 @@ class funcTimer():
         
 class Particle():
     def __init__(self, color):
-        self.x = random.randint(0, 500)
-        self.y = random.randint(0, 500)
+        self.x = random.randint(0, length)
+        self.y = random.randint(0, breadth)
         self.coords = [self.x, self.y]
         self.col = color
 
@@ -54,13 +58,6 @@ class Particle():
         dx /= dist ## Unit Vector Form of X Cordinate
         dy /= dist ## Unit Vector Form of Y Cordiate
         diff = radius - dist ## Difference between 
-        if dist < 5:
-            g *= -1
-
-        if self.x <= 0 or self.x >= 500:
-            self.x = 250 + (self.x * 0.1)
-        if self.y <= 0 or self.y >= 500:
-            self.y = 250 + (self.y * 0.1)
         ## In Vector Theory, Finding v / |v| and then using this unit vector and adding it to base one.
         if diff > 0:
         ## Attraction Force with gravity when g > 0
@@ -95,16 +92,14 @@ def create(number, color):
         particles.append(Particle(color[col]))
     return particles
 
-g = 0.2
+g = -0.0002
 
 ## Own code
-def move(list, gravity = 1):
+def move(list):
     global g
     for i in range(len(list)):
         for j in range(len(list)):
-            list[i].push(list[j].coords, 500, g)
-    g *= -1
-
+            list[i].push(list[j].coords, max(length, breadth), g)
 
 moveFunc = False
 gameState = True        ## Game Running
@@ -136,7 +131,7 @@ while gameState:
         list_P += create(int(particleCap/10), [yellow, aqua])
 
     if moveFunc == True:
-        if(runTimer.run(200)):
+        if(runTimer.run(50)):
             move(list_P)
             screen.fill(background)
             for particle in list_P:
