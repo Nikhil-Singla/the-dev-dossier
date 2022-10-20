@@ -29,8 +29,8 @@ font = pygame.font.Font('freesansbold.ttf', 16)     ## Font
 timer = pygame.time.Clock()                         ## Help run our game at 60 FPS
 
 list_P = []
-radius = 15
-particleCap = 50
+pushRadius = 30
+particleCap = 100
 sizeCircle = 2
 
 class funcTimer():
@@ -119,12 +119,12 @@ while gameState:
                 list_P.clear()          ## Empty out the points list
                 moveFunc = False        ## Future implementation of auto moving partciiles
             if event.key == pygame.K_s: ## If Key is "S"
-                moveFunc = True         ## Start the move function simulation
+                moveFunc = not moveFunc         ## Start the move function simulation
         elif event.type == pygame.MOUSEBUTTONUP:    ## IF clicked
             pos = pygame.mouse.get_pos()            ## Get mouse position
             screen.fill(background)                 ## Reset print Screen
             for p in list_P:
-                p.push(pos, radius)                ## Update the points list with the new points away from mouse by a fixed radius
+                p.push(pos, pushRadius)                ## Update the points list with the new points away from mouse by a fixed radius
                 pygame.draw.circle(screen, p.col, (p.x, p.y), sizeCircle) ## Draw the new points
   
     if len(list_P) < particleCap: ## Max Cap on particle count
