@@ -1,9 +1,8 @@
 ## Simulate life processes.
-from operator import length_hint
 import pygame, random
 from math import sqrt 
 
-pygame.init()
+pygame.init() ## Initializing Game
 
 ## Color Palette = (R, G, B) values
 aqua = (0,255,255)
@@ -18,8 +17,10 @@ white = (255, 255, 255)
 yellow = (255,255,0)
 ## End Palette
 
-length = 300
+## Screen dimensions
+length = 300 
 breadth = 300
+## Screen dimensions end
 
 screen = pygame.display.set_mode([length, breadth]) ## Resolution
 pygame.display.set_caption('Particle Simulator')    ## Title of the game
@@ -28,43 +29,46 @@ frameRate = 60                                      ## Framerate
 font = pygame.font.Font('freesansbold.ttf', 16)     ## Font
 timer = pygame.time.Clock()                         ## Help run our game at 60 FPS
 
-list_P = []
-pushRadius = 30
-particleCap = 100
-sizeCircle = 2
+list_P = []                 ## Empty array to store particles
+pushRadius = 30             ## Radius for mouse pushing
+particleCap = 100           ## Max Particles
+sizeCircle = 2              ## Size of the particles
+g = 0.0002                  ## Designated automatic gravity
 
 class funcTimer():
     def __init__(self):
-        self.start = pygame.time.get_ticks()
+        self.start = pygame.time.get_ticks()    ## Clock starting
 
     def run(self, time):
-        self.cooldown = time # Cooldown has been time milliseconds since last
-        now = pygame.time.get_ticks()
-        if now - self.start >= self.cooldown:
-            self.start = now
-            return True
+        self.cooldown = time                    ## Set cooldown = Time (miliseconds)
+        now = pygame.time.get_ticks()           ## Get current time
+        if now - self.start >= self.cooldown:   ## If current time passed is greater than cooldown
+            self.start = now                    ## Change current time
+            return True                         ## Toggle Value of cooldown return 
         
 class Particle():
     def __init__(self, color):
-        self.x = random.randint(0, length)
-        self.y = random.randint(0, breadth)
-        self.coords = [self.x, self.y]
-        self.col = color
+        self.x = random.randint(0, length)      ## X Cordinate randomization
+        self.y = random.randint(0, breadth)     ## Y Cordinate randomization
+        self.coords = [self.x, self.y]          ## Store coordinates in Tuple
+        self.col = color                        ## Set color according to initialization
 
     def push(self, pos, radius = 30, g = 1):
-        dx = self.x - pos[0] ## Change in X between two points
-        dy = self.y - pos[1] ## Change in Y between two points
-        dist = sqrt(dx*dx + dy*dy + 0.1)
-        dx /= dist ## Unit Vector Form of X Cordinate
-        dy /= dist ## Unit Vector Form of Y Cordiate
-        diff = radius - dist ## Difference between 
+        dx = self.x - pos[0]                ## Change in X between two points
+        dy = self.y - pos[1]                ## Change in Y between two points
+        dist = sqrt(dx*dx + dy*dy + 0.1)    ## Distance between particles, can never be 0
+        dx /= dist                          ## Unit Vector Form of X Cordinate
+        dy /= dist                          ## Unit Vector Form of Y Cordiate
+        diff = radius - dist                ## Difference between 
         ## In Vector Theory, Finding v / |v| and then using this unit vector and adding it to base one.
         if diff > 0:
         ## Attraction Force with gravity when g > 0
-            self.x += diff*dx*g
-            self.y += diff*dy*g
+            self.x -= diff*dx*g
+            self.y -= diff*dy*g
         ## Repulsion Force with gravity when g < 0
 
+    def centralize(self):
+        self.push([int(length/2), int(breadth/2)], max(length, breadth), 0.02)
 
 ## Reference Move Function Code
 """def move(particle1, particle2, g):
@@ -87,12 +91,10 @@ class Particle():
 
 def create(number, color):
     particles = []
-    for i in range(0, number):
-        col = random.randint(0, 100)%len(color)
-        particles.append(Particle(color[col]))
+    for i in range(0, number):                      ## Loop to create "number" of particles
+        col = random.randint(0, 100)%len(color)     ## Get a random color from input list of colors
+        particles.append(Particle(color[col]))      ## Add particles created to list
     return particles
-
-g = -0.0002
 
 ## Own code
 def move(list):
@@ -119,12 +121,17 @@ while gameState:
                 list_P.clear()          ## Empty out the points list
                 moveFunc = False        ## Future implementation of auto moving partciiles
             if event.key == pygame.K_s: ## If Key is "S"
-                moveFunc = not moveFunc         ## Start the move function simulation
+                moveFunc = not moveFunc             ## Start the move function simulation
+            if event.key == pygame.K_c:
+                screen.fill(background)
+                for p in list_P:
+                    p.centralize()
+    
         elif event.type == pygame.MOUSEBUTTONUP:    ## IF clicked
             pos = pygame.mouse.get_pos()            ## Get mouse position
             screen.fill(background)                 ## Reset print Screen
             for p in list_P:
-                p.push(pos, pushRadius)                ## Update the points list with the new points away from mouse by a fixed radius
+                p.push(pos, pushRadius)             ## Update the points list with the new points away from mouse by a fixed radius
                 pygame.draw.circle(screen, p.col, (p.x, p.y), sizeCircle) ## Draw the new points
   
     if len(list_P) < particleCap: ## Max Cap on particle count
