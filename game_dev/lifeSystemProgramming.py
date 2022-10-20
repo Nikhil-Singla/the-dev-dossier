@@ -63,8 +63,8 @@ class Particle():
         ## In Vector Theory, Finding v / |v| and then using this unit vector and adding it to base one.
         if diff > 0:
         ## Attraction Force with gravity when g > 0
-            self.x -= diff*dx*g
-            self.y -= diff*dy*g
+            self.x += diff*dx*g
+            self.y += diff*dy*g
         ## Repulsion Force with gravity when g < 0
 
     def centralize(self):
@@ -103,6 +103,7 @@ def move(list):
         for j in range(len(list)):
             list[i].push(list[j].coords, max(length, breadth), g)
 
+keyC = False
 moveFunc = False
 gameState = True        ## Game Running
 screen.fill(background) ## Have our initial background on the screen
@@ -123,9 +124,7 @@ while gameState:
             if event.key == pygame.K_s: ## If Key is "S"
                 moveFunc = not moveFunc             ## Start the move function simulation
             if event.key == pygame.K_c:
-                screen.fill(background)
-                for p in list_P:
-                    p.centralize()
+                keyC = not keyC
     
         elif event.type == pygame.MOUSEBUTTONUP:    ## IF clicked
             pos = pygame.mouse.get_pos()            ## Get mouse position
@@ -142,6 +141,12 @@ while gameState:
             move(list_P)
             screen.fill(background)
             for particle in list_P:
+                pygame.draw.circle(screen, particle.col, (particle.x, particle.y), sizeCircle) ## Drawing board of particles per frame
+    elif keyC == True:
+        if(runTimer.run(60)):
+            screen.fill(background)
+            for particle in list_P:
+                particle.centralize()
                 pygame.draw.circle(screen, particle.col, (particle.x, particle.y), sizeCircle) ## Drawing board of particles per frame
     else:
         for particle in list_P:
