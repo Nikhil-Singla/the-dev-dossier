@@ -30,10 +30,10 @@ font = pygame.font.Font('freesansbold.ttf', 16)     ## Font
 timer = pygame.time.Clock()                         ## Help run our game at 60 FPS
 
 list_P = []                 ## Empty array to store particles
-pushRadius = 30             ## Radius for mouse pushing
-particleCap = 100           ## Max Particles
+pushRadius = 10             ## Radius for mouse pushing
+particleCap = 100           ## Max Particle
 sizeCircle = 2              ## Size of the particles
-g = 0.0002                  ## Designated automatic gravity
+g = 0.0002                 ## Designated automatic gravity
 
 class funcTimer():
     def __init__(self):
