@@ -30,10 +30,10 @@ font = pygame.font.Font('freesansbold.ttf', 16)     ## Font
 timer = pygame.time.Clock()                         ## Help run our game at 60 FPS
 
 list_P = []                 ## Empty array to store particles
-pushRadius = 10             ## Radius for mouse pushing
-particleCap = 100           ## Max Particle
-sizeCircle = 2              ## Size of the particles
-g = 0.0002                 ## Designated automatic gravity
+pushRadius = 20             ## Radius for mouse pushing
+particleCap = 200           ## Max Particle
+sizeCircle = 3              ## Size of the particles
+g = -0.0002                 ## Designated automatic gravity
 
 class funcTimer():
     def __init__(self):
@@ -134,7 +134,7 @@ while gameState:
                 pygame.draw.circle(screen, p.col, (p.x, p.y), sizeCircle) ## Draw the new points
   
     if len(list_P) < particleCap: ## Max Cap on particle count
-        list_P += create(int(particleCap/10), [yellow, aqua])
+        list_P += create(int(particleCap/10), [yellow, aqua, red, white])
 
     if moveFunc == True:
         if(runTimer.run(50)):
