@@ -33,7 +33,7 @@ list_P = []                 ## Empty array to store particles
 pushRadius = 20             ## Radius for mouse pushing
 particleCap = 200           ## Max Particle
 sizeCircle = 3              ## Size of the particles
-g = -0.0002                 ## Designated automatic gravity
+g = -0.0002                 ## Designated automatic gravity (Attraction)
 
 class funcTimer():
     def __init__(self):
@@ -59,16 +59,16 @@ class Particle():
         dist = sqrt(dx*dx + dy*dy + 0.1)    ## Distance between particles, can never be 0
         dx /= dist                          ## Unit Vector Form of X Cordinate
         dy /= dist                          ## Unit Vector Form of Y Cordiate
-        diff = dist - radius                ## Difference between 
+        diff = radius - dist                ## Difference between 
         ## In Vector Theory, Finding v / |v| and then using this unit vector and adding it to base one.
         if diff > 0:
-        ## Attraction Force with gravity when g > 0
+        ## Repulsion Force with gravity when g > 0
             self.x += diff*dx*g
             self.y += diff*dy*g
-        ## Repulsion Force with gravity when g < 0
+        ## Attraction Force with gravity when g < 0
 
     def centralize(self):
-        self.push([int(length/2), int(breadth/2)], max(length, breadth), 0.02)
+        self.push([int(length/2), int(breadth/2)], max(length, breadth), -0.02)
 
 ## Reference Move Function Code
 """def move(particle1, particle2, g):
@@ -103,6 +103,16 @@ def move(list):
         for j in range(len(list)):
             list[i].push(list[j].coords, max(length, breadth), g)
 
+def average(list):
+    sumx = 0
+    sumy = 0
+    for i in range(len(list)):
+        sumx += list[i].x
+        sumy += list[i].y
+    sumx /= len(list)
+    sumy /= len(list)
+    print(round(sumx,2), round(sumy,2))
+
 keyC = False
 moveFunc = False
 gameState = True        ## Game Running
@@ -125,6 +135,8 @@ while gameState:
                 moveFunc = not moveFunc             ## Start the move function simulation
             if event.key == pygame.K_c:
                 keyC = not keyC
+            if event.key == pygame.K_a:
+                average(list_P)
     
         elif event.type == pygame.MOUSEBUTTONUP:    ## IF clicked
             pos = pygame.mouse.get_pos()            ## Get mouse position
