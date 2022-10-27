@@ -59,7 +59,7 @@ class Particle():
         dist = sqrt(dx*dx + dy*dy + 0.1)    ## Distance between particles, can never be 0
         dx /= dist                          ## Unit Vector Form of X Cordinate
         dy /= dist                          ## Unit Vector Form of Y Cordiate
-        diff = radius - dist                ## Difference between 
+        diff = dist - radius                ## Difference between 
         ## In Vector Theory, Finding v / |v| and then using this unit vector and adding it to base one.
         if diff > 0:
         ## Attraction Force with gravity when g > 0
