@@ -18,6 +18,18 @@ green = (0, 255, 0)
 white = (255, 255, 255)
 ## End Palette
 
+length = 700 
+breadth = 700
+
 ## Global Variables
-screen = pygame.display.set_mode([1080, 720]) ## Resolution
+
+screen = pygame.display.set_mode([length, breadth]) ## Resolution
 pygame.display.set_caption('Chessboard') ## Title of the game
+background = black  ## Variable that can be edited later
+frameRate = 60  ## Framerate 
+font = pygame.font.Font('freesansbold.ttf', 16) ## Font
+timer = pygame.time.Clock() ## Help run our game at 60 FPS
+timer_interval = 1000 # 0.5 seconds
+timer_event = pygame.USEREVENT + 1
+
+
