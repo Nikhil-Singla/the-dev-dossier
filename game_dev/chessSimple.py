@@ -46,12 +46,24 @@ def drawSquare(i, j):
     pygame.draw.rect(screen,color, [50*i+200, 50*j+200, 50, 50])
 
 pieceName = ["Pawn", "Rook", "Knight", "Bishop", "King", "Queen"]
+pieceAmount = [8, 2, 2, 2, 1, 1] ## For Future Customization
 pieceColor = [aqua, navy, orange, green, metallic, red]
+boardState = []
+
 def drawPiece(name, xCor, yCor):
     for i in range(len(pieceName)):
         if name.lower() == pieceName[i].lower():
             pygame.draw.circle(screen,pieceColor[i], (50*xCor+225, 50*yCor+225), 5)
         
+def initBoard():
+    rowState = []
+    for i in range(1, 6):
+        rowState.append(pieceName[i])
+    for i in range(3, 0, -1):
+        rowState.append(pieceName[i])
+    boardState.append(rowState)
+
+initBoard()
 
 gameState = True ## Game Running
 screen.fill(background) ## Have our initial background on the screen
@@ -65,8 +77,9 @@ while gameState:
         for j in range(len(board[i])):
                 drawSquare(i, j)
 
-    drawPiece("Rook", 0, 0)
-    drawPiece("Rook", 7, 0)
+    for i in range(len(boardState)):
+        for j in range(len(boardState[i])):
+            drawPiece(boardState[i][j], j, i)
 
 
     pygame.display.flip() ## Update the content of the entire display
