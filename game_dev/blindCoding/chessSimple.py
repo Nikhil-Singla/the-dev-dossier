@@ -40,10 +40,32 @@ row = [0]*8
 board = [row]*8
 pieceName = ["Pawn", "Rook", "Knight", "Bishop", "King", "Queen"]
 pieceAmount = [8, 2, 2, 2, 1, 1] ## For Future Customization
+pieceValue = [1, 5, 3, 3, 999, 8]
+sides = [black, white]
 pieceColor = [aqua, navy, orange, green, metallic, red]
 boardState = []
 sqPieces = {}
 piecePos = {}
+activePieces = []
+
+class ChessPiece():
+    def __init__(self, side, name):
+        self.name = name.lower
+        self.side = side
+        self.value = value()
+
+    def value(self):
+        for i in range(len(pieceName)):
+            if self.name == pieceName[i].lower():
+                return pieceValue[i]
+        return 0
+
+    def drawPiece(self, xCor, yCor):
+        for i in range(len(pieceName)):
+            if self.name == pieceName[i].lower():
+                pygame.draw.circle(screen,pieceColor[i], (50*xCor+225, 50*yCor+225), 5)
+        return name.lower()
+        
 
 def drawSquare(i, j):
     retPiece = NULL    
@@ -54,13 +76,7 @@ def drawSquare(i, j):
     retPiece = pygame.draw.rect(screen,color, [50*i+200, 50*j+200, 50, 50])
     return retPiece
 
-def drawPiece(name, xCor, yCor):
-    for i in range(len(pieceName)):
-        if name.lower() == pieceName[i].lower():
-            pygame.draw.circle(screen,pieceColor[i], (50*xCor+225, 50*yCor+225), 5)
-    return name.lower()
-        
-def pawnRow(team):
+def pawnRow():
     rowState = []
     for i in range(8):
         rowState.append(pieceName[0])
@@ -83,10 +99,10 @@ def addMainPieceRow(random, boardList):
     boardList.append(rowState)
 
 def initBoard():
-    addMainPieceRow(False, boardState)
-    boardState.append(pawnRow(1))
+    addMainPieceRow(False, boardState)      ## True or False for the not yet implemented random
+    boardState.append(pawnRow())
     addEmpty(4, boardState)
-    boardState.append(pawnRow(2))
+    boardState.append(pawnRow())
     addMainPieceRow(False, boardState)
 
 initBoard()
@@ -102,9 +118,19 @@ def run (time):
 gameState = True ## Game Running
 screen.fill(background) ## Have our initial background on the screen
 
+def start():
+    for j in range(len(sides)):
+        tempAmount = pieceAmount.copy()
+        for i in range(len(tempAmount)):
+            while tempAmount[i] > 0:
+                tempAmount[i] -= 1
+                piece = ChessPiece(sides[j],pieceName[i])
+                activePieces.append(piece)
+
 while gameState:
     sqNumber = 0
     numPiece = 0
+
     timer.tick(frameRate) ## Tick at the specified framerate
     for event in pygame.event.get():
         if event.type == pygame.QUIT: ## Different from quit(). Here, its an event
@@ -112,6 +138,7 @@ while gameState:
 
     if run(1000):
         screen.fill(black)
+        
         for i in range(len(board)):
             for j in range(len(board[i])):
                     piece = drawSquare(i, j)        ## Drawing Each Square
