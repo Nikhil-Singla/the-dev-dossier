@@ -33,6 +33,7 @@ font = pygame.font.Font('freesansbold.ttf', 16) ## Font
 timer = pygame.time.Clock() ## Help run our game at 60 FPS
 timer_interval = 1000 # 0.5 seconds
 timer_event = pygame.USEREVENT + 1
+start = pygame.time.get_ticks()
 
 ## Game Variables
 row = [0]*8
@@ -90,6 +91,14 @@ def initBoard():
 
 initBoard()
 
+def run (time):
+    global start
+    cooldown = time                    ## Set cooldown = Time (miliseconds)
+    now = pygame.time.get_ticks()           ## Get current time
+    if now - start >= cooldown:   ## If current time passed is greater than cooldown
+        start = now                    ## Change current time
+        return True     
+
 gameState = True ## Game Running
 screen.fill(background) ## Have our initial background on the screen
 
@@ -101,19 +110,21 @@ while gameState:
         if event.type == pygame.QUIT: ## Different from quit(). Here, its an event
             gameState = False
 
-    for i in range(len(board)):
-        for j in range(len(board[i])):
-                piece = drawSquare(i, j)        ## Drawing Each Square
-                if piece != NULL:
-                    sqNumber += 1
-                    sqPieces[sqNumber] = piece
-    
-    for i in range(len(boardState)):
-        for j in range(len(boardState[i])):
-            name = drawPiece(boardState[i][j], j, i)
-            if name != NULL:
-                numPiece += 1
-                piecePos[numPiece] = name
+    if run(1000):
+        screen.fill(black)
+        for i in range(len(board)):
+            for j in range(len(board[i])):
+                    piece = drawSquare(i, j)        ## Drawing Each Square
+                    if piece != NULL:
+                        sqNumber += 1
+                        sqPieces[sqNumber] = piece
+        
+        for i in range(len(boardState)):
+            for j in range(len(boardState[i])):
+                name = drawPiece(boardState[i][j], j, i)
+                if name != NULL:
+                    numPiece += 1
+                    piecePos[numPiece] = name
 
     pygame.display.flip() ## Update the content of the entire display
 
