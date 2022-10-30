@@ -1,6 +1,5 @@
 ## To use Python in CMD, use py instead of python
-## Auto Battler
-## Army Simulator Game
+## Chess Creator
 ## Credits: Me <3
 
 from asyncio.windows_events import NULL
