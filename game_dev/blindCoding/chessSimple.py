@@ -3,6 +3,7 @@
 ## Army Simulator Game
 ## Credits: Me <3
 
+from asyncio.windows_events import NULL
 import pygame  
 pygame.init()
 
@@ -33,27 +34,30 @@ timer = pygame.time.Clock() ## Help run our game at 60 FPS
 timer_interval = 1000 # 0.5 seconds
 timer_event = pygame.USEREVENT + 1
 
+## Game Variables
 row = [0]*8
 board = [row]*8
-
-
-
-def drawSquare(i, j):
-    if ((i+j)%2 == 0):
-        color = white
-    else:
-        color = brown
-    pygame.draw.rect(screen,color, [50*i+200, 50*j+200, 50, 50])
-
 pieceName = ["Pawn", "Rook", "Knight", "Bishop", "King", "Queen"]
 pieceAmount = [8, 2, 2, 2, 1, 1] ## For Future Customization
 pieceColor = [aqua, navy, orange, green, metallic, red]
 boardState = []
+sqPieces = {}
+piecePos = {}
+
+def drawSquare(i, j):
+    retPiece = NULL    
+    if ((i+j)%2 == 0):
+        color = white
+    else:
+        color = brown
+    retPiece = pygame.draw.rect(screen,color, [50*i+200, 50*j+200, 50, 50])
+    return retPiece
 
 def drawPiece(name, xCor, yCor):
     for i in range(len(pieceName)):
         if name.lower() == pieceName[i].lower():
             pygame.draw.circle(screen,pieceColor[i], (50*xCor+225, 50*yCor+225), 5)
+    return name.lower()
         
 def pawnRow(team):
     rowState = []
@@ -62,7 +66,7 @@ def pawnRow(team):
     return rowState
 
 def addEmpty(number, boardList):
-    emptyRow = [" "]*8
+    emptyRow = [""]*8
     for i in range(number):
         boardList.append(emptyRow)
 
@@ -84,12 +88,14 @@ def initBoard():
     boardState.append(pawnRow(2))
     addMainPieceRow(False, boardState)
 
-
 initBoard()
 
 gameState = True ## Game Running
 screen.fill(background) ## Have our initial background on the screen
+
 while gameState:
+    sqNumber = 0
+    numPiece = 0
     timer.tick(frameRate) ## Tick at the specified framerate
     for event in pygame.event.get():
         if event.type == pygame.QUIT: ## Different from quit(). Here, its an event
@@ -97,14 +103,22 @@ while gameState:
 
     for i in range(len(board)):
         for j in range(len(board[i])):
-                drawSquare(i, j)        ## Drawing Each Square
-
+                piece = drawSquare(i, j)        ## Drawing Each Square
+                if piece != NULL:
+                    sqNumber += 1
+                    sqPieces[sqNumber] = piece
+    
     for i in range(len(boardState)):
         for j in range(len(boardState[i])):
-            drawPiece(boardState[i][j], j, i)
-
+            name = drawPiece(boardState[i][j], j, i)
+            if name != NULL:
+                numPiece += 1
+                piecePos[numPiece] = name
 
     pygame.display.flip() ## Update the content of the entire display
+
+for key, value in piecePos.items():
+    print(key, value)
 
 pygame.quit() ## Uninitialize all pygame modules
 
