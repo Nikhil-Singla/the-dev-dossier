@@ -36,12 +36,22 @@ timer_event = pygame.USEREVENT + 1
 row = [0]*8
 board = [row]*8
 
+
+
 def drawSquare(i, j):
     if ((i+j)%2 == 0):
         color = white
     else:
         color = brown
     pygame.draw.rect(screen,color, [50*i+200, 50*j+200, 50, 50])
+
+pieceName = ["Pawn", "Rook", "Knight", "Bishop", "King", "Queen"]
+pieceColor = [aqua, navy, orange, green, metallic, red]
+def drawPiece(name, i, j):
+    for i in range(len(pieceName)):
+        if name.lower() == pieceName[i].lower():
+            pygame.draw.circle(screen,pieceColor[i], (50*i+175, 50*j+225), 5)
+        
 
 gameState = True ## Game Running
 screen.fill(background) ## Have our initial background on the screen
@@ -54,6 +64,8 @@ while gameState:
     for i in range(len(board)):
         for j in range(len(board[i])):
                 drawSquare(i, j)
+
+    drawPiece("rook", 0, 0)
 
 
     pygame.display.flip() ## Update the content of the entire display
