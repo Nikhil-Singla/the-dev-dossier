@@ -16,10 +16,11 @@ metallic = (198,226,255)
 red = (255, 0, 0)
 green = (0, 255, 0)
 white = (255, 255, 255)
+brown = (225, 193, 110)
 ## End Palette
 
-length = 700 
-breadth = 700
+length = 800 
+breadth = 800
 
 ## Global Variables
 
@@ -32,4 +33,30 @@ timer = pygame.time.Clock() ## Help run our game at 60 FPS
 timer_interval = 1000 # 0.5 seconds
 timer_event = pygame.USEREVENT + 1
 
+row = [0]*8
+board = [row]*8
+
+def drawSquare(i, j):
+    if ((i+j)%2 == 0):
+        color = white
+    else:
+        color = brown
+    pygame.draw.rect(screen,color, [50*i, 50*j, 50, 50], 2)
+
+gameState = True ## Game Running
+screen.fill(background) ## Have our initial background on the screen
+while gameState:
+    timer.tick(frameRate) ## Tick at the specified framerate
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT: ## Different from quit(). Here, its an event
+            gameState = False
+
+    for i in range(len(board)):
+        for j in range(len(board[i])):
+                drawSquare(i, j)
+
+
+    pygame.display.flip() ## Update the content of the entire display
+
+pygame.quit() ## Uninitialize all pygame modules
 
