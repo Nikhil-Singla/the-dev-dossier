@@ -99,13 +99,12 @@ def addMainPieceRow(random, boardList):
     boardList.append(rowState)
 
 def initBoard():
+    boardState.clear()
     addMainPieceRow(False, boardState)      ## True or False for the not yet implemented random
     boardState.append(pawnRow())
     addEmpty(4, boardState)
     boardState.append(pawnRow())
     addMainPieceRow(False, boardState)
-
-initBoard()
 
 def run (time):
     global start
@@ -119,6 +118,8 @@ gameState = True ## Game Running
 screen.fill(background) ## Have our initial background on the screen
 
 def start():
+    initBoard()
+    
     for j in range(len(sides)):
         tempAmount = pieceAmount.copy()
         for i in range(len(tempAmount)):
@@ -126,6 +127,14 @@ def start():
                 tempAmount[i] -= 1
                 piece = ChessPiece(sides[j],pieceName[i])
                 activePieces.append(piece)
+
+    for i in range(len(boardState)):
+        for j in range(len(boardState[i])):
+            name = drawPiece(boardState[i][j], j, i)
+            if name != NULL:
+                numPiece += 1
+                piecePos[numPiece] = name
+
 
 while gameState:
     sqNumber = 0
@@ -146,12 +155,6 @@ while gameState:
                         sqNumber += 1
                         sqPieces[sqNumber] = piece
         
-        for i in range(len(boardState)):
-            for j in range(len(boardState[i])):
-                name = drawPiece(boardState[i][j], j, i)
-                if name != NULL:
-                    numPiece += 1
-                    piecePos[numPiece] = name
 
     pygame.display.flip() ## Update the content of the entire display
 
