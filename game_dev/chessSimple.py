@@ -82,7 +82,7 @@ while gameState:
 
     for i in range(len(board)):
         for j in range(len(board[i])):
-                drawSquare(i, j)
+                drawSquare(i, j)        ## Drawing Each Square
 
     for i in range(len(boardState)):
         for j in range(len(boardState[i])):
