@@ -47,10 +47,10 @@ def drawSquare(i, j):
 
 pieceName = ["Pawn", "Rook", "Knight", "Bishop", "King", "Queen"]
 pieceColor = [aqua, navy, orange, green, metallic, red]
-def drawPiece(name, i, j):
+def drawPiece(name, xCor, yCor):
     for i in range(len(pieceName)):
         if name.lower() == pieceName[i].lower():
-            pygame.draw.circle(screen,pieceColor[i], (50*i+175, 50*j+225), 5)
+            pygame.draw.circle(screen,pieceColor[i], (50*xCor+225, 50*yCor+225), 5)
         
 
 gameState = True ## Game Running
@@ -65,7 +65,8 @@ while gameState:
         for j in range(len(board[i])):
                 drawSquare(i, j)
 
-    drawPiece("rook", 0, 0)
+    drawPiece("Rook", 0, 0)
+    drawPiece("Rook", 7, 0)
 
 
     pygame.display.flip() ## Update the content of the entire display
