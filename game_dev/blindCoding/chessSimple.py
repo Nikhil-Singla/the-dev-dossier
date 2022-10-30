@@ -61,14 +61,29 @@ def pawnRow(team):
         rowState.append(pieceName[0])
     return rowState
 
-def initBoard():
+def addEmpty(number, boardList):
+    emptyRow = [" "]*8
+    for i in range(number):
+        boardList.append(emptyRow)
+
+def addMainPieceRow(random, boardList):
     rowState = []
-    for i in range(1, 6):
-        rowState.append(pieceName[i])
-    for i in range(3, 0, -1):
-        rowState.append(pieceName[i])
-    boardState.append(rowState)
+    if random == True:
+        return
+    else:
+        for i in range(1, 6):
+            rowState.append(pieceName[i])
+        for i in range(3, 0, -1):
+            rowState.append(pieceName[i])
+    boardList.append(rowState)
+
+def initBoard():
+    addMainPieceRow(False, boardState)
     boardState.append(pawnRow(1))
+    addEmpty(4, boardState)
+    boardState.append(pawnRow(2))
+    addMainPieceRow(False, boardState)
+
 
 initBoard()
 
