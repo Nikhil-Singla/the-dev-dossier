@@ -41,7 +41,7 @@ def drawSquare(i, j):
         color = white
     else:
         color = brown
-    pygame.draw.rect(screen,color, [50*i, 50*j, 50, 50], 2)
+    pygame.draw.rect(screen,color, [50*i+200, 50*j+200, 50, 50])
 
 gameState = True ## Game Running
 screen.fill(background) ## Have our initial background on the screen
