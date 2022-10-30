@@ -55,6 +55,12 @@ def drawPiece(name, xCor, yCor):
         if name.lower() == pieceName[i].lower():
             pygame.draw.circle(screen,pieceColor[i], (50*xCor+225, 50*yCor+225), 5)
         
+def pawnRow(team):
+    rowState = []
+    for i in range(8):
+        rowState.append(pieceName[0])
+    return rowState
+
 def initBoard():
     rowState = []
     for i in range(1, 6):
@@ -62,6 +68,7 @@ def initBoard():
     for i in range(3, 0, -1):
         rowState.append(pieceName[i])
     boardState.append(rowState)
+    boardState.append(pawnRow(1))
 
 initBoard()
 
