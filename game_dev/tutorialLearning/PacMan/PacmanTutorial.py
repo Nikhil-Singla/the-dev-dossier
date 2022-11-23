@@ -20,35 +20,37 @@ width = 900
 height = 950
 PI = 3.141592653589793
 
+wall_color = [blue]
+pellet_color = [white]
 
 screen = pygame.display.set_mode([width, height])
 timer = pygame.time.Clock()
 fps = 60
 font = pygame.font.Font('freesansbold.ttf', 20)
 
-def draw_board(lvl):
+def draw_board(lvl, wall_i = 0, pellet_i = 0):
     tile_height = ((height - 50) // 32)   ## 50 Pixels for space to write. And Floor division to round down the tile to the nearest height. 32 Tiles vertically
     tile_width = ((width) // 30)      
     for i in range(len(lvl)):           ## i iterates across the rows of cells / y axis
         for j in range(len(lvl[i])):    ## j iterates across the individual cells in the rows / columns / x axis
             if lvl[i][j] == 1:
-                pygame.draw.circle( screen, white, ( (j*tile_width + (0.5*tile_width)), (i*tile_height + (0.5*tile_height)) ), 4 )
+                pygame.draw.circle( screen, pellet_color[pellet_i], ( (j*tile_width + (0.5*tile_width)), (i*tile_height + (0.5*tile_height)) ), 4 )
             if lvl[i][j] == 2:
-                pygame.draw.circle( screen, white, ( (j*tile_width + (0.5*tile_width)), (i*tile_height + (0.5*tile_height)) ), 8 )
+                pygame.draw.circle( screen, pellet_color[pellet_i], ( (j*tile_width + (0.5*tile_width)), (i*tile_height + (0.5*tile_height)) ), 8 )
             if lvl[i][j] == 3:
-                pygame.draw.line( screen, blue, ( (j*tile_width + (0.5*tile_width)), (i*tile_height) ), 
+                pygame.draw.line( screen, wall_color[wall_i], ( (j*tile_width + (0.5*tile_width)), (i*tile_height) ), 
                                                 ( (j*tile_width + (0.5*tile_width)), (i*tile_height + tile_height) ), 3)
             if lvl[i][j] == 4:
-                pygame.draw.line( screen, blue, ( (j*tile_width), (i*tile_height + (0.5*tile_height)) ), 
+                pygame.draw.line( screen, wall_color[wall_i], ( (j*tile_width), (i*tile_height + (0.5*tile_height)) ), 
                                                 ( (j*tile_width + tile_width), (i*tile_height + (0.5*tile_height)) ), 3)
             if lvl[i][j] == 5:
-                pygame.draw.arc( screen, blue, [(j*tile_width) - (tile_width*0.4) - 2, (i*tile_height + (0.5*tile_height)), tile_width, tile_height], 0, PI/2, 3 )
+                pygame.draw.arc( screen, wall_color[wall_i], [(j*tile_width) - (tile_width*0.4) - 2, (i*tile_height + (0.5*tile_height)), tile_width, tile_height], 0, PI/2, 3 )
             if lvl[i][j] == 6:
-                pygame.draw.arc( screen, blue, [(j*tile_width) + (tile_width*0.4) + 2, (i*tile_height + (0.5*tile_height) - 1), tile_width, tile_height], PI/2, PI, 3 )
+                pygame.draw.arc( screen, wall_color[wall_i], [(j*tile_width) + (tile_width*0.4) + 2, (i*tile_height + (0.5*tile_height) - 1), tile_width, tile_height], PI/2, PI, 3 )
             if lvl[i][j] == 7:
-                pygame.draw.arc( screen, blue, [(j*tile_width) + (tile_width*0.5) - 1, (i*tile_height - (0.4*tile_height) - 1), tile_width, tile_height], PI, 3*PI/2, 3 )
+                pygame.draw.arc( screen, wall_color[wall_i], [(j*tile_width) + (tile_width*0.5) - 1, (i*tile_height - (0.4*tile_height) - 1), tile_width, tile_height], PI, 3*PI/2, 3 )
             if lvl[i][j] == 8:
-                pygame.draw.arc( screen, blue, [(j*tile_width) - (tile_width*0.4) - 2, (i*tile_height - (0.4*tile_height)), tile_width, tile_height], 3*PI/2, 0, 3 )
+                pygame.draw.arc( screen, wall_color[wall_i], [(j*tile_width) - (tile_width*0.4) - 2, (i*tile_height - (0.4*tile_height)), tile_width, tile_height], 3*PI/2, 0, 3 )
             if lvl[i][j] == 9:
                 pygame.draw.line( screen, white, ( (j*tile_width), (i*tile_height + (0.5*tile_height)) ), 
                                                 ( (j*tile_width + tile_width), (i*tile_height + (0.5*tile_height)) ), 3)
