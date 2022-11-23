@@ -47,8 +47,8 @@ def draw_board(lvl):
                 pygame.draw.arc( screen, blue, [(j*tile_width) + (tile_width*0.4) + 2, (i*tile_height + (0.5*tile_height) - 1), tile_width, tile_height], PI/2, PI, 3 )
             if lvl[i][j] == 7:
                 pygame.draw.arc( screen, blue, [(j*tile_width) + (tile_width*0.5) - 1, (i*tile_height - (0.4*tile_height) - 1), tile_width, tile_height], PI, 3*PI/2, 3 )
-            ##if lvl[i][j] == 8:
-                ##pygame.draw.arc( screen, blue, [(j*tile_width) - (tile_width*0.4) - 2, (i*tile_height + (0.5*tile_height)), tile_width, tile_height], 0, PI/2, 3 )
+            if lvl[i][j] == 8:
+                pygame.draw.arc( screen, blue, [(j*tile_width) - (tile_width*0.4) - 2, (i*tile_height - (0.4*tile_height)), tile_width, tile_height], 3*PI/2, 0, 3 )
             if lvl[i][j] == 9:
                 pygame.draw.line( screen, white, ( (j*tile_width), (i*tile_height + (0.5*tile_height)) ), 
                                                 ( (j*tile_width + tile_width), (i*tile_height + (0.5*tile_height)) ), 3)
