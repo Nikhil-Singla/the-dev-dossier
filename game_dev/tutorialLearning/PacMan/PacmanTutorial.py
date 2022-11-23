@@ -27,6 +27,12 @@ screen = pygame.display.set_mode([width, height])
 timer = pygame.time.Clock()
 fps = 60
 font = pygame.font.Font('freesansbold.ttf', 20)
+player_images = []
+
+for i in range(1, 5):
+    img_loader = pygame.image.load(f'assets/player_images/{i}.png')         ## Load images from assets/player_images/[number from 1, 2, 3, 4].png
+    scaled_img = pygame.transform.scale(img_loader), (45, 45)               ## Scale the images to the screen by increasing or decreasing
+    player_images.append(scaled_img)                                        ## Append the scaled images in order to the list of images we will use
 
 def draw_board(lvl, wall_i = 0, pellet_i = 0):  ## Lvl is the lvl number in map, wall_i is the index for wall colors, and same for pellet for pellet colors
     tile_height = ((height - 50) // 32)         ## 50 Pixels for space to write. And Floor division to round down the tile to the nearest height. 32 Tiles vertically
@@ -55,13 +61,15 @@ def draw_board(lvl, wall_i = 0, pellet_i = 0):  ## Lvl is the lvl number in map,
                 pygame.draw.line( screen, white, ( (j*tile_width), (i*tile_height + (0.5*tile_height)) ), 
                                                 ( (j*tile_width + tile_width), (i*tile_height + (0.5*tile_height)) ), 3)
 
+def draw_player():
+    pass
 
 gameState = True
 while gameState:
     timer.tick(fps)
     screen.fill(black)
     draw_board(level)
-    
+    draw_player()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             gameState = False
