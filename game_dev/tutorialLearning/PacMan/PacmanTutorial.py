@@ -30,11 +30,11 @@ font = pygame.font.Font('freesansbold.ttf', 20)
 player_images = []
 
 for i in range(1, 5):
-    img_loader = pygame.image.load(f'assets/player_images/{i}.png')         ## Load images from assets/player_images/[number from 1, 2, 3, 4].png
-    scaled_img = pygame.transform.scale(img_loader), (45, 45)               ## Scale the images to the screen by increasing or decreasing
+    img_loader = pygame.image.load(f'game_dev/tutorialLearning/PacMan/assets/player_images/{i}.png')         ## Load images from assets/player_images/[number from 1, 2, 3, 4].png
+    scaled_img = pygame.transform.scale((img_loader), (45, 45))             ## Scale the images to the screen by increasing or decreasing
     player_images.append(scaled_img)                                        ## Append the scaled images in order to the list of images we will use
 
-def draw_board(lvl, wall_i = 0, pellet_i = 0):  ## Lvl is the lvl number in map, wall_i is the index for wall colors, and same for pellet for pellet colors
+def draw_board(lvl, wall_i = 1, pellet_i = 0):  ## Lvl is the lvl number in map, wall_i is the index for wall colors, and same for pellet for pellet colors
     tile_height = ((height - 50) // 32)         ## 50 Pixels for space to write. And Floor division to round down the tile to the nearest height. 32 Tiles vertically
     tile_width = ((width) // 30)      
     for i in range(len(lvl)):                   ## i iterates across the rows of cells / y axis
