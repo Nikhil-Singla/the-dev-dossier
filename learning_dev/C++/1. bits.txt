@@ -1,4 +1,4 @@
-YouTube: The Cherno
+YouTube: The Cherno (Intro to Binary and Bitwise Operators in C++)
 Arithmetic Operators: + - / *
 Bitwise Operators (Base 2 number system):
 
@@ -46,4 +46,7 @@ For example:
 1100 is our original. Create a target mask for the 3rd bit -> 0100. & them -> 0100, ~ them -> 1011, & with original -> 1000.
 In our final answer, we managed to turn off the third bit successfully!
 
-XOR is mostly used in hashing.
+XOR is mostly used in hashing. XOR with itself is always 0. 
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+YouTube: CodeVault (Practical uses of bitwise operations)
