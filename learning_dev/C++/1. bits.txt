@@ -1,0 +1,14 @@
+Arithmetic Operators: + - / *
+Bitwise Operators (Base 2 number system):
+
+1) << : Bitshift Left
+2) >> : Bitshift Right
+3) && : AND Operator
+4) || : OR Operator
+5)  ^ : XOR Operator
+6)  ~ : NOT Operator
+
+You can definitely overload/override these operators. ["bitshifts" => "cout"]
+In our computers: We have capacitors where below a certain threshold of current, it falls into OFF state, otherwise ON state.
+This is how our RAM stores data. Binary system uses 0,1 numbers.
+Five is 101. Int is 4 bytes. 
