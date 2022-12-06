@@ -1,0 +1,9 @@
+Prerequisite Knowledge: Bits and Bitwise Operators, Decimal to Binary conversion
+
+Concept 1: To get Bit
+Suppose to get a bit at position i = 2.
+n =         0 1 0 1        = 5
+Pos/Index:  3 2 1 0
+
+First form a number where only the target position has 1.
+In our case: 1 << i = 0 1 0 0 using left-shift operator.
