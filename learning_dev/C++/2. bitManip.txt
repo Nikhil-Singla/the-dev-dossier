@@ -7,3 +7,10 @@ Pos/Index:  3 2 1 0
 
 First form a number where only the target position has 1.
 In our case: 1 << i = 0 1 0 0 using left-shift operator.
+
+Then take the & Operator of New number and Original number
+0101 & 0100 = 0100
+Doing this lets us know the value of the target position. As rest all numbers are 0.
+Finally, check if(n & (1 << i) != 0), then bit is 1.
+
+Second case: Set bit
