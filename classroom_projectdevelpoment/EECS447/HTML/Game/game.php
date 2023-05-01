@@ -1,3 +1,23 @@
+<?php
+
+session_start();
+
+	if (isset($_SESSION["user_id"])) 
+	{
+		
+		$mysqli = require __DIR__ . "../PHP/Connect.php";
+		
+		$sql = "SELECT * FROM users
+				WHERE id = {$_SESSION["user_id"]}";
+				
+		$result = $mysqli->query($sql);
+		
+		$user = $result->fetch_assoc();
+	}
+
+?>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +30,16 @@
 
 <body>
 
-	<h1>Monster Adventure | Player : </h1>
+	<h1>Monster Adventure |  	
+	<?php if (isset($user)): ?>    
+        Player : <?= htmlspecialchars($user["username"]) ?>
+        <p><a href="../PHP/Logout.php">Disconnect</a></p>
+    <?php else: ?>
+        <p><a href="../main.php">Log in</a> or <a href="../SignUp/signupPage.html">Sign Up</a> to connect progress</p>
+    <?php endif; ?>
+
+	</h1>
+
 	<h2>Click the monster to fight!</h2>
 
 	<button onclick="fight()">Fight</button>
