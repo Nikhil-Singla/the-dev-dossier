@@ -2,7 +2,7 @@
     (
         id SERIAL PRIMARY KEY,
         username VARCHAR(50) NOT NULL UNIQUE,
-        password VARCHAR(255) NOT NULL,
+        password VARCHAR(255) NOT NULL
     );
 INSERT INTO players (username, password) 
 VALUES ('player1', 'password1');
@@ -12,9 +12,10 @@ VALUES ('player1', 'password1');
     (
         id SERIAL PRIMARY KEY,
         name TEXT,
+        price INT NOT NULL
     );
-INSERT INTO listofitems (name) 
-VALUES ('sword');
+INSERT INTO listofitems (name, price)
+VALUES ('sword', 50);
 
 
     CREATE TABLE player_inventory

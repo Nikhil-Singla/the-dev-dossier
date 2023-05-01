@@ -1,29 +1,45 @@
 <!DOCTYPE html>
 <html>
 <head>
+
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="script.js"></script>
 	<title>Monster Adventure</title>
+	
 </head>
 
 <body>
+
 	<h1>Monster Adventure</h1>
 	<h2>Click the monster to fight!</h2>
+
 	<button onclick="fight()">Fight</button>
-	<div id="stats">
-		<p>Level: <span id="level">1</span></p>
-		<p>Gold: <span id="gold">0</span></p>
-		<p>Health: <span id="health">10</span></p>
-		<div id="items">
-			<div class="item" id="sword">
-                <span>Sword (+1 damage)</span>
-                <button onclick="equip('sword')" disabled>Equip</button>
-                <button onclick="discard('sword')">Discard</button>
-                <button onclick="buySword()" id="buy-sword">Buy for <span id="sword-price">${swordPrice}</span> gold</button>
-                <p id="sword-message"></p>
-            </div>            
+	<button onclick="buy()">Buy</button>
+	<br>
+	<div>
+		<div id="boxes">
+
+			<p>Level: <span id="level">1</span></p>
+			<p>Gold: <span id="gold">0</span></p>
+			<p>Health: <span id="health">10</span></p>
+		
+		</div>
+
+		<div id="boxes">
+
+			<p>Items:</p>
+			<p>ABC</p>
+			<p>DEF</p>
+		
+		</div>
+		<div id="boxes">
+
+			<p>Achievements:</p>
+			<p>UNLOCKED!</p>
+
 		</div>
 	</div>
+
 </body>
 </html>
 

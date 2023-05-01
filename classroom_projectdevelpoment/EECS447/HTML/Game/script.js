@@ -23,18 +23,6 @@ function fight()
     updateStats();
 }
 
-function equip(item) {
-    equippedItem = item;
-    updateStats();
-}
-
-function discard(item) {
-    if (equippedItem === item) {
-        equippedItem = null;
-    }
-    updateStats();
-}
-
 let swordPrice = 10;
 
 function buySword() {

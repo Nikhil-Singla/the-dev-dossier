@@ -25,16 +25,20 @@
 		  </label>
 	  	  
 		  <div class="clearfix">
-			<button type="button" class="cancelbtn" id="CANCEL">Cancel</button>
-			<button type="submit" class="signupbtn">Sign Up</button>
+			<button type="button" class="backbtn" id="BACK">Back To Login Page</button>
+			<button type="submit" class="signupbtn" id="SIGN">Sign Up</button>
 		  </div>
 		</div>
 	  </form>
 </body>
 <script>
-    document.getElementById("CANCEL").onclick = function () 
+    document.getElementById("BACK").onclick = function () 
     {
         location.href = "../main.html";
+    };
+	document.getElementById("SIGN").onclick = function () 
+    {
+        location.href = "error.html";
     };
 </script>
 </html>
