@@ -33,7 +33,7 @@ function fight()
 
 function buy() 
 {
-    if(damge === 100)
+    if(damage == 100)
     {
         document.getElementById("item-message").innerText = "Damage Capped Out! All Items Bought";
     }
