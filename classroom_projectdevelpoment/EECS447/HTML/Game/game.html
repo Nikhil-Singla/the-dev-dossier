@@ -14,9 +14,10 @@
 	<h2>Click the monster to fight!</h2>
 
 	<button onclick="fight()">Fight</button>
-	<button onclick="buy()">Buy</button>
+	<button onclick="buy()"><div id="buytext">Buy: 10</div></button>
 	<br>
 	<div>
+	
 		<div id="boxes">
 
 			<p>Level: <span id="level">1</span></p>
@@ -25,11 +26,13 @@
 		
 		</div>
 
-		<div id="boxes">
+		<div id="itemboxes">
 
 			<p>Items:</p>
 			<p>ABC</p>
 			<p>DEF</p>
+
+			<div id ="item-message"> </div>
 		
 		</div>
 		<div id="boxes">
@@ -38,8 +41,10 @@
 			<p>UNLOCKED!</p>
 
 		</div>
+	
 	</div>
-
+	<br>
+	<div id="dmg">Current Damage: 1</div>
 </body>
 </html>
 

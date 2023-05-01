@@ -18,7 +18,7 @@ button {
 button:hover {
     background-color: #3e8e41;
 }
-#boxes {
+#boxes, #itemboxes {
     display: inline-block;
     text-align: left;
     padding: 10px;
@@ -27,15 +27,4 @@ button:hover {
     width:150px; 
     max-width:150px;  
     vertical-align: top;
-
-}
-.item {
-    display: inline-block;
-    margin: 10px;
-    padding: 10px;
-    background-color: #f2f2f2;
-    border-radius: 5px;
-}
-.item button {
-    margin-left: 10px;
 }

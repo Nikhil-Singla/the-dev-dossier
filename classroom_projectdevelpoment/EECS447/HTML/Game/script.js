@@ -3,76 +3,81 @@ let level = 1;
 let gold = 0;
 let Starthealth = 10;
 let health = 10;
-let equippedItem = null;
+let equippedItem = 0;
+let itemPrice = 10;
+let damage = 1;
 
 // Define functions
-function fight() 
+function clamp(num, min, max) 
 {
-    let damage = 1;
-    if (equippedItem === "sword") {
-        damage++;
-    }
+    return num <= min 
+        ? min 
+        : num >= max 
+            ? max 
+            : num
+  }
+
+
+function fight() 
+{    
     health -= damage;
     if (health <= 0) {
-        level++;
         gold += level;
-        Starthealth *= 1.2;
-        Starthealth = Math.round(Starthealth);
+        level++;
+        Starthealth = Math.round(Starthealth*1.2);
         health = Starthealth;
     }
+
     updateStats();
 }
 
-let swordPrice = 10;
-
-function buySword() {
-    if (gold >= swordPrice) {
-        gold -= swordPrice;
-        equippedItem = "sword";
-        swordPrice *= 2;
+function buy() 
+{
+    if (gold >= itemPrice) 
+    {
+        gold -= itemPrice;
+        equippedItem += 1;
+        itemPrice = Math.round(itemPrice*1.5);
+        damage = clamp(damage*2, 1, 100);
         updateStats();
-        document.getElementById("buy-sword").disabled = true;
-        document.getElementById("sword-price").innerText = swordPrice;
-        document.getElementById("sword-message").innerText = "You bought the sword!";
-        document.getElementById("sword").classList.add("equipped");
-    } else {
-        document.getElementById("sword-message").innerText = "Not enough gold!";
+    } 
+    else 
+    {
+        document.getElementById("item-message").innerText = "Not enough gold!";
     }
 }
 
-function updateStats() {
+function updateStats() 
+{
     document.getElementById("level").innerText = level;
     document.getElementById("gold").innerText = gold;
     document.getElementById("health").innerText = health;
-    if (equippedItem === "sword") {
-        document.getElementById("sword").classList.add("equipped");
-    } else {
-        document.getElementById("sword").classList.remove("equipped");
-    }
-    if (equippedItem === "sword") {
-        document.getElementById("sword").classList.add("equipped");
-        document.getElementById("buy-sword").disabled = true;
-        document.getElementById("sword-message").innerText = "";
-        document.getElementById("sword-price").innerText = "N/A";
-    } else {
-        document.getElementById("sword").classList.remove("equipped");
-        document.getElementById("buy-sword").disabled = false;
-        document.getElementById("sword-message").innerText = "";
-        document.getElementById("sword-price").innerText = swordPrice;
-    }
+    document.getElementById("buytext").innerText = "Buy: " + itemPrice;
+    document.getElementById("dmg").innerText = "Current Damage: " + damage;
 }
 
   
-  function updateGold() {
+function idleGold() 
+{
     gold += level;
-  }
-  
-  // Main Game Loop every 0.5 seconds
-  setInterval(function() {
+}
+
+function clearText()
+{
+    document.getElementById("item-message").innerText = "";
+}
+
+// call idleGold every 10 seconds
+setInterval(function() 
+{
+    idleGold();
+    clearText();
+}, 5000);  
+
+// Main Game Loop every 0.5 seconds
+setInterval(function() 
+{
     updateStats();
-  }, 500);
+}, 500);
   
-  // call updateGold every 10 seconds
-  setInterval(function() {
-    updateGold();
-  }, 10000);
+
