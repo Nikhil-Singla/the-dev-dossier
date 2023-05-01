@@ -33,7 +33,11 @@ function fight()
 
 function buy() 
 {
-    if (gold >= itemPrice) 
+    if(damge === 100)
+    {
+        document.getElementById("item-message").innerText = "Damage Capped Out! All Items Bought";
+    }
+    else if (gold >= itemPrice) 
     {
         gold -= itemPrice;
         equippedItem += 1;
