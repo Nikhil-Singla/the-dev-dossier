@@ -1,0 +1,77 @@
+    CREATE TABLE players 
+    (
+        id SERIAL PRIMARY KEY,
+        username VARCHAR(50) NOT NULL UNIQUE,
+        password VARCHAR(255) NOT NULL,
+    );
+INSERT INTO players (username, password) 
+VALUES ('player1', 'password1');
+
+
+    CREATE TABLE listofitems
+    (
+        id SERIAL PRIMARY KEY,
+        name TEXT,
+    );
+INSERT INTO listofitems (name) 
+VALUES ('sword');
+
+
+    CREATE TABLE player_inventory
+    (
+        id SERIAL PRIMARY KEY,
+        player_id INTEGER NOT NULL REFERENCES players(id),
+        item_id INTEGER NOT NULL REFERENCES listofitems(id),
+        quantity INTEGER NOT NULL
+    );
+INSERT INTO player_inventory (player_id, item_id, quantity) 
+VALUES (1, 1, 1);
+// player_id of 1, an item_id of 1, and a quantity of 1.
+
+
+    CREATE TABLE achievements 
+    (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(50) NOT NULL UNIQUE
+    );
+INSERT INTO achievements (name) VALUES ('Kill 1 Enemy');
+INSERT INTO achievements (name) VALUES ('Get 100 gold');
+
+
+    CREATE TABLE player_achievements 
+    (
+        player_id INT NOT NULL,
+        achievement_id INT NOT NULL,
+        FOREIGN KEY (player_id) REFERENCES players (id),
+        FOREIGN KEY (achievement_id) REFERENCES achievements (id),
+        PRIMARY KEY (player_id, achievement_id)
+    );
+INSERT INTO player_achievements (player_id, achievement_id) VALUES (1, 1);
+INSERT INTO player_achievements (player_id, achievement_id) VALUES (1, 2);
+
+
+    CREATE TABLE users 
+    (
+        id SERIAL PRIMARY KEY,
+        username VARCHAR(50) NOT NULL UNIQUE,
+        password VARCHAR(255) NOT NULL
+    );
+INSERT INTO users (username, password) 
+VALUES ('johndoe', 'password123');
+
+
+
+JOIN STATEMENTS:
+
+1) 
+    SELECT listofitems.name, player_inventory.quantity
+    FROM player_inventory
+    INNER JOIN listofitems ON player_inventory.item_id = listofitems.id
+    WHERE player_inventory.player_id = <player_id>;
+
+2)
+    SELECT a.name AS achievement_name
+    FROM players p
+    INNER JOIN player_achievements pa ON p.id = pa.player_id
+    INNER JOIN achievements a ON pa.achievement_id = a.id
+    WHERE p.id = <player_id>;
