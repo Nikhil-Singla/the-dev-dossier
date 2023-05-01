@@ -65,8 +65,9 @@
 		// Define variables
 		let level = 1;
 		let gold = 0;
+		let Starthealth = 10;
 		let health = 10;
-		let equippedItem = null;
+        let equippedItem = null;
         
         // Define functions
         function fight() 
@@ -79,7 +80,8 @@
             if (health <= 0) {
                 level++;
                 gold += level;
-                health = 10;
+                Starthealth += Starthealth;
+                health = Starthealth;
             }
             updateStats();
         }
