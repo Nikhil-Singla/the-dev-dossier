@@ -78,6 +78,12 @@ setInterval(function()
     clearText();
 }, 5000);  
 
+// Save Progress every 60 seconds
+//setInterval(function() 
+//{
+//    write();
+//}, 60000);  
+
 // Main Game Loop every 0.5 seconds
 setInterval(function() 
 {

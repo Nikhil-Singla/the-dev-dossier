@@ -1,11 +1,16 @@
-    CREATE TABLE players 
+    CREATE TABLE playersInfo 
     (
         id SERIAL PRIMARY KEY,
         username VARCHAR(50) NOT NULL UNIQUE,
-        password VARCHAR(255) NOT NULL
+        levelStart smallint,
+        goldStart int,
+        healthStart int,
+        buytextStart int,
+        dmgStart tinyint,
+        FOREIGN KEY (username) REFERENCES users (username)
     );
-INSERT INTO players (username, password) 
-VALUES ('player1', 'password1');
+INSERT INTO playersInfo (id, username, levelStart, goldStart, healthStart, buytextStart, dmgStart) 
+VALUES ('0', 'default', 1, 0, 10, 10, 1);
 
 
     CREATE TABLE listofitems
@@ -57,8 +62,8 @@ INSERT INTO player_achievements (player_id, achievement_id) VALUES (1, 2);
         username VARCHAR(50) NOT NULL UNIQUE,
         password VARCHAR(255) NOT NULL
     );
-INSERT INTO users (username, password) 
-VALUES ('johndoe', 'password123');
+INSERT INTO users (id, username, password) 
+VALUES (0, 'default', '3b01edb4c5c7b51a0a5e5c5c82e4cecca9bf691c7763e8a91c3a10cf9888e3cb');
 
 
 

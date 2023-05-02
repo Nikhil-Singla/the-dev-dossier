@@ -1,17 +1,12 @@
 <?php
 
 session_start();
-
-	if (isset($_SESSION["user_id"])) 
+	if (isset($_SESSION['user_id'])) 
 	{
-		
-		$mysqli = require __DIR__ . "../PHP/Connect.php";
-		
-		$sql = "SELECT * FROM users
-				WHERE id = {$_SESSION["user_id"]}";
-				
-		$result = $mysqli->query($sql);
-		
+		$mysqli = require __DIR__ . "/../PHP/Connect.php";
+		$id = $_SESSION['user_id'];
+		$statement = "SELECT * FROM users WHERE id = '$id'";	
+		$result = $mysqli->query($statement);
 		$user = $result->fetch_assoc();
 	}
 
@@ -25,20 +20,23 @@ session_start();
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="script.js"></script>
 	<title>Monster Adventure</title>
+	<meta name="levelStart" content="<?= htmlspecialchars($name) ?>">
+    <meta name="goldStart" content="<?= htmlspecialchars($name) ?>">
+    <meta name="healthStart" content="<?= htmlspecialchars($name) ?>">
+	<meta name="buytextStart" content="<?= htmlspecialchars($name) ?>">
+	<meta name="dmgStart" content="<?= htmlspecialchars($name) ?>">
 	
 </head>
 
 <body>
 
-	<h1>Monster Adventure |  	
 	<?php if (isset($user)): ?>    
-        Player : <?= htmlspecialchars($user["username"]) ?>
+        <h1>Monster Adventure | Player : <?= htmlspecialchars($user["username"]) ?></h1>
         <p><a href="../PHP/Logout.php">Disconnect</a></p>
     <?php else: ?>
         <p><a href="../main.php">Log in</a> or <a href="../SignUp/signupPage.html">Sign Up</a> to connect progress</p>
     <?php endif; ?>
 
-	</h1>
 
 	<h2>Click the monster to fight!</h2>
 

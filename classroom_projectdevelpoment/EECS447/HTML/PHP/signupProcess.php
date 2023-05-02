@@ -1,5 +1,4 @@
 <?php
-print_r($_POST);
 
 if (empty($_POST["usr"])) {
     die("Name is required");
