@@ -1,3 +1,13 @@
+    CREATE TABLE users 
+    (
+        id SERIAL PRIMARY KEY,
+        username VARCHAR(50) NOT NULL UNIQUE,
+        password VARCHAR(255) NOT NULL
+    );
+INSERT INTO users (username, password) 
+VALUES ('testuser', 'fakepassword');    
+
+
     CREATE TABLE playersInfo 
     (
         id SERIAL PRIMARY KEY,
@@ -9,8 +19,8 @@
         dmgStart tinyint,
         FOREIGN KEY (username) REFERENCES users (username)
     );
-INSERT INTO playersInfo (id, username, levelStart, goldStart, healthStart, buytextStart, dmgStart) 
-VALUES ('0', 'default', 1, 0, 10, 10, 1);
+INSERT INTO playersInfo (username, levelStart, goldStart, healthStart, buytextStart, dmgStart) 
+VALUES ('testuser', 5, 23, 19, 15, 4);
 
 
     CREATE TABLE listofitems
@@ -20,19 +30,13 @@ VALUES ('0', 'default', 1, 0, 10, 10, 1);
         price INT NOT NULL
     );
 INSERT INTO listofitems (name, price)
-VALUES ('sword', 50);
-
-
-    CREATE TABLE player_inventory
-    (
-        id SERIAL PRIMARY KEY,
-        player_id INTEGER NOT NULL REFERENCES players(id),
-        item_id INTEGER NOT NULL REFERENCES listofitems(id),
-        quantity INTEGER NOT NULL
-    );
-INSERT INTO player_inventory (player_id, item_id, quantity) 
-VALUES (1, 1, 1);
-// player_id of 1, an item_id of 1, and a quantity of 1.
+VALUES ('sword', 10);
+INSERT INTO listofitems (name, price)
+VALUES ('shield', 12);
+INSERT INTO listofitems (name, price)
+VALUES ('gauntlets', 15);
+INSERT INTO listofitems (name, price)
+VALUES ('chestplate', 20);
 
 
     CREATE TABLE achievements 
@@ -44,26 +48,17 @@ INSERT INTO achievements (name) VALUES ('Kill 1 Enemy');
 INSERT INTO achievements (name) VALUES ('Get 100 gold');
 
 
-    CREATE TABLE player_achievements 
-    (
-        player_id INT NOT NULL,
-        achievement_id INT NOT NULL,
-        FOREIGN KEY (player_id) REFERENCES players (id),
-        FOREIGN KEY (achievement_id) REFERENCES achievements (id),
-        PRIMARY KEY (player_id, achievement_id)
-    );
+CREATE TABLE player_achievements 
+(
+    player_id BIGINT(20) UNSIGNED NOT NULL,
+    achievement_id BIGINT(20) UNSIGNED NOT NULL,
+    PRIMARY KEY (player_id, achievement_id),
+    FOREIGN KEY (player_id) REFERENCES users (id),
+    FOREIGN KEY (achievement_id) REFERENCES achievements (id)
+);
+
 INSERT INTO player_achievements (player_id, achievement_id) VALUES (1, 1);
 INSERT INTO player_achievements (player_id, achievement_id) VALUES (1, 2);
-
-
-    CREATE TABLE users 
-    (
-        id SERIAL PRIMARY KEY,
-        username VARCHAR(50) NOT NULL UNIQUE,
-        password VARCHAR(255) NOT NULL
-    );
-INSERT INTO users (id, username, password) 
-VALUES (0, 'default', '3b01edb4c5c7b51a0a5e5c5c82e4cecca9bf691c7763e8a91c3a10cf9888e3cb');
 
 
 

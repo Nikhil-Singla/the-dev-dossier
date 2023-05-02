@@ -13,7 +13,14 @@ session_start();
 
 		$statement = "SELECT * FROM playersinfo WHERE username = '$user_name'";	
 		$inforesult = $mysqli->query($statement);
-		$stats = $inforesult->fetch_assoc();
+		if($inforesult->num_rows == 0)
+		{
+			$stats = array("levelStart"=>"1", "goldStart"=>"0", "healthStart"=>"10", "buytextStart"=>"10", "dmgStart"=>"1",);
+		}
+		else
+		{
+			$stats = $inforesult->fetch_assoc();
+		}
 	}
 	else
 	{
