@@ -5,9 +5,19 @@ session_start();
 	{
 		$mysqli = require __DIR__ . "/../PHP/Connect.php";
 		$id = $_SESSION['user_id'];
+		$user_name = $_SESSION["user_name"];
+
 		$statement = "SELECT * FROM users WHERE id = '$id'";	
 		$result = $mysqli->query($statement);
 		$user = $result->fetch_assoc();
+
+		$statement = "SELECT * FROM playersinfo WHERE username = '$user_name'";	
+		$inforesult = $mysqli->query($statement);
+		$stats = $inforesult->fetch_assoc();
+	}
+	else
+	{
+		$stats = array("levelStart"=>"1", "goldStart"=>"0", "healthStart"=>"10", "buytextStart"=>"10", "dmgStart"=>"1",);
 	}
 
 ?>
@@ -18,14 +28,14 @@ session_start();
 <head>
 
     <link rel="stylesheet" type="text/css" href="style.css">
-    <script src="script.js"></script>
 	<title>Monster Adventure</title>
-	<meta name="levelStart" content="<?= htmlspecialchars($name) ?>">
-    <meta name="goldStart" content="<?= htmlspecialchars($name) ?>">
-    <meta name="healthStart" content="<?= htmlspecialchars($name) ?>">
-	<meta name="buytextStart" content="<?= htmlspecialchars($name) ?>">
-	<meta name="dmgStart" content="<?= htmlspecialchars($name) ?>">
-	
+	<meta name="levelStart" content="<?= htmlspecialchars($stats["levelStart"]) ?>">
+    <meta name="goldStart" content="<?= htmlspecialchars($stats["goldStart"]) ?>">
+    <meta name="healthStart" content="<?= htmlspecialchars($stats["healthStart"]) ?>">
+	<meta name="buytextStart" content="<?= htmlspecialchars($stats["buytextStart"]) ?>">
+	<meta name="dmgStart" content="<?= htmlspecialchars($stats["dmgStart"]) ?>">
+	<script src="script.js"></script>
+
 </head>
 
 <body>

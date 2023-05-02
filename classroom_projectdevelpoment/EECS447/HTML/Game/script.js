@@ -1,11 +1,13 @@
 // Define variables
-let level = 1;
-let gold = 0;
-let Starthealth = 10;
-let health = 10;
+let level = Number(document.querySelector('meta[name="levelStart"]').content);
+let gold = Number(document.querySelector('meta[name="goldStart"]').content);
+let Starthealth = Number(document.querySelector('meta[name="healthStart"]').content);
+let health = Starthealth;
 let equippedItem = 0;
-let itemPrice = 10;
-let damage = 1;
+let itemPrice = Number(document.querySelector('meta[name="buytextStart"]').content); 
+let damage = Number(document.querySelector('meta[name="dmgStart"]').content);
+
+
 
 // Define functions
 function clamp(num, min, max) 
