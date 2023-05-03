@@ -75,8 +75,8 @@ session_start();
 
 			<p>Items:</p>
 			<div id="itemnames">
-				<p>ABC</p>
-				<p>DEF</p>
+				<p>Sword</p>
+				<p>Shield</p>
 			</div>
 			
 			<div id ="item-message"> </div>
@@ -85,7 +85,8 @@ session_start();
 		<div id="boxes">
 
 			<p>Achievements:</p>
-			<p>UNLOCKED!</p>
+			<p>Kill 1 Enemy</p>
+			<p>Get 100 Gold</p>
 
 		</div>
 	

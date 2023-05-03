@@ -54,6 +54,18 @@ function buy()
     }
 }
 
+function achievements()
+{
+    if(level >1)
+    {
+        document.cookie = "achievement1=1;SameSite=None;Secure;path=/"
+    }
+    if(gold >= 100)
+    {
+        document.cookie = "achievement2=2;SameSite=None;Secure;path=/";
+    }
+}
+
 function updateStats() 
 {
     document.getElementById("level").innerText = level;
@@ -61,13 +73,11 @@ function updateStats()
     document.getElementById("health").innerText = health;
     document.getElementById("buytext").innerText = "Buy: " + itemPrice;
     document.getElementById("dmg").innerText = "Current Damage: " + damage;
-
 }
 
 // Set a Cookie
-function setCookie(cValue) 
+function setCookie() 
 {
-        document.cookie = "username=" + cValue + ";SameSite=None;Secure;path=/";  
         document.cookie= "level=" + level + ";SameSite=None;Secure;path=/";  
         document.cookie= "gold=" + gold + ";SameSite=None;Secure;path=/";  
         document.cookie= "health=" + health + ";SameSite=None;Secure;path=/";  
@@ -75,11 +85,6 @@ function setCookie(cValue)
         document.cookie= "dmg=" + damage + ";SameSite=None;Secure;path=/";  
 }
   
-setInterval(function() 
-{
-    setCookie(username);
-}, 1000);  
-
 function idleGold() 
 {
     gold += level;
@@ -90,11 +95,12 @@ function clearText()
     document.getElementById("item-message").innerText = "";
 }
 
-// call idleGold every 10 seconds
+// call idleGold every 5 seconds
 setInterval(function() 
 {
     idleGold();
     clearText();
+    setCookie();
 }, 5000);  
 
 // Save Progress every 60 seconds
@@ -107,6 +113,7 @@ setInterval(function()
 setInterval(function() 
 {
     updateStats();
+    achievements()
 }, 500);
   
 
