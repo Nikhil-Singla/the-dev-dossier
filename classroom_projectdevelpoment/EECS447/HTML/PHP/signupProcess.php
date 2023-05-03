@@ -30,12 +30,26 @@ $stmt->bind_param("ss",
                   $_POST["usr"],
                   $_POST["psw"]);
 
-                  if ($stmt->execute()) {
+                if ($stmt->execute()) 
+                {
+                    $startState = "INSERT INTO playersInfo (username, levelStart, goldStart, healthStart, buytextStart, dmgStart) VALUES (?, ?, ?, ?, ?, ?)";
+                    $stmtState = $mysqli->stmt_init();
 
-                    header("Location: ../main.php");
-                    exit;
+                    if ( ! $stmtState->prepare($startState)) 
+                    {
+                        die("SQL error: " . $mysqli->error);
+                    }
+                    $first = 1;
+                    $ten = 10;
+                    $zero = 0;
+
+                    $stmtState->bind_param("siiiii", $_POST["usr"], $first, $zero, $ten, $ten, $first);
+                    $stmtState->execute();
                     
-                } else {
+                    header("Location: ../main.php");
+                    exit;  
+                } 
+                else {
                     
                     if ($mysqli->errno === 1062) {
                         die("Name already taken");

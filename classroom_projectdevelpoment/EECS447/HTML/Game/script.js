@@ -6,6 +6,7 @@ let health = Starthealth;
 let equippedItem = 0;
 let itemPrice = Number(document.querySelector('meta[name="buytextStart"]').content); 
 let damage = Number(document.querySelector('meta[name="dmgStart"]').content);
+let username = document.querySelector('meta[name="userNAME"]').content;
 
 
 
@@ -60,9 +61,25 @@ function updateStats()
     document.getElementById("health").innerText = health;
     document.getElementById("buytext").innerText = "Buy: " + itemPrice;
     document.getElementById("dmg").innerText = "Current Damage: " + damage;
+
 }
 
+// Set a Cookie
+function setCookie(cValue) 
+{
+        document.cookie = "username=" + cValue + ";SameSite=None;Secure;path=/";  
+        document.cookie= "level=" + level + ";SameSite=None;Secure;path=/";  
+        document.cookie= "gold=" + gold + ";SameSite=None;Secure;path=/";  
+        document.cookie= "health=" + health + ";SameSite=None;Secure;path=/";  
+        document.cookie= "buytext=" + itemPrice + ";SameSite=None;Secure;path=/";  
+        document.cookie= "dmg=" + damage + ";SameSite=None;Secure;path=/";  
+}
   
+setInterval(function() 
+{
+    setCookie(username);
+}, 1000);  
+
 function idleGold() 
 {
     gold += level;

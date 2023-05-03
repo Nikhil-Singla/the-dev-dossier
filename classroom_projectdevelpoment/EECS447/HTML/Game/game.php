@@ -36,6 +36,7 @@ session_start();
 
     <link rel="stylesheet" type="text/css" href="style.css">
 	<title>Monster Adventure</title>
+	<meta name="userNAME" content="<?= htmlspecialchars($user["username"]) ?>">
 	<meta name="levelStart" content="<?= htmlspecialchars($stats["levelStart"]) ?>">
     <meta name="goldStart" content="<?= htmlspecialchars($stats["goldStart"]) ?>">
     <meta name="healthStart" content="<?= htmlspecialchars($stats["healthStart"]) ?>">
