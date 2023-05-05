@@ -25,15 +25,15 @@ if (isset($_SESSION['user_id']))
 	$name = $_SESSION['user_id'];
 
 
-	$achieve_one = $_COOKIE['achievement1'];
-	$achieve_two = $_COOKIE['achievement2'];
-	$achievements = array();
-	$achievements = array_push($achieve_one, $achieve_two);
+	//$achieve_one = $_COOKIE['achievement1'];
+	//$achieve_two = $_COOKIE['achievement2'];
+	//$achievements = array();
+	//$achievements = array_push($achieve_one, $achieve_two);
 
-	foreach ($achievements as &$code) 
-	{
-		$code = intval($code);
-	}
+	//foreach ($achievements as &$code) 
+	//{
+		//$code = intval($code);
+	//}
 
 	
 
