@@ -7,8 +7,8 @@ let equippedItem = 0;
 let itemPrice = Number(document.querySelector('meta[name="buytextStart"]').content); 
 let damage = Number(document.querySelector('meta[name="dmgStart"]').content);
 let username = document.querySelector('meta[name="userNAME"]').content;
-
-
+//let achievements = Number(document.querySelector('meta[name="count"]').content);
+let itemsCount = passedArray.length;
 
 // Define functions
 function clamp(num, min, max) 
@@ -27,10 +27,10 @@ function fight()
     if (health <= 0) {
         gold += level;
         level++;
-        Starthealth = Math.round(Starthealth*1.2);
+        Starthealth = Math.round(Starthealth) + (damage*level);
         health = Starthealth;
+        console.log(health);
     }
-
     updateStats();
 }
 
@@ -68,11 +68,30 @@ function achievements()
 
 function updateStats() 
 {
+
     document.getElementById("level").innerText = level;
     document.getElementById("gold").innerText = gold;
     document.getElementById("health").innerText = health;
     document.getElementById("buytext").innerText = "Buy: " + itemPrice;
     document.getElementById("dmg").innerText = "Current Damage: " + damage;
+    document.getElementById("items").innerText = "";
+    // 10, 15, 23, 35, 53, 80, 120, 180;
+    var print = 0;
+    if(itemPrice >= 179){
+        print++;
+    } if(itemPrice >= 119){
+        print++;
+    } if(itemPrice >= 79){
+        print++;
+    } if(itemPrice >= 52){
+        print++;
+    } if(itemPrice >= 34){
+        print++;
+    } if(itemPrice >= 22){
+        print++;
+    } if(itemPrice >= 14){
+        print++;
+    }
 }
 
 // Set a Cookie

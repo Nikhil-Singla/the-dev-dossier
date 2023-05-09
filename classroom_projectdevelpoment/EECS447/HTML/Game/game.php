@@ -13,6 +13,29 @@ session_start();
 
 		$statement = "SELECT * FROM playersinfo WHERE username = '$user_name'";	
 		$inforesult = $mysqli->query($statement);
+
+		$statement = "SELECT player_achievements.player_id, player_achievements.achievement_id, achievements.name
+		FROM player_achievements
+		JOIN achievements ON player_achievements.achievement_id = achievements.id
+		WHERE player_achievements.player_id = '?'";
+
+		$statement = "SELECT name FROM listofitems";
+		$stmt = $mysqli->prepare($statement);
+		$stmt->execute();
+		$listofitems = [];
+		foreach ($stmt->get_result() as $row)
+		{
+			$listofitems[] = $row['name'];
+		}
+		// print_r($listofitems);
+		// Array ( [0] => sword [1] => shield [2] => gauntlets [3] => chestplate [4] => leggings [5] => boots [6] => greatsword ) 
+
+
+		$statement = "SELECT player_achievements.player_id, player_achievements.achievement_id, achievements.name
+		FROM player_achievements
+		JOIN achievements ON player_achievements.achievement_id = achievements.id
+		WHERE player_achievements.player_id = '?'";
+
 		if($inforesult->num_rows == 0)
 		{
 			$stats = array("levelStart"=>"1", "goldStart"=>"0", "healthStart"=>"10", "buytextStart"=>"10", "dmgStart"=>"1",);
@@ -42,6 +65,16 @@ session_start();
     <meta name="healthStart" content="<?= htmlspecialchars($stats["healthStart"]) ?>">
 	<meta name="buytextStart" content="<?= htmlspecialchars($stats["buytextStart"]) ?>">
 	<meta name="dmgStart" content="<?= htmlspecialchars($stats["dmgStart"]) ?>">
+
+	<script>
+		var passedArray = 
+		<?php 
+			echo json_encode($listofitems); 
+		?> ;
+	</script>
+
+	<meta name="count" content="<?= htmlspecialchars($user["username"]) ?>">
+
 	<script src="script.js"></script>
 
 </head>
@@ -59,7 +92,7 @@ session_start();
 	<h2>Click the monster to fight!</h2>
 
 	<button onclick="fight()">Fight</button>
-	<button onclick="buy()"><div id="buytext">Buy: 10</div></button>
+	<button onclick="buy()"><div id="buytext">Buy: <?= htmlspecialchars($stats["buytextStart"]) ?></div></button>
 	<br>
 	<div>
 	
@@ -75,8 +108,7 @@ session_start();
 
 			<p>Items:</p>
 			<div id="itemnames">
-				<p>Sword</p>
-				<p>Shield</p>
+				<p> <span id="items"></span> </p>
 			</div>
 			
 			<div id ="item-message"> </div>
