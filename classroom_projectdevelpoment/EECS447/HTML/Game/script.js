@@ -92,6 +92,11 @@ function updateStats()
     } if(itemPrice >= 14){
         print++;
     }
+
+    for(var i = 0; i < print; i++)
+    {
+        document.getElementById("items").innerText += passedArray[i] + "\n";
+    }
 }
 
 // Set a Cookie
