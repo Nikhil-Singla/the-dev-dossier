@@ -58,7 +58,7 @@ $stmt->bind_param("ss",
                         die("SQL error: " . $mysqli->error);
                     }
                     $stmtState->bind_param("s", $_POST["usr"]);
-
+                    $stmtState->execute();
 
                     header("Location: ../main.php");
                     exit;  
