@@ -46,6 +46,20 @@ $stmt->bind_param("ss",
                     $stmtState->bind_param("siiiii", $_POST["usr"], $first, $zero, $ten, $ten, $first);
                     $stmtState->execute();
                     
+                    $secondStart = "INSERT INTO player_achievements(player_id, achievement_id) 
+                    SELECT users.id, 1
+                    FROM users 
+                    WHERE users.username = ?";
+
+                    $stmtState = $mysqli->stmt_init();
+
+                    if ( ! $stmtState->prepare($secondStart)) 
+                    {
+                        die("SQL error: " . $mysqli->error);
+                    }
+                    $stmtState->bind_param("s", $_POST["usr"]);
+
+
                     header("Location: ../main.php");
                     exit;  
                 } 

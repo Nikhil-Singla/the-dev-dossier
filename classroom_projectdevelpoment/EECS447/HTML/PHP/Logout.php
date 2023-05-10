@@ -23,9 +23,7 @@ if (isset($_SESSION['user_id']))
 	$buytext = $_COOKIE['buytext'];
 	$dmg = $_COOKIE['dmg'];
 	$name = $_SESSION['user_id'];
-
-
-	//$achieve_one = $_COOKIE['achievement1'];
+	$achieve_one = $_COOKIE['achievement_one'];
 	//$achieve_two = $_COOKIE['achievement2'];
 	//$achievements = array();
 	//$achievements = array_push($achieve_one, $achieve_two);
@@ -38,6 +36,20 @@ if (isset($_SESSION['user_id']))
 	
 
 	$stmt->bind_param("iiiiis", $level, $gold, $health, $buytext, $dmg, $name);
+	$stmt->execute();
+
+	$secondStart = "UPDATE player_achievements 
+	INNER JOIN users ON users.id = player_achievements.player_id
+	SET player_achievements.achievement_id = ?
+	WHERE users.id = ?";
+
+	$stmt = $mysqli->stmt_init();
+
+	if ( ! $stmt->prepare($secondStart)) 
+	{
+		die("SQL error: " . $mysqli->error);
+	}
+	$stmt->bind_param("is", $achieve_one, $name);
 	$stmt->execute();
 }
 

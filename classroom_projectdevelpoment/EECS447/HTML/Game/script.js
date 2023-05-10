@@ -30,6 +30,14 @@ function fight()
         {
             goldAchi = 1;
         }
+        if(goldAchi == 1)
+        {
+            document.cookie = "achievement_one=1;SameSite=None;Secure;path=/";
+        }
+        else
+        {
+            document.cookie = "achievement_one=0;SameSite=None;Secure;path=/";
+        }
         level++;
         Starthealth = Math.round(Starthealth) + (damage*level);
         health = Starthealth;
@@ -55,18 +63,6 @@ function buy()
     else 
     {
         document.getElementById("item-message").innerText = "Not enough gold!";
-    }
-}
-
-function achievements()
-{
-    if(level >1)
-    {
-        document.cookie = "achievement1=1;SameSite=None;Secure;path=/"
-    }
-    if(gold >= 100)
-    {
-        document.cookie = "achievement2=2;SameSite=None;Secure;path=/";
     }
 }
 
@@ -151,7 +147,6 @@ setInterval(function()
 setInterval(function() 
 {
     updateStats();
-    achievements()
 }, 500);
   
 
