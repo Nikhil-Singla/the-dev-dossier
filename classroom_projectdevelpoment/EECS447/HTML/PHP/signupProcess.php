@@ -60,7 +60,7 @@ $stmt->bind_param("ss",
                     $stmtState->bind_param("s", $_POST["usr"]);
                     $stmtState->execute();
 
-                    header("Location: ../main.html");
+                    header("Location: ../main.php");
                     exit;  
                 } 
                 else {

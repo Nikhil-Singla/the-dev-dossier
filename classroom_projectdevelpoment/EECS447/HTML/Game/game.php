@@ -90,7 +90,7 @@ session_start();
         <h1>Monster Adventure | Player : <?= htmlspecialchars($user["username"]) ?></h1>
         <p><a href="../PHP/Logout.php">Disconnect</a></p>
     <?php else: ?>
-        <p><a href="../main.html">Log in</a> or <a href="../SignUp/signupPage.html">Sign Up</a> to connect progress</p>
+        <p><a href="../main.php">Log in</a> or <a href="../SignUp/signupPage.html">Sign Up</a> to connect progress</p>
     <?php endif; ?>
 
 
