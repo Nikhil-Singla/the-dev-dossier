@@ -4,9 +4,6 @@
         username VARCHAR(50) NOT NULL UNIQUE,
         password VARCHAR(255) NOT NULL
     );
-INSERT INTO users (username, password) 
-VALUES ('testuser', 'fakepassword');    
-
 
     CREATE TABLE playersinfo 
     (
@@ -19,11 +16,6 @@ VALUES ('testuser', 'fakepassword');
         dmgStart tinyint,
         FOREIGN KEY (username) REFERENCES users (username)
     );
-INSERT INTO playersInfo (username, levelStart, goldStart, healthStart, buytextStart, dmgStart) 
-VALUES ('testuser', 5, 23, 19, 15, 4);
-UPDATE playersinfo
-SET playersinfo.levelStart = ?, playersinfo.goldStart = ?, playersinfo.healthStart = ?, playersinfo.buytextStart = ?, playersinfo.dmgStart = ?
-WHERE playersinfo.username = ?
 
     CREATE TABLE listofitems
     (
@@ -45,7 +37,6 @@ INSERT INTO listofitems (name, price)
 VALUES ('boots', 70);
 INSERT INTO listofitems (name, price)
 VALUES ('greatsword', 100);
-
 
     CREATE TABLE achievements 
     (
