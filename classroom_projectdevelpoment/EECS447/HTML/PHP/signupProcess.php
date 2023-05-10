@@ -32,7 +32,7 @@ $stmt->bind_param("ss",
 
                 if ($stmt->execute()) 
                 {
-                    $startState = "INSERT INTO playersInfo (username, levelStart, goldStart, healthStart, buytextStart, dmgStart) VALUES (?, ?, ?, ?, ?, ?)";
+                    $startState = "INSERT INTO playersinfo (username, levelStart, goldStart, healthStart, buytextStart, dmgStart) VALUES (?, ?, ?, ?, ?, ?)";
                     $stmtState = $mysqli->stmt_init();
 
                     if ( ! $stmtState->prepare($startState)) 
