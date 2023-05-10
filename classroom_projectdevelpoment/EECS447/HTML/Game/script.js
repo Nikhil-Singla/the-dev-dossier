@@ -26,22 +26,9 @@ function fight()
     health -= damage;
     if (health <= 0) {
         gold += level;
-        if(gold > 100)
-        {
-            goldAchi = 1;
-        }
-        if(goldAchi == 1)
-        {
-            document.cookie = "achievement_one=1;SameSite=None;Secure;path=/";
-        }
-        else
-        {
-            document.cookie = "achievement_one=0;SameSite=None;Secure;path=/";
-        }
         level++;
         Starthealth = Math.round(Starthealth) + (damage*level);
         health = Starthealth;
-        console.log(health);
     }
     updateStats();
 }
@@ -68,7 +55,23 @@ function buy()
 
 function updateStats() 
 {
-
+    if(gold > 100)
+    {
+        goldAchi = 1;
+    }
+    if(goldAchi == 1)
+    {
+        document.cookie = "achievement_one=3;SameSite=None;Secure;path=/";
+    }
+    else if(level > 1)
+    {
+        document.cookie = "achievement_one=2;SameSite=None;Secure;path=/";
+    }
+    else
+    {
+        document.cookie = "achievement_one=1;SameSite=None;Secure;path=/";
+    }
+    
     document.getElementById("level").innerText = level;
     document.getElementById("gold").innerText = gold;
     document.getElementById("health").innerText = health;
@@ -95,6 +98,8 @@ function updateStats()
         print++;
     } if(itemPrice >= 14){
         print++;
+    }
+    if(level > 1){
         achi++;
     }
 

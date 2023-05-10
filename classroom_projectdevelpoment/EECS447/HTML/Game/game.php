@@ -25,10 +25,7 @@ session_start();
 		// print_r($listofitems);
 		// Array ( [0] => sword [1] => shield [2] => gauntlets [3] => chestplate [4] => leggings [5] => boots [6] => greatsword ) 
 
-		$statement = "SELECT achievements.name
-		FROM player_achievements
-		JOIN achievements ON player_achievements.achievement_id = achievements.id
-		WHERE player_achievements.player_id = '$id'";
+		$statement = "SELECT achievements.name FROM achievements ORDER BY achievements.id";
 
 		$stmt = $mysqli->prepare($statement);
 		$stmt->execute();
