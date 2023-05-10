@@ -9,7 +9,7 @@ let damage = Number(document.querySelector('meta[name="dmgStart"]').content);
 let username = document.querySelector('meta[name="userNAME"]').content;
 //let achievements = Number(document.querySelector('meta[name="count"]').content);
 let itemsCount = passedArray.length;
-
+let goldAchi = 0;
 // Define functions
 function clamp(num, min, max) 
 {
@@ -26,6 +26,10 @@ function fight()
     health -= damage;
     if (health <= 0) {
         gold += level;
+        if(gold > 100)
+        {
+            goldAchi = 1;
+        }
         level++;
         Starthealth = Math.round(Starthealth) + (damage*level);
         health = Starthealth;
@@ -75,8 +79,12 @@ function updateStats()
     document.getElementById("buytext").innerText = "Buy: " + itemPrice;
     document.getElementById("dmg").innerText = "Current Damage: " + damage;
     document.getElementById("items").innerText = "";
+    document.getElementById("achievements").innerText = "";
+
     // 10, 15, 23, 35, 53, 80, 120, 180;
     var print = 0;
+    var achi = goldAchi + 1;
+
     if(itemPrice >= 179){
         print++;
     } if(itemPrice >= 119){
@@ -91,11 +99,17 @@ function updateStats()
         print++;
     } if(itemPrice >= 14){
         print++;
+        achi++;
     }
 
     for(var i = 0; i < print; i++)
     {
         document.getElementById("items").innerText += passedArray[i] + "\n";
+    }
+
+    for(var i = 0; i < achi; i++)
+    {
+        document.getElementById("achievements").innerText += passedAchievements[i] + "\n";
     }
 }
 

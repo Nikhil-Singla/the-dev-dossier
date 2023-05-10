@@ -14,11 +14,6 @@ session_start();
 		$statement = "SELECT * FROM playersinfo WHERE username = '$user_name'";	
 		$inforesult = $mysqli->query($statement);
 
-		$statement = "SELECT player_achievements.player_id, player_achievements.achievement_id, achievements.name
-		FROM player_achievements
-		JOIN achievements ON player_achievements.achievement_id = achievements.id
-		WHERE player_achievements.player_id = '?'";
-
 		$statement = "SELECT name FROM listofitems";
 		$stmt = $mysqli->prepare($statement);
 		$stmt->execute();
@@ -30,10 +25,18 @@ session_start();
 		// print_r($listofitems);
 		// Array ( [0] => sword [1] => shield [2] => gauntlets [3] => chestplate [4] => leggings [5] => boots [6] => greatsword ) 
 
-		$statement = "SELECT player_achievements.player_id, player_achievements.achievement_id, achievements.name
+		$statement = "SELECT achievements.name
 		FROM player_achievements
 		JOIN achievements ON player_achievements.achievement_id = achievements.id
-		WHERE player_achievements.player_id = '?'";
+		WHERE player_achievements.player_id = '$id'";
+
+		$stmt = $mysqli->prepare($statement);
+		$stmt->execute();
+		$achievements = [];
+		foreach ($stmt->get_result() as $row)
+		{
+			$achievements[] = $row['name'];
+		}
 
 		if($inforesult->num_rows == 0)
 		{
@@ -48,6 +51,7 @@ session_start();
 	{
 		$stats = array("levelStart"=>"1", "goldStart"=>"0", "healthStart"=>"10", "buytextStart"=>"10", "dmgStart"=>"1",);
 		$listofitems = array("sword", "shield", "gauntlets", "chestplate", "leggings", "boots", "greatsword");
+		$achievements = array("Start the game", "Kill 1 enemey", "Get 100 Gold");
 	}
 
 ?>
@@ -70,6 +74,10 @@ session_start();
 		var passedArray = 
 		<?php 
 			echo json_encode($listofitems); 
+		?> ;
+		var passedAchievements = 
+		<?php 
+			echo json_encode($achievements); 
 		?> ;
 	</script>
 
@@ -117,8 +125,7 @@ session_start();
 		<div id="boxes">
 
 			<p>Achievements:</p>
-			<p>Kill 1 Enemy</p>
-			<p>Get 100 Gold</p>
+			<p><span id="achievements"></span></p>
 
 		</div>
 	
