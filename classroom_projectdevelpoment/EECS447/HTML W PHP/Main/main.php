@@ -50,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST")
         <form method="post">
             
             <label for="uname"><b>Username</b></label>
-            <input type="text" placeholder="Enter Username" name="uname" required value="<?= htmlspecialchars($_POST["uname"] ?? "") ?>">
+            <input type="text" placeholder="Enter Username" name="uname" required value="<?= htmlspecialchars(isset($_POST["uname"]) ? $_POST["uname"] : "") ?>">
 
             <label for="psw"><b>Password</b></label>
             <input type="password" placeholder="Enter Password" name="psw" required>
