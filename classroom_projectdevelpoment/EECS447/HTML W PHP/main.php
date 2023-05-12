@@ -1,3 +1,5 @@
+<!-- The below code has been adapted to execute on older php versions (specifically 5.x) --> 
+
 <?php
 
 $is_invalid = false;
