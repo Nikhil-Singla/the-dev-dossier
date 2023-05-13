@@ -117,11 +117,11 @@ function updateStats()
 // Set a Cookie
 function setCookie() 
 {
-        document.cookie= "level=" + level + ";SameSite=None;Secure;path=/";  
-        document.cookie= "gold=" + gold + ";SameSite=None;Secure;path=/";  
-        document.cookie= "health=" + health + ";SameSite=None;Secure;path=/";  
-        document.cookie= "buytext=" + itemPrice + ";SameSite=None;Secure;path=/";  
-        document.cookie= "dmg=" + damage + ";SameSite=None;Secure;path=/";  
+    document.cookie= "level=" + level + ";SameSite=None;Secure;path=/";  
+    document.cookie= "gold=" + gold + ";SameSite=None;Secure;path=/";  
+    document.cookie= "health=" + health + ";SameSite=None;Secure;path=/";  
+    document.cookie= "buytext=" + itemPrice + ";SameSite=None;Secure;path=/";  
+    document.cookie= "dmg=" + damage + ";SameSite=None;Secure;path=/";  
 }
   
 function idleGold() 
