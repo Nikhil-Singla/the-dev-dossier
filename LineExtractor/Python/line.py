@@ -2,6 +2,8 @@ import cv2
 import os
 import numpy as np
 import json
+import random
+import string
 
 # Get the current directory
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -51,7 +53,7 @@ def getWalls(image_path, threshold_area, canny_threshold1, canny_threshold2):
 
     ##cv2.floodFill(dilated, mask=None, seedPoint=(int(0), int(0)), newVal=(255))
 
-    # Display the resulting image
+    # Display the resulting image [UNDO TO SEE MID RESULT]
     cv2.imshow('Original Image', image)
     cv2.imshow('Lines along Walls', dilated)
     cv2.imwrite(output_path, dilated)
@@ -71,7 +73,7 @@ def reduction(pathToOutput):
     # Perform erosion
     eroded_image = cv2.erode(img, kernel, iterations=thickness_reduction_factor)
 
-    # Display the eroded image
+    # Display the eroded image [UNDO TO SEE MID RESULT]
     cv2.imshow("Eroded Image", eroded_image)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
@@ -99,7 +101,6 @@ def detect_line_segments(image_path):
     return dimensions
 
 # Call the function to reduce the image to lines and label them
-
 threshold_area = 90
 canny_threshold1 = 10
 canny_threshold2 = 10
@@ -111,13 +112,25 @@ getWalls(image_path, threshold_area, canny_threshold1, canny_threshold2)
 reduction(output_path)
 
 line_segments = detect_line_segments(output_path)
+
+list_of_xcor = []
+list_of_ycor = []
+
 for segment in line_segments:
     x1, y1, x2, y2, length, angle = segment
     print(f"Start Point: ({x1}, {y1}), End Point: ({x2}, {y2}), Length: {length}, Angle: {angle}")
+    list_of_xcor.append(x1)
+    list_of_ycor.append(y1)
 
-vertexName = "tZz4-vWqWF"
+list_of_xcor = [int(x) for x in list_of_xcor]
+list_of_ycor = [int(y) for y in list_of_ycor]
 
-def generateVertex(xcor, ycor, inputLineIDList, vertexName="tZz4-vWqWF"):
+def acquire_id(id_length=8):
+    characters = string.ascii_letters + string.digits
+    id = ''.join(random.choice(characters) for _ in range(id_length))
+    return id
+
+def generateVertex(xcor, ycor, inputLineIDList, vertexName):
     e = {}
     L = []
     verticeName = vertexName
@@ -138,25 +151,18 @@ def generateVertex(xcor, ycor, inputLineIDList, vertexName="tZz4-vWqWF"):
     return vertex
 
 def generate_COLverticesCOL():
-    vertices = {
-        "tZz4-vWqWF": generateVertex(600, 1800, ["line1"]),
-        "t2z4-vWqWF": generateVertex(700, 1800, ["line3"]),
-        # Add more vertices here
-    }
+    individualElement = {}
+    for xcor, ycor in zip(list_of_xcor, list_of_ycor):
+        vertexName = acquire_id()
+        individualElement[vertexName] = generateVertex(xcor, ycor, "", vertexName)
+        
+    return individualElement
 
-    return vertices
-
-xcor = 600
-ycor = 1800
-input_line_id = ["Xo4EUkJ-u"]
-
-##vertex_json = json.dumps({"vertices": {"tZz4-vWqWF": generateVertex(xcor, ycor, input_line_id)}}, indent=4)
-vertices_json = json.dumps({"vertices": generate_COLverticesCOL()}, indent=4)
-
+vertices_json = json.dumps(generate_COLverticesCOL(), indent=4)
 print(vertices_json)
 
-
-def generate_line(id, vertices, height, thickness=20, textureA="bricks", textureB="bricks"):
+{
+"""def generate_line(id, vertices, height, thickness=20, textureA="bricks", textureB="bricks"):
     line = {
         "id": id,
         "type": "wall",
@@ -188,4 +194,5 @@ textureA = "bricks"
 textureB = "bricks"
 
 line_json = json.dumps({line_id: generate_line(line_id, vertices, height)}, indent=4)
-print(line_json)
+print(line_json)"""
+}
