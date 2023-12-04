@@ -119,8 +119,12 @@ list_of_ycor = []
 for segment in line_segments:
     x1, y1, x2, y2, length, angle = segment
     print(f"Start Point: ({x1}, {y1}), End Point: ({x2}, {y2}), Length: {length}, Angle: {angle}")
-    list_of_xcor.append(x1)
-    list_of_ycor.append(y1)
+    if(angle >= 0):
+        list_of_xcor.append(x1)
+        list_of_ycor.append(y1)
+    else:
+        list_of_xcor.append(x2)
+        list_of_ycor.append(y2)
 
 list_of_xcor = [int(x) for x in list_of_xcor]
 list_of_ycor = [int(y) for y in list_of_ycor]
