@@ -1,0 +1,314 @@
+{
+    "9YcdGrB1": {
+        "id": "9YcdGrB1",
+        "type": "",
+        "prototype": "vertices",
+        "name": "Vertex",
+        "misc": {},
+        "selected": false,
+        "properties": {},
+        "visible": true,
+        "x": 246,
+        "y": 517,
+        "lines": "",
+        "areas": []
+    },
+    "4OL5HNHH": {
+        "id": "4OL5HNHH",
+        "type": "",
+        "prototype": "vertices",
+        "name": "Vertex",
+        "misc": {},
+        "selected": false,
+        "properties": {},
+        "visible": true,
+        "x": 250,
+        "y": 148,
+        "lines": "",
+        "areas": []
+    },
+    "7UDLD7Gk": {
+        "id": "7UDLD7Gk",
+        "type": "",
+        "prototype": "vertices",
+        "name": "Vertex",
+        "misc": {},
+        "selected": false,
+        "properties": {},
+        "visible": true,
+        "x": 819,
+        "y": 151,
+        "lines": "",
+        "areas": []
+    },
+    "FnIrR1GW": {
+        "id": "FnIrR1GW",
+        "type": "",
+        "prototype": "vertices",
+        "name": "Vertex",
+        "misc": {},
+        "selected": false,
+        "properties": {},
+        "visible": true,
+        "x": 246,
+        "y": 152,
+        "lines": "",
+        "areas": []
+    }
+}
+
+{
+  "unit": "cm",
+  "layers": {
+    "layer-1": {
+      "id": "layer-1",
+      "altitude": 0,
+      "order": 0,
+      "opacity": 1,
+      "name": "default",
+      "visible": true,
+      "vertices": {
+        "_cmsRcdnXT": {
+          "id": "_cmsRcdnXT",
+          "type": "",
+          "prototype": "vertices",
+          "name": "Vertex",
+          "misc": {},
+          "selected": false,
+          "properties": {},
+          "visible": true,
+          "x": 1298.9887460449686,
+          "y": 1299.133630637874,
+          "lines": [
+            "kFFQ0KTrTT",
+            "UOoHHDpt1lq"
+          ],
+          "areas": []
+        },
+        "Je6iaR1jDZ": {
+          "id": "Je6iaR1jDZ",
+          "type": "",
+          "prototype": "vertices",
+          "name": "Vertex",
+          "misc": {},
+          "selected": false,
+          "properties": {},
+          "visible": true,
+          "x": 1298.9887460449686,
+          "y": 1396.8695974723125,
+          "lines": [
+            "kFFQ0KTrTT",
+            "XgK7UZ4XSS"
+          ],
+          "areas": []
+        },
+        "hhJFf2LQrpC": {
+          "id": "hhJFf2LQrpC",
+          "type": "",
+          "prototype": "vertices",
+          "name": "Vertex",
+          "misc": {},
+          "selected": false,
+          "properties": {},
+          "visible": true,
+          "x": 1399.73197339739,
+          "y": 1299.133630637874,
+          "lines": [
+            "UOoHHDpt1lq",
+            "eGWrkrfjMPC"
+          ],
+          "areas": []
+        },
+        "S4oX0FQ5O9Z": {
+          "id": "S4oX0FQ5O9Z",
+          "type": "",
+          "prototype": "vertices",
+          "name": "Vertex",
+          "misc": {},
+          "selected": false,
+          "properties": {},
+          "visible": true,
+          "x": 1399.73197339739,
+          "y": 1396.8695974723125,
+          "lines": [
+            "eGWrkrfjMPC",
+            "XgK7UZ4XSS"
+          ],
+          "areas": []
+        }
+      },
+      "lines": {
+        "kFFQ0KTrTT": {
+          "id": "kFFQ0KTrTT",
+          "type": "wall",
+          "prototype": "lines",
+          "name": "Wall",
+          "misc": {},
+          "selected": false,
+          "properties": {
+            "height": {
+              "length": 300
+            },
+            "thickness": {
+              "length": 20
+            },
+            "textureA": "bricks",
+            "textureB": "bricks"
+          },
+          "visible": true,
+          "vertices": [
+            "_cmsRcdnXT",
+            "Je6iaR1jDZ"
+          ],
+          "holes": []
+        },
+        "UOoHHDpt1lq": {
+          "id": "UOoHHDpt1lq",
+          "type": "wall",
+          "prototype": "lines",
+          "name": "Wall",
+          "misc": {},
+          "selected": false,
+          "properties": {
+            "height": {
+              "length": 300
+            },
+            "thickness": {
+              "length": 20
+            },
+            "textureA": "bricks",
+            "textureB": "bricks"
+          },
+          "visible": true,
+          "vertices": [
+            "_cmsRcdnXT",
+            "hhJFf2LQrpC"
+          ],
+          "holes": []
+        },
+        "eGWrkrfjMPC": {
+          "id": "eGWrkrfjMPC",
+          "type": "wall",
+          "prototype": "lines",
+          "name": "Wall",
+          "misc": {},
+          "selected": false,
+          "properties": {
+            "height": {
+              "length": 300
+            },
+            "thickness": {
+              "length": 20
+            },
+            "textureA": "bricks",
+            "textureB": "bricks"
+          },
+          "visible": true,
+          "vertices": [
+            "hhJFf2LQrpC",
+            "S4oX0FQ5O9Z"
+          ],
+          "holes": []
+        },
+        "XgK7UZ4XSS": {
+          "id": "XgK7UZ4XSS",
+          "type": "wall",
+          "prototype": "lines",
+          "name": "Wall",
+          "misc": {},
+          "selected": false,
+          "properties": {
+            "height": {
+              "length": 300
+            },
+            "thickness": {
+              "length": 20
+            },
+            "textureA": "bricks",
+            "textureB": "bricks"
+          },
+          "visible": true,
+          "vertices": [
+            "Je6iaR1jDZ",
+            "S4oX0FQ5O9Z"
+          ],
+          "holes": []
+        }
+      },
+      "holes": {},
+      "areas": {
+        "bl-6xMhxuI": {
+          "id": "bl-6xMhxuI",
+          "type": "area",
+          "prototype": "areas",
+          "name": "Area",
+          "misc": {},
+          "selected": false,
+          "properties": {
+            "patternColor": "#F5F4F4",
+            "thickness": {
+              "length": 0
+            },
+            "texture": "none"
+          },
+          "visible": true,
+          "vertices": [
+            "S4oX0FQ5O9Z",
+            "Je6iaR1jDZ",
+            "_cmsRcdnXT",
+            "hhJFf2LQrpC"
+          ],
+          "holes": []
+        }
+      },
+      "items": {},
+      "selected": {
+        "vertices": [],
+        "lines": [],
+        "holes": [],
+        "areas": [],
+        "items": []
+      }
+    }
+  },
+  "grids": {
+    "h1": {
+      "id": "h1",
+      "type": "horizontal-streak",
+      "properties": {
+        "step": 20,
+        "colors": [
+          "#808080",
+          "#ddd",
+          "#ddd",
+          "#ddd",
+          "#ddd"
+        ]
+      }
+    },
+    "v1": {
+      "id": "v1",
+      "type": "vertical-streak",
+      "properties": {
+        "step": 20,
+        "colors": [
+          "#808080",
+          "#ddd",
+          "#ddd",
+          "#ddd",
+          "#ddd"
+        ]
+      }
+    }
+  },
+  "selectedLayer": "layer-1",
+  "groups": {},
+  "width": 3000,
+  "height": 2000,
+  "meta": {},
+  "guides": {
+    "horizontal": {},
+    "vertical": {},
+    "circular": {}
+  }
+}
