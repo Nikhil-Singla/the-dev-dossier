@@ -1,15 +1,13 @@
 import cv2
 import os
 import numpy as np
-import json
-import random
-import string
-from selenium import webdriver
-from selenium.webdriver import Firefox, FirefoxOptions
 import pyautogui
 import time 
+from selenium import webdriver
+from selenium.webdriver import Firefox, FirefoxOptions
 from selenium.webdriver.common.keys import Keys
-
+from selenium.webdriver import ActionChains
+from selenium.webdriver.common.actions.action_builder import ActionBuilder
 
 # Get the current directory
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -56,8 +54,6 @@ def getWalls(image_path, threshold_area, canny_threshold1, canny_threshold2):
     # Perform morphological dilation to connect adjacent line segments
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (15, 15))
     dilated = cv2.dilate(result, kernel, iterations=1)
-
-    ##cv2.floodFill(dilated, mask=None, seedPoint=(int(0), int(0)), newVal=(255))
 
     # Display the resulting image [UNDO TO SEE MID RESULT]
     cv2.imshow('Original Image', image)
@@ -125,58 +121,20 @@ list_of_ycor = []
 for segment in line_segments:
     x1, y1, x2, y2, length, angle = segment
     print(f"Start Point: ({x1}, {y1}), End Point: ({x2}, {y2}), Length: {length}, Angle: {angle}")
-    ## if(angle >= 0):
     list_of_xcor.append(x1)
     list_of_ycor.append(y1)
-    ## else:
     list_of_xcor.append(x2)
     list_of_ycor.append(y2)
 
 list_of_xcor = [int(x) for x in list_of_xcor]
 list_of_ycor = [int(y) for y in list_of_ycor]
 
-def acquire_id(id_length=8):
-    characters = string.ascii_letters + string.digits
-    id = ''.join(random.choice(characters) for _ in range(id_length))
-    return id
-
-def generateVertex(xcor, ycor, inputLineIDList, vertexName):
-    e = {}
-    L = []
-    verticeName = vertexName
-    vertex = {
-        "id": verticeName,
-        "type": "",
-        "prototype": "vertices",
-        "name": "Vertex",
-        "misc": e,
-        "selected": False,
-        "properties": e,
-        "visible": True,
-        "x" : xcor,
-        "y" : ycor,
-        "lines": inputLineIDList,
-        "areas" : L
-    }
-    return vertex
-
-def generate_COLverticesCOL():
-    individualElement = {}
-    for xcor, ycor in zip(list_of_xcor, list_of_ycor):
-        vertexName = acquire_id()
-        individualElement[vertexName] = generateVertex(xcor, ycor, "", vertexName)
-        
-    return individualElement
-
-## vertices_json = json.dumps(generate_COLverticesCOL(), indent=4)
-## print(vertices_json)
-
 opts = FirefoxOptions()
 opts.add_argument("--width=1920")
 opts.add_argument("--height=1080")
 
 driver = Firefox(options=opts)
-driver.get('https://cvdlab.github.io/react-planner/') # replaces "ie.navigate"
+driver.get('https://cvdlab.github.io/react-planner/')
 
 def selectWall():
     time.sleep(0.20)
@@ -206,13 +164,5 @@ def saveProject():
     time.sleep(0.20)
 
 saveProject()
-## pyautogui.displayMousePosition()
-    
 time.sleep(1)
 driver.quit()
-
-
-
-
-
-
