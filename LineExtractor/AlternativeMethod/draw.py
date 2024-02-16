@@ -20,7 +20,6 @@ output_file = "output.png"
 image_path = os.path.join(current_dir, image_file)
 output_path = os.path.join(current_dir, output_file)
 
-
 # Check if the image file exists
 if not os.path.isfile(image_path):
     raise FileNotFoundError(f"Image file '{image_file}' not found.")
