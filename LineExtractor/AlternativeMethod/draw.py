@@ -8,13 +8,20 @@ from selenium.webdriver import Firefox, FirefoxOptions
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.actions.action_builder import ActionBuilder
-from flask import Flask, request, render_template
+from flask import Flask, request
 
 # Call the function to reduce the image to lines and label them
 threshold_area = 90
 canny_threshold1 = 10
 canny_threshold2 = 10
 thickness_reduction_factor = 1
+
+opts = FirefoxOptions()
+opts.add_argument("--width=1920")
+opts.add_argument("--height=1080")
+
+driver = Firefox(options=opts)
+driver.get('https://cvdlab.github.io/react-planner/')
 
 
 def selectWall():
@@ -163,50 +170,40 @@ def upload():
     file_path = 'picture/' + file.filename
     image_path = file_path
 
+    getWalls(image_path, threshold_area, canny_threshold1, canny_threshold2)
+    # Call the function to remove background elements and retain lines along walls
+    reduction(output_path)
+
+    line_segments = detect_line_segments(output_path)
+
+    list_of_xcor = []
+    list_of_ycor = []
+
+    for segment in line_segments:
+        x1, y1, x2, y2, length, angle = segment
+        print(
+            f"Start Point: ({x1}, {y1}), End Point: ({x2}, {y2}), Length: {length}, Angle: {angle}")
+        list_of_xcor.append(x1)
+        list_of_ycor.append(y1)
+        list_of_xcor.append(x2)
+        list_of_ycor.append(y2)
+
+    list_of_xcor = [int(x) for x in list_of_xcor]
+    list_of_ycor = [int(y) for y in list_of_ycor]
+
+    coords = list(map(list, zip(list_of_xcor, list_of_ycor)))
+
+    for i in range(0, len(coords), 2):
+        selectWall()
+        time.sleep(0.20)
+        drawWall(coords[i][0], coords[i][1], coords[i+1][0], coords[i+1][1])
+
+    saveProject()
+    time.sleep(1)
+    driver.quit()
+
     return file_path
 
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-# Call the function to remove background elements and retain lines along walls
-getWalls(image_path, threshold_area, canny_threshold1, canny_threshold2)
-reduction(output_path)
-
-line_segments = detect_line_segments(output_path)
-
-list_of_xcor = []
-list_of_ycor = []
-
-for segment in line_segments:
-    x1, y1, x2, y2, length, angle = segment
-    print(
-        f"Start Point: ({x1}, {y1}), End Point: ({x2}, {y2}), Length: {length}, Angle: {angle}")
-    list_of_xcor.append(x1)
-    list_of_ycor.append(y1)
-    list_of_xcor.append(x2)
-    list_of_ycor.append(y2)
-
-list_of_xcor = [int(x) for x in list_of_xcor]
-list_of_ycor = [int(y) for y in list_of_ycor]
-
-opts = FirefoxOptions()
-opts.add_argument("--width=1920")
-opts.add_argument("--height=1080")
-
-driver = Firefox(options=opts)
-driver.get('https://cvdlab.github.io/react-planner/')
-
-
-coords = list(map(list, zip(list_of_xcor, list_of_ycor)))
-
-for i in range(0, len(coords), 2):
-    selectWall()
-    time.sleep(0.20)
-    drawWall(coords[i][0], coords[i][1], coords[i+1][0], coords[i+1][1])
-
-
-saveProject()
-time.sleep(1)
-driver.quit()
