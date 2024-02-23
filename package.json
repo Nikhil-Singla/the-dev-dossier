@@ -1,0 +1,11 @@
+{
+  "name": "create-react-app",
+  "version": "1.0.0",
+  "description": "Basic",
+  "main": "index.js",
+  "scripts": {
+    "test": "haha"
+  },
+  "author": "",
+  "license": "ISC"
+}

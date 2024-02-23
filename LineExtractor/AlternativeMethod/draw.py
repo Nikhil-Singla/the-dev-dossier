@@ -23,13 +23,11 @@ opts.add_argument("--height=1080")
 driver = Firefox(options=opts)
 driver.get('https://cvdlab.github.io/react-planner/')
 
-
 def selectWall():
     time.sleep(0.20)
     pyautogui.click(17, 168)
     time.sleep(0.20)
     pyautogui.click(676, 372)
-
 
 def drawWall(x1, y1, x2, y2):
     pyautogui.click(x1, y1)
@@ -37,7 +35,6 @@ def drawWall(x1, y1, x2, y2):
     pyautogui.click(x2, y2)
     time.sleep(0.20)
     webdriver.ActionChains(driver).send_keys(Keys.ESCAPE).perform()
-
 
 def saveProject():
     time.sleep(0.20)
@@ -63,7 +60,6 @@ output_path = os.path.join(current_dir, output_file)
 # Check if the image file exists
 if not os.path.isfile(image_path):
     raise FileNotFoundError(f"Image file '{image_file}' not found.")
-
 
 def getWalls(image_path, threshold_area, canny_threshold1, canny_threshold2):
     # Load the image
@@ -104,7 +100,6 @@ def getWalls(image_path, threshold_area, canny_threshold1, canny_threshold2):
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
-
 def reduction(pathToOutput):
     img = cv2.imread(pathToOutput, cv2.IMREAD_GRAYSCALE)
 
@@ -123,7 +118,6 @@ def reduction(pathToOutput):
     cv2.waitKey(0)
     cv2.destroyAllWindows()
     cv2.imwrite(output_path, eroded_image)
-
 
 def detect_line_segments(image_path):
     # Load the image in grayscale
@@ -181,8 +175,7 @@ def upload():
 
     for segment in line_segments:
         x1, y1, x2, y2, length, angle = segment
-        print(
-            f"Start Point: ({x1}, {y1}), End Point: ({x2}, {y2}), Length: {length}, Angle: {angle}")
+        print(f"Start Point: ({x1}, {y1}), End Point: ({x2}, {y2}), Length: {length}, Angle: {angle}")
         list_of_xcor.append(x1)
         list_of_ycor.append(y1)
         list_of_xcor.append(x2)
