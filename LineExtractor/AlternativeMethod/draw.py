@@ -9,6 +9,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.actions.action_builder import ActionBuilder
 from flask import Flask, request
+from selenium.webdriver.common.by import By
 
 # Call the function to reduce the image to lines and label them
 threshold_area = 90
@@ -17,15 +18,27 @@ canny_threshold2 = 10
 thickness_reduction_factor = 1
 
 opts = FirefoxOptions()
+## Fixing Window Size
 opts.add_argument("--width=1920")
 opts.add_argument("--height=1080")
 
+## Getting the options and starting the webpage
 driver = Firefox(options=opts)
 driver.get('https://cvdlab.github.io/react-planner/')
 
+
+actionChains = ActionChains(driver)
+
+
 def selectWall():
     time.sleep(0.20)
-    pyautogui.click(17, 168)
+    ## CSS Properties of the Open Menu Button
+    cssSelector_OpenMenu = ".toolbar > div:nth-child(4) > div:nth-child(1) > svg:nth-child(1)"
+    ## Finding the button
+    button = driver.find_element(By.CSS_SELECTOR, cssSelector_OpenMenu)
+    ## Clicking the button
+    actionChains.move_to_element(button).click().perform()
+
     time.sleep(0.20)
     pyautogui.click(676, 372)
 

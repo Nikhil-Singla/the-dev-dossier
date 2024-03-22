@@ -8,8 +8,9 @@ import time
 
 # Initialize options for the FIREFOX driver
 opts = FirefoxOptions()
-opts.add_argument("--width=1920")
-opts.add_argument("--height=1080")
+opts.add_argument("--width=3000")
+opts.add_argument("--height=3000")
+opts.add_argument('--headless')
 
 # This option needs to be enabled, and it will remove the GUI, only do it when clicking works without the GUI
 # opts.add_argument("-headless") 
@@ -18,7 +19,6 @@ opts.add_argument("--height=1080")
 driver = Firefox(options=opts)
 driver.get('https://cvdlab.github.io/react-planner/')
 
-driver.maximize_window() # For maximizing window
 driver.implicitly_wait(10) # gives an implicit wait for 10 seconds
 
 # xPath = "/html/body/div/div[1]/aside[1]/div[4]/div/svg/path"
@@ -46,6 +46,7 @@ cssSelector_Save = ".toolbar > div:nth-child(2) > div:nth-child(1) > svg:nth-chi
 button = driver.find_element(By.CSS_SELECTOR, cssSelector_Save)
 
 actionChains.perform()
+driver.save_screenshot('screenie.png')
 
 ##driver.find_element(By.CSS_SELECTOR, cssSelector).click()
 print("clicked")

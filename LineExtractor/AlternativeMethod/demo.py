@@ -8,6 +8,7 @@ from selenium.webdriver import Firefox, FirefoxOptions
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.actions.action_builder import ActionBuilder
+from selenium.webdriver.common.by import By
 
 # Get the current directory
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -162,8 +163,6 @@ driver.get('https://cvdlab.github.io/react-planner/')
 def selectWall():
     time.sleep(0.20)
     cssSelector_OpenMenu = ".toolbar > div:nth-child(4) > div:nth-child(1) > svg:nth-child(1)"
-    cssSelector = "#app > div:nth-child(1) > div:nth-child(2) > div:nth-child(4) > svg:nth-child(1) > g:nth-child(2) > g:nth-child(2) > g:nth-child(2) > g:nth-child(1) > rect:nth-child(1)"
-
     actionChains = ActionChains(driver)
 
     button = driver.find_element(By.CSS_SELECTOR, cssSelector_OpenMenu)
