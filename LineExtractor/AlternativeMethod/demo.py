@@ -161,6 +161,13 @@ driver.get('https://cvdlab.github.io/react-planner/')
 # Trying to get this to work with clicking on elements instead
 def selectWall():
     time.sleep(0.20)
+    cssSelector_OpenMenu = ".toolbar > div:nth-child(4) > div:nth-child(1) > svg:nth-child(1)"
+    cssSelector = "#app > div:nth-child(1) > div:nth-child(2) > div:nth-child(4) > svg:nth-child(1) > g:nth-child(2) > g:nth-child(2) > g:nth-child(2) > g:nth-child(1) > rect:nth-child(1)"
+
+    actionChains = ActionChains(driver)
+
+    button = driver.find_element(By.CSS_SELECTOR, cssSelector_OpenMenu)
+    actionChains.move_to_element(button).click().perform()
     pyautogui.click(17, 168)
     time.sleep(0.20)
     pyautogui.click(676, 372)
