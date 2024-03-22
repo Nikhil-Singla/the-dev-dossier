@@ -1,7 +1,6 @@
 import cv2
 import os
 import numpy as np
-import pyautogui
 import time
 from selenium import webdriver
 from selenium.webdriver import Firefox, FirefoxOptions
