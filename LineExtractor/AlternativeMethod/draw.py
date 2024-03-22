@@ -17,20 +17,7 @@ canny_threshold1 = 10
 canny_threshold2 = 10
 thickness_reduction_factor = 1
 
-opts = FirefoxOptions()
-## Fixing Window Size
-opts.add_argument("--width=1920")
-opts.add_argument("--height=1080")
-
-## Getting the options and starting the webpage
-driver = Firefox(options=opts)
-driver.get('https://cvdlab.github.io/react-planner/')
-
-
-actionChains = ActionChains(driver)
-
-
-def selectWall():
+def selectWall(driver, actionChains):
     time.sleep(0.20)
     ## CSS Properties of the Open Menu Button
     cssSelector_OpenMenu = ".toolbar > div:nth-child(4) > div:nth-child(1) > svg:nth-child(1)"
@@ -40,22 +27,46 @@ def selectWall():
     actionChains.move_to_element(button).click().perform()
 
     time.sleep(0.20)
-    pyautogui.click(676, 372)
+    ## CSS Properties of the Wall Selection Button
+    cssSelector_Wall = "#app > div:nth-child(1) > div:nth-child(2) > div:nth-child(3) > div:nth-child(3)"
+    ## Finding the button
+    button = driver.find_element(By.CSS_SELECTOR, cssSelector_Wall)
+    ## Clicking the button
+    actionChains.move_to_element(button).click().perform()
 
-def drawWall(x1, y1, x2, y2):
-    pyautogui.click(x1, y1)
-    time.sleep(0.20)
-    pyautogui.click(x2, y2)
-    time.sleep(0.20)
-    webdriver.ActionChains(driver).send_keys(Keys.ESCAPE).perform()
+def drawWall(x1, y1, x2, y2, driver, actionChains):
+    ## CSS Properties of the Grid
+    cssSelector_Grid = "#app > div:nth-child(1) > div:nth-child(2) > div:nth-child(4) > svg:nth-child(1) > g:nth-child(2) > g:nth-child(2) > g:nth-child(2) > g:nth-child(1) > rect:nth-child(1)"
+    
+    ## Grid Size = (3000, 2000)
+    ## Center = (1500,1000)
+    Offset_X1 = x1 - 1500
+    Offset_Y1 = y1 - 1000
 
-def saveProject():
-    time.sleep(0.20)
-    pyautogui.click(19, 94)
-    time.sleep(0.20)
-    pyautogui.click(1053, 592)
-    time.sleep(0.20)
+    Offset_X2 = x2 - 1500
+    Offset_Y2 = y2 - 1000
 
+    button = driver.find_element(By.CSS_SELECTOR, cssSelector_Grid)
+    actionChains.move_to_element_with_offset(button, Offset_X1, Offset_Y1)
+    actionChains.click()
+    actionChains.move_to_element_with_offset(button, Offset_X2, Offset_Y2)
+    actionChains.click()
+    actionChains.send_keys(Keys.ESCAPE).perform()
+
+
+def saveProject(driver, actionChains):
+    time.sleep(0.20)
+    ## Properties of the Save Button
+    cssSelector_Save = ".toolbar > div:nth-child(2) > div:nth-child(1) > svg:nth-child(1) > path:nth-child(1)"
+    ## Find the Save Button
+    button = driver.find_element(By.CSS_SELECTOR, cssSelector_Save)
+    ## Move to and click the save Button
+    actionChains.move_to_element(button).click().perform()
+
+    ## Wait for it to load properly in case
+    time.sleep(0.20)
+    ## Accept the alert pop-up
+    driver.switch_to.alert.accept()
 
 app = Flask(__name__)
 
@@ -199,12 +210,24 @@ def upload():
 
     coords = list(map(list, zip(list_of_xcor, list_of_ycor)))
 
-    for i in range(0, len(coords), 2):
-        selectWall()
-        time.sleep(0.20)
-        drawWall(coords[i][0], coords[i][1], coords[i+1][0], coords[i+1][1])
+    opts = FirefoxOptions()
+    ## Fixing Window Size
+    opts.add_argument("--width=4000")
+    opts.add_argument("--height=4000")
+    opts.add_argument('--headless')
 
-    saveProject()
+    ## Getting the options and starting the webpage
+    driver = Firefox(options=opts)
+    driver.get('https://cvdlab.github.io/react-planner/')
+
+    actionChains = ActionChains(driver)
+
+    for i in range(0, len(coords), 2):
+        selectWall(driver, actionChains)
+        time.sleep(0.20)
+        drawWall(coords[i][0], coords[i][1], coords[i+1][0], coords[i+1][1], driver, actionChains)
+
+    saveProject(driver, actionChains)
     time.sleep(1)
     driver.quit()
 
