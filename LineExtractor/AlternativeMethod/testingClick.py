@@ -41,23 +41,27 @@ actionChains.move_to_element_with_offset(button, 1, 1)
 actionChains.click()
 actionChains.move_to_element_with_offset(button, 100, 100)
 actionChains.click()
-actionChains.move_to_element_with_offset(button, -1500, -1000)
+##actionChains.move_to_element_with_offset(button, -1500, -1000)
 
 
 cssSelector_Save = ".toolbar > div:nth-child(2) > div:nth-child(1) > svg:nth-child(1)"
 button = driver.find_element(By.CSS_SELECTOR, cssSelector_Save)
 
 actionChains.perform()
+webdriver.ActionChains(driver).send_keys(Keys.ESCAPE).perform()
+
 time.sleep(1)
 
 driver.save_screenshot('screenie.png')
 
-##cssSelector_Save = ".toolbar > div:nth-child(2) > div:nth-child(1) > svg:nth-child(1) > path:nth-child(1)"
-##button = driver.find_element(By.CSS_SELECTOR, cssSelector_Save)
-##actionChains.move_to_element(button).click().perform()
+cssSelector_Save = ".toolbar > div:nth-child(2) > div:nth-child(1) > svg:nth-child(1) > path:nth-child(1)"
+button = driver.find_element(By.CSS_SELECTOR, cssSelector_Save)
+actionChains.move_to_element(button).click().perform()
 
-##driver.switch_to.alert.accept()
+driver.switch_to.alert.accept()
 
 ##driver.find_element(By.CSS_SELECTOR, cssSelector).click()
 print("clicked")
+time.sleep(1)
+
 driver.close()
