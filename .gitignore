@@ -1,3 +1,5 @@
+DatasetParser/*
+!DatasetParser/datasetParsing.py
 LineExtractor/C++/cmake_install.cmake
 LineExtractor/C++/CMakeCache.txt
 LineExtractor/C++/CMakeLists.txt
@@ -32,4 +34,3 @@ LineExtractor/C++/CMakeFiles/display_image.dir/link.txt
 LineExtractor/C++/CMakeFiles/display_image.dir/linkLibs.rsp
 LineExtractor/C++/CMakeFiles/display_image.dir/objects1.rsp
 LineExtractor/C++/CMakeFiles/display_image.dir/progress.make
-mainfolder/DatasetExtractor/*
