@@ -1,6 +1,7 @@
 import pandas as pd
 import os
 import nltk
+import glob
 
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
@@ -20,8 +21,16 @@ nltk.download('wordnet', quiet=True)
 nltk.download('stopwords', quiet=True)
 nltk.download('punkt_tab', quiet=True)
 
-absoluteSourcePath =  os.getcwd()
+absoluteSourcePath =  os.path.dirname(__file__)
 # Finds out the path to the source code location
+
+subFolder = os.path.join(absoluteSourcePath, "China")
+
+regexForDirectory = os.path.join(subFolder, "China_*.parquet")
+# print(regexForDirectory), this one gets the general path into the regex for getting all dataset files
+
+allFiles = glob.glob(regexForDirectory)  # Get all files from the global directory.
+# print(allFiles), we get ALL the files into this variable
 
 datasetFile = "ENTER DATASET FILE NAME HERE"
 # Used to get the dataset file name which contains the columns
@@ -39,5 +48,4 @@ inputData = pd.read_csv(inputFileName, sep='\t', usecols=usefulColumnList, on_ba
 print('\nThree sample reviews, along with their ratings include: \n')
 print(inputData.sample(3, random_state=10), "\n")
 # Getting a sample of 3 reviews to confirm workings
-
 # TO DO: Process data to remove unknown characters and spaces, etc, Perform Contractions, Remove stopwords, perform lemmatization
