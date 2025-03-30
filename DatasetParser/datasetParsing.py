@@ -25,6 +25,7 @@ absoluteSourcePath =  os.path.dirname(__file__)
 # Finds out the path to the source code location
 
 subFolder = os.path.join(absoluteSourcePath, "China")
+# Subfolder named Chine with the dataset inside in the same location as the script
 
 regexForDirectory = os.path.join(subFolder, "China_*.parquet")
 # print(regexForDirectory), this one gets the general path into the regex for getting all dataset files
@@ -32,20 +33,22 @@ regexForDirectory = os.path.join(subFolder, "China_*.parquet")
 allFiles = glob.glob(regexForDirectory)  # Get all files from the global directory.
 # print(allFiles), we get ALL the files into this variable
 
-datasetFile = "ENTER DATASET FILE NAME HERE"
+allFiles = allFiles[:20]
+print(len(allFiles))
+
+datasetFile = pd.concat([pd.read_parquet(f) for f in allFiles], ignore_index=True)
 # Used to get the dataset file name which contains the columns
 
-inputFileName = os.path.join(absoluteSourcePath, datasetFile)
-# Adjoins the dataset file to the source code. IE, DATASET IS IN SAME FOLDER AS CODE
+print(datasetFile.shape)
 
-usefulColumnList = ["post_text", "application_name", "post_language"]
-# Get out the useful column headings in the dataset
+# usefulColumnList = ["post_text", "application_name", "post_language"]
+# # Get out the useful column headings in the dataset
 
-inputData = pd.read_csv(inputFileName, sep='\t', usecols=usefulColumnList, on_bad_lines='skip', low_memory=False)
-# Read dataset as CSV, seperator is TAB and SKIP any error giving lines while only using the columns
-# for star rating and the review body (such as 20773 with 22 tokens instead of 15?).
+# inputData = pd.read_csv(datasetFile, sep='\t', usecols=usefulColumnList, on_bad_lines='skip', low_memory=False)
+# # Read dataset as CSV, seperator is TAB and SKIP any error giving lines while only using the columns
+# # for star rating and the review body (such as 20773 with 22 tokens instead of 15?).
 
-print('\nThree sample reviews, along with their ratings include: \n')
-print(inputData.sample(3, random_state=10), "\n")
-# Getting a sample of 3 reviews to confirm workings
-# TO DO: Process data to remove unknown characters and spaces, etc, Perform Contractions, Remove stopwords, perform lemmatization
+# print('\nThree sample reviews, along with their ratings include: \n')
+# print(inputData.sample(3, random_state=10), "\n")
+# # Getting a sample of 3 reviews to confirm workings
+# # TO DO: Process data to remove unknown characters and spaces, etc, Perform Contractions, Remove stopwords, perform lemmatization

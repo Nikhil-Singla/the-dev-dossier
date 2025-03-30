@@ -1,5 +1,6 @@
 DatasetParser/*
 !DatasetParser/datasetParsing.py
+!DatasetParser/columns.txt
 LineExtractor/C++/cmake_install.cmake
 LineExtractor/C++/CMakeCache.txt
 LineExtractor/C++/CMakeLists.txt

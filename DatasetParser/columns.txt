@@ -1,0 +1,19 @@
+postid: Unique identifier for each post within the dataset.
+post_text: The textual content of the post. The PII inside post_text such as mentions and URLs are hashed
+application_name: Hashed version of the name of the application or platform from which the post was made.
+post_language: Language in which the post was written.
+in_reply_to_postid: Anonymized ID of the post this entry is replying to, if applicable.
+in_reply_to_accountid: Anonymized ID of the account the post is replying to, if applicable.
+post_time: Timestamp indicating when the post was made.
+accountid: Unique anonymized ID for the account that created the post.
+account_profile_description: Description provided by the account holder in their profile.
+follower_count: Number of followers the account had at the time of data collection.
+following_count: Number of accounts the user was following at the time of data collection.
+account_creation_date: Date when the account was created.
+is_repost: Boolean indicator if the post is a repost.
+reposted_accountid: Anonymized ID of the original account that made the reposted post, if applicable.
+reposted_postid: Anonymized ID of the original post that was reposted, if applicable.
+hashtags: Hashtags included in the post content, if any.
+urls: Hashed URLs shared within the post, if any.
+account_mentions: Anonymized ID of accounts mentioned within the post, if any.
+is_control: Boolean indicator marking whether the post is from a control (True) or IO (False) account.
