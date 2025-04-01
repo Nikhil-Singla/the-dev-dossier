@@ -17,3 +17,6 @@ hashtags: Hashtags included in the post content, if any.
 urls: Hashed URLs shared within the post, if any.
 account_mentions: Anonymized ID of accounts mentioned within the post, if any.
 is_control: Boolean indicator marking whether the post is from a control (True) or IO (False) account.
+
+useLessColumn = ["application_name", "in_reply_to_postid", "in_reply_to_accountid", "follower_count", "reposted_accountid", "reposted_postid", "account_mentions"]
+usefulColumn = ["postid", "post_text", "post_language", "post_time", "accountid", "following_count", "account_creation_date", "is_repost", "hashtags", "urls", "account_profile_description", "is_control"]

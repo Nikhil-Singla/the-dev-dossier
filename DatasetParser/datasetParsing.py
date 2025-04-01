@@ -1,11 +1,15 @@
 import pandas as pd
 import os
-import nltk
 import glob
+import nltk
+import re
+import contractions
+import string
 
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
+from bs4 import BeautifulSoup
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
@@ -36,19 +40,55 @@ allFiles = glob.glob(regexForDirectory)  # Get all files from the global directo
 allFiles = allFiles[:20]
 print(len(allFiles))
 
-datasetFile = pd.concat([pd.read_parquet(f) for f in allFiles], ignore_index=True)
+datasetFile = pd.concat([pd.read_parquet(f, engine='fastparquet') for f in allFiles], ignore_index=True)
 # Used to get the dataset file name which contains the columns
+# Shape = (1000000, 19)
 
-print(datasetFile.shape)
+useLessColumnList = ["postid", "application_name", "in_reply_to_postid", "in_reply_to_accountid", "follower_count", "reposted_accountid", "reposted_postid", "account_mentions"]
+# Get out the useful column headings in the dataset
+# usefulColumns = ["post_text", "post_language", "post_time", "accountid", "following_count", "account_creation_date", "is_repost", "hashtags", "urls", "account_profile_description", "is_control"]
 
-# usefulColumnList = ["post_text", "application_name", "post_language"]
-# # Get out the useful column headings in the dataset
+inputData = datasetFile.drop(useLessColumnList, axis=1).reset_index(drop=True)
+# New Shape = (1000000, 11)
 
-# inputData = pd.read_csv(datasetFile, sep='\t', usecols=usefulColumnList, on_bad_lines='skip', low_memory=False)
-# # Read dataset as CSV, seperator is TAB and SKIP any error giving lines while only using the columns
-# # for star rating and the review body (such as 20773 with 22 tokens instead of 15?).
+print('\nThree sample reviews, along with their ratings include: \n')
+print(inputData.sample(10, random_state=10), "\n")
+# Getting a sample of 3 reviews to confirm workings
+# TO DO: Process data to remove unknown characters and spaces, etc, Perform Contractions, Remove stopwords, perform lemmatization
 
-# print('\nThree sample reviews, along with their ratings include: \n')
-# print(inputData.sample(3, random_state=10), "\n")
-# # Getting a sample of 3 reviews to confirm workings
-# # TO DO: Process data to remove unknown characters and spaces, etc, Perform Contractions, Remove stopwords, perform lemmatization
+allLangs = inputData['post_language'].unique()
+print("Total languages are: ", allLangs)
+
+inputData.replace(['NONE', None, ''], pd.NA, inplace=True)
+inputData.dropna(inplace=True)
+
+
+lemmWords = WordNetLemmatizer()
+stopWords = set(stopwords.words("english"))
+
+def clean_text(inText):
+    if not isinstance(inText, str):
+        return ""
+
+    inText = BeautifulSoup(inText, "html.parser").get_text()
+    inText = contractions.fix(inText)   # Removing and fixing contractions
+
+    inText = re.sub(f"[{re.escape(string.punctuation)}]", "", inText)   # Trying to remove excess punctuations
+
+    inText = re.sub(r'\s+', ' ', inText).strip()  # Leaving only one extra space.
+
+    inText = inText.casefold()  # Using the lowercase that accounts for different languages and not just english 
+
+    tokenizedList = word_tokenize(inText)  # Tokenization
+
+    tokenizedList = [lemmWords.lemmatize(oneWord) for oneWord in tokenizedList if oneWord not in stopWords]  # Lemmatize and removing stopwords
+
+    return " ".join(tokenizedList)
+
+if 'post_text' in inputData.columns:
+    inputData['post_text'] = inputData['post_text'].apply(clean_text)
+
+inputData.reset_index(drop=True, inplace=True)
+
+print("Data preprocessing complete. Sample processed data:\n")
+print(inputData.sample(10, random_state=10))
