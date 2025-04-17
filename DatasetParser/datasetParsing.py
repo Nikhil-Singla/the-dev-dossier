@@ -19,7 +19,10 @@ from sklearn.naive_bayes import MultinomialNB
 
 from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score
 
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, MarkupResemblesLocatorWarning
+import warnings
+
+warnings.filterwarnings("ignore", category=MarkupResemblesLocatorWarning)
 
 nltk.download('wordnet', quiet=True)
 nltk.download('stopwords', quiet=True)
@@ -56,12 +59,11 @@ print(inputData.sample(10, random_state=10), "\n")
 # Getting a sample of 3 reviews to confirm workings
 # TO DO: Process data to remove unknown characters and spaces, etc, Perform Contractions, Remove stopwords, perform lemmatization
 
-allLangs = inputData['post_language'].unique()
-print("Total languages are: ", allLangs)
-
 inputData.replace(['NONE', None, ''], pd.NA, inplace=True)
 inputData.dropna(inplace=True)
 
+allLangs = inputData['post_language'].unique()
+print("Total languages are: ", allLangs)
 
 lemmWords = WordNetLemmatizer()
 stopWords = set(stopwords.words("english"))
@@ -71,18 +73,17 @@ def clean_text(inText):
         return ""
 
     inText = BeautifulSoup(inText, "html.parser").get_text()
-    inText = contractions.fix(inText)   # Removing and fixing contractions
+    if len(inText) > 1:
+        try:
+            inText = contractions.fix(inText)   # Removing and fixing contractions
+        except IndexError:
+            pass
 
     inText = re.sub(f"[{re.escape(string.punctuation)}]", "", inText)   # Trying to remove excess punctuations
-
     inText = re.sub(r'\s+', ' ', inText).strip()  # Leaving only one extra space.
-
     inText = inText.casefold()  # Using the lowercase that accounts for different languages and not just english 
-
     tokenizedList = word_tokenize(inText)  # Tokenization
-
     tokenizedList = [lemmWords.lemmatize(oneWord) for oneWord in tokenizedList if oneWord not in stopWords]  # Lemmatize and removing stopwords
-
     return " ".join(tokenizedList)
 
 if 'post_text' in inputData.columns:
