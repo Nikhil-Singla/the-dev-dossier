@@ -60,7 +60,7 @@ print(inputData.sample(10, random_state=10), "\n")
 # TO DO: Process data to remove unknown characters and spaces, etc, Perform Contractions, Remove stopwords, perform lemmatization
 
 inputData.replace(['NONE', None, ''], pd.NA, inplace=True)
-inputData.dropna(inplace=True)
+inputData.dropna(axis=0, how='any', inplace=True)
 
 allLangs = inputData['post_language'].unique()
 print("Total languages are: ", allLangs)
@@ -93,3 +93,33 @@ inputData.reset_index(drop=True, inplace=True)
 
 print("Data preprocessing complete. Sample processed data:\n")
 print(inputData.sample(10, random_state=10))
+
+X = inputData['post_text']
+y = inputData['is_control']           
+
+X_train_text, X_test_text, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y
+)
+
+vectorizer = TfidfVectorizer(max_features=5_000)
+X_train = vectorizer.fit_transform(X_train_text)
+X_test  = vectorizer.transform(X_test_text)
+
+models = {
+    'LogisticRegression': LogisticRegression(max_iter=1_000),
+    'LinearSVC':          LinearSVC(),
+    'MultinomialNB':      MultinomialNB(),
+    'Perceptron':         Perceptron(),
+}
+
+# 5) Train & evaluate
+for name, clf in models.items():
+    clf.fit(X_train, y_train)
+    y_pred = clf.predict(X_test)
+    
+    print(f"=== {name} ===")
+    print("  Accuracy: ", accuracy_score(y_test, y_pred))
+    print("  Precision:", precision_score(y_test, y_pred))
+    print("  Recall:   ", recall_score(y_test, y_pred))
+    print("  F1:       ", f1_score(y_test, y_pred))
+    print()
