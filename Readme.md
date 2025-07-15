@@ -1,5 +1,5 @@
-# My Computer Science Bachelor Projects
-This repository contains the projects that I have developed during my Computer Science Bachelor program.
+# My Computer Science Projects
+This repository contains the projects that I have developed during my Computer Science education over the years.
 
 ## Projects
 - Project 1: Particle System (Interactive particle simulator)
