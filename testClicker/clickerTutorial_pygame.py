@@ -22,33 +22,25 @@ pygame.display.set_caption('Not Adventure Capitalist') ## Title of the game
 
 background = black  ## Variable that can be edited later
 frameRate = 60  ## Framerate 
+
 font = pygame.font.Font('freesansbold.ttf', 16) ## Font
 
 timer = pygame.time.Clock() ## Help run our game at 60 FPS
 
 ## Game Variables
 
-boxOne = 1
-boxTwo = 2
-boxThree = 3
-boxFour = 4
-boxFive = 5
-score = 0
+moneyOnButtonPress = [1, 2, 3, 4, 5]    # Legacy of Box One, Two, Three. . .    Tells about the money gained on button press
+barFillingSpeed = [5, 4, 3, 2, 1]       # Legacy of speed_One, Two, Three. . .  Tells about the speed of the bar filling
+percentFillForI = [0] * 5               # Legacy of length_One , Two, Three. . .Tells of the current filling percent
+totalMoneyEarned = 0                    # Legacy of Score                       Tells of the total money earned
+
+isDrawn = [False] * 5
+
 draw_One = False
 draw_Two = False
 draw_Three = False
 draw_Four = False
 draw_Five = False
-length_One = 0
-length_Two = 0
-length_Three = 0
-length_Four = 0
-length_Five = 0
-speed_One = 5
-speed_Two = 4
-speed_Three = 3
-speed_Four = 2
-speed_Five = 1
 
 ## End Game Variables
 
@@ -73,13 +65,13 @@ manFiveCost = 5000
 ## End Manager Variables
 
 def draw_Box(color, y_cord, value, draw, length, speed):
-    global score
+    global totalMoneyEarned
     if draw and length < 200:
         length += speed
     elif length >= 200:
         draw = False
         length = 0
-        score += value
+        totalMoneyEarned += value
     pygame.draw.rect(screen, color, [70, y_cord-15, 200, 30], 2)
     pygame.draw.rect(screen, color, [70, y_cord-15, length, 30])
     task = pygame.draw.circle(screen, color, (30, y_cord), 20, 5)
@@ -127,87 +119,92 @@ while gameState:
                 draw_Four = True
             if task5.collidepoint(event.pos):
                 draw_Five = True
-            if manBuy1.collidepoint(event.pos) and score >= manOneCost and not manOneOwn:
+            if manBuy1.collidepoint(event.pos) and totalMoneyEarned >= manOneCost and not manOneOwn:
                 manOneOwn = True
-                score -= manOneCost
-            if manBuy2.collidepoint(event.pos) and score >= manTwoCost and not manTwoOwn:
+                totalMoneyEarned -= manOneCost
+            if manBuy2.collidepoint(event.pos) and totalMoneyEarned >= manTwoCost and not manTwoOwn:
                 manTwoOwn = True
-                score -= manTwoCost
-            if manBuy3.collidepoint(event.pos) and score >= manThreeCost and not manThreeOwn:
+                totalMoneyEarned -= manTwoCost
+            if manBuy3.collidepoint(event.pos) and totalMoneyEarned >= manThreeCost and not manThreeOwn:
                 manThreeOwn = True
-                score -= manThreeCost
-            if manBuy4.collidepoint(event.pos) and score >= manFourCost and not manFourOwn:
+                totalMoneyEarned -= manThreeCost
+            if manBuy4.collidepoint(event.pos) and totalMoneyEarned >= manFourCost and not manFourOwn:
                 manFourOwn = True
-                score -= manFourCost
-            if manBuy5.collidepoint(event.pos) and score >= manFiveCost and not manFiveOwn:
+                totalMoneyEarned -= manFourCost
+            if manBuy5.collidepoint(event.pos) and totalMoneyEarned >= manFiveCost and not manFiveOwn:
                 manFiveOwn = True
-                score -= manFiveCost
-            if buy1.collidepoint(event.pos) and score >= oneCost:
+                totalMoneyEarned -= manFiveCost
+            if buy1.collidepoint(event.pos) and totalMoneyEarned >= oneCost:
                 if oneCost < 500:
-                    boxOne += 1
-                    score -= oneCost
+                    moneyOnButtonPress[0] += 1
+                    totalMoneyEarned -= oneCost
                     oneCost *= 1.2
                 else:
-                    boxOne += 2
-                    score -= oneCost
+                    moneyOnButtonPress[0] += 2
+                    totalMoneyEarned -= oneCost
                     oneCost *= 1.1
-            if buy2.collidepoint(event.pos) and score >= twoCost:
+            if buy2.collidepoint(event.pos) and totalMoneyEarned >= twoCost:
                 if twoCost < 1000:
-                    boxTwo += 1.5
-                    score -= twoCost
+                    moneyOnButtonPress[1] += 1.5
+                    totalMoneyEarned -= twoCost
                     twoCost *= 1.35
                 else:
-                    boxTwo += 3
-                    score -= twoCost
+                    moneyOnButtonPress[1] += 3
+                    totalMoneyEarned -= twoCost
                     twoCost *= 1.25
-            if buy3.collidepoint(event.pos) and score >= threeCost:
+            if buy3.collidepoint(event.pos) and totalMoneyEarned >= threeCost:
                 if threeCost < 1500:
-                    boxThree += 5
-                    score -= threeCost
+                    moneyOnButtonPress[2] += 5
+                    totalMoneyEarned -= threeCost
                     threeCost *= 1.5
                 else:
-                    boxThree += 10
-                    score -= threeCost
+                    moneyOnButtonPress[2] += 10
+                    totalMoneyEarned -= threeCost
                     threeCost *= 1.4
-            if buy4.collidepoint(event.pos) and score >= fourCost:
+            if buy4.collidepoint(event.pos) and totalMoneyEarned >= fourCost:
                 if fourCost < 2000:
-                    boxFour += 30
-                    score -= fourCost
+                    moneyOnButtonPress[3] += 30
+                    totalMoneyEarned -= fourCost
                     fourCost *= 1.8
                 else:
-                    boxFour += 40
-                    score -= fourCost
+                    moneyOnButtonPress[3] += 40
+                    totalMoneyEarned -= fourCost
                     fourCost *= 1.6
-            if buy5.collidepoint(event.pos) and score >= fiveCost:
+            if buy5.collidepoint(event.pos) and totalMoneyEarned >= fiveCost:
                 if fiveCost < 5000:
-                    boxFive += 100
-                    score -= fiveCost
+                    moneyOnButtonPress[4] += 100
+                    totalMoneyEarned -= fiveCost
                     fiveCost *= 2
                 else:
-                    boxFive += 200
-                    score -= fiveCost
+                    moneyOnButtonPress[4] += 200
+                    totalMoneyEarned -= fiveCost
                     fiveCost *= 1.6
             
             
     screen.fill(background) ## Have our initial background on the screen
     
-    task1, length_One, draw_One = draw_Box(white, 100, boxOne, draw_One, length_One, speed_One)
-    task2, length_Two, draw_Two = draw_Box(red, 200, boxTwo, draw_Two, length_Two, speed_Two)
-    task3, length_Three, draw_Three = draw_Box(aqua, 300, boxThree, draw_Three, length_Three, speed_Three)
-    task4, length_Four, draw_Four = draw_Box(orange, 400, boxFour, draw_Four, length_Four, speed_Four)
-    task5, length_Five, draw_Five = draw_Box(navy, 500, boxFive, draw_Five, length_Five, speed_Five)
+    
+    task1, percentFillForI[0], draw_One = draw_Box(white, 100, moneyOnButtonPress[0], draw_One, percentFillForI[0], barFillingSpeed[0])
+    task2, percentFillForI[1], draw_Two = draw_Box(red, 200, moneyOnButtonPress[1], draw_Two, percentFillForI[1], barFillingSpeed[1])
+    task3, percentFillForI[2], draw_Three = draw_Box(aqua, 300, moneyOnButtonPress[2], draw_Three, percentFillForI[2], barFillingSpeed[2])
+    task4, percentFillForI[3], draw_Four = draw_Box(orange, 400, moneyOnButtonPress[3], draw_Four, percentFillForI[3], barFillingSpeed[3])
+    task5, percentFillForI[4], draw_Five = draw_Box(navy, 500, moneyOnButtonPress[4], draw_Five, percentFillForI[4], barFillingSpeed[4])
+
     buy1, manBuy1 = newButton(white, 10, oneCost, manOneCost, manOneOwn)
     buy2, manBuy2 = newButton(red, 80, twoCost, manTwoCost, manTwoOwn)
     buy3, manBuy3 = newButton(aqua, 150, threeCost, manThreeCost, manThreeOwn)
     buy4, manBuy4 = newButton(orange, 220, fourCost, manFourCost, manFourOwn)
     buy5, manBuy5 = newButton(navy, 290, fiveCost, manFiveCost, manFiveOwn)
 
-    display_score = font.render('Money: $'+str(round(score,2)), True, white, black)
-    screen.blit(display_score, (10,5))
+    displayMoney = font.render('Money: $'+str(round(totalMoneyEarned,2)), True, white, black)
+    screen.blit(displayMoney, (10,5))
+
     buyMore = font.render('Buy More: ', True, white)
     screen.blit(buyMore, (10, 580))
+
     buyMoreMan = font.render('Buy Managers: ', True, white)
     screen.blit(buyMoreMan, (10, 650))
+
     pygame.display.flip() ## Update the content of the entire display
 
 pygame.quit() ## Uninitialize all pygame modules
