@@ -28,6 +28,7 @@ timer = pygame.time.Clock() ## Help run our game at 60 FPS
 
 buttonColorsOrder = [white, red, aqua, orange, navy]
 verticalPositionOrder = [100, 200, 300, 400, 500]
+horizontalPositionOrder = [10, 80, 150, 220, 290]
 
 ## Game Variables
 
@@ -40,29 +41,9 @@ drawBarFilling = [False] * 5            # Upgrade of draw_One , Two, Three. . . 
 ## End Game Variables
 
 ## Manager Variables
-managerOwned = [False] * 5              # Upgrade of manFiveOne, Two, Three. . . Tells if the manager is owned 
-managerCost = [100, 200, 300, 400, 500] # Upgrade of manOneCost, Two, Three. . . Tells what the cost of the manager is
-buttonUpgradeCost = list(range(5))      # Upgrade of oneCost , Two ,  Three. . . Tells about the current and start cost of the button upgrade.
-
-oneCost = 1
-manOneOwn = False
-managerCost[0] = 100
-
-twoCost = 2
-manTwoOwn = False
-managerCost[1] = 500
-
-threeCost = 3
-manThreeOwn = False
-managerCost[2] = 1000
-
-fourCost = 4
-manFourOwn = False
-managerCost[3] = 3000
-
-fiveCost = 5
-manFiveOwn = False
-managerCost[4] = 5000
+managerOwned = [False] * 5                  # Upgrade of manOneOwn , Two, Three. . . Tells if the manager is owned 
+managerCost = [100, 500, 1000, 3000, 5000]  # Upgrade of manOneCost, Two, Three. . . Tells what the cost of the manager is
+buttonUpgradeCost = list(range(1, 6))       # Upgrade of oneCost , Two ,  Three. . . Tells about the current and start cost of the button upgrade.
 
 ## End Manager Variables
 
@@ -78,6 +59,7 @@ def draw_Box(color, y_cord, value, draw, length, speed):
     pygame.draw.rect(screen, color, [70, y_cord-15, 200, 30], 2)
     pygame.draw.rect(screen, color, [70, y_cord-15, length, 30])
     task = pygame.draw.circle(screen, color, (30, y_cord), 20, 5)
+
     value_text = font.render(str(round(value,1)), True, white)
     screen.blit(value_text, (16, y_cord-10))
     return task, length, draw
@@ -97,17 +79,10 @@ def newButton(color, x_coord, cost, manCost, owned):
 gameState = True ## Game Running
 while gameState:
     timer.tick(frameRate) ## Tick at the specified framerate
-    if manOneOwn and not drawBarFilling[0]:
-        drawBarFilling[0] = True
-    if manTwoOwn and not drawBarFilling[1]:
-        drawBarFilling[1] = True
-    if manThreeOwn and not drawBarFilling[2]:
-        drawBarFilling[2] = True
-    if manFourOwn and not drawBarFilling[3]:
-        drawBarFilling[3] = True
-    if manFiveOwn and not drawBarFilling[4]:
-        drawBarFilling[4] = True
-    
+    for i in range(5):
+        if managerOwned[i] and not drawBarFilling[0]:
+            drawBarFilling[0] = True
+        
     for event in pygame.event.get():
         if event.type == pygame.QUIT: ## Different from quit(). Here, its an event
             gameState = False
@@ -116,67 +91,58 @@ while gameState:
             for i in range(5):
                 if tasks[i].collidepoint(event.pos):
                     drawBarFilling[i] = True
-
-            if manBuy1.collidepoint(event.pos) and totalMoneyEarned >= managerCost[0] and not manOneOwn:
-                manOneOwn = True
-                totalMoneyEarned -= managerCost[0]
-            if manBuy2.collidepoint(event.pos) and totalMoneyEarned >= managerCost[1] and not manTwoOwn:
-                manTwoOwn = True
-                totalMoneyEarned -= managerCost[1]
-            if manBuy3.collidepoint(event.pos) and totalMoneyEarned >= managerCost[2] and not manThreeOwn:
-                manThreeOwn = True
-                totalMoneyEarned -= managerCost[2]
-            if manBuy4.collidepoint(event.pos) and totalMoneyEarned >= managerCost[3] and not manFourOwn:
-                manFourOwn = True
-                totalMoneyEarned -= managerCost[3]
-            if manBuy5.collidepoint(event.pos) and totalMoneyEarned >= managerCost[4] and not manFiveOwn:
-                manFiveOwn = True
-                totalMoneyEarned -= managerCost[4]
-            if buy1.collidepoint(event.pos) and totalMoneyEarned >= oneCost:
-                if oneCost < 500:
+                
+                if managerBuyButtons[i].collidepoint(event.pos) and totalMoneyEarned >= managerCost[i] and not managerOwned[i]:
+                    managerOwned[i] = True
+                    totalMoneyEarned -= managerCost[i]
+            
+            
+            if buy1.collidepoint(event.pos) and totalMoneyEarned >= buttonUpgradeCost[0]:
+                if buttonUpgradeCost[0] < 500:
                     moneyOnButtonPress[0] += 1
-                    totalMoneyEarned -= oneCost
-                    oneCost *= 1.2
+                    totalMoneyEarned -= buttonUpgradeCost[0]
+                    buttonUpgradeCost[0] *= 1.2
                 else:
                     moneyOnButtonPress[0] += 2
-                    totalMoneyEarned -= oneCost
-                    oneCost *= 1.1
-            if buy2.collidepoint(event.pos) and totalMoneyEarned >= twoCost:
-                if twoCost < 1000:
+                    totalMoneyEarned -= buttonUpgradeCost[0]
+                    buttonUpgradeCost[0] *= 1.1
+                    
+            if buy2.collidepoint(event.pos) and totalMoneyEarned >= buttonUpgradeCost[1]:
+                if buttonUpgradeCost[1] < 1000:
                     moneyOnButtonPress[1] += 1.5
-                    totalMoneyEarned -= twoCost
-                    twoCost *= 1.35
+                    totalMoneyEarned -= buttonUpgradeCost[1]
+                    buttonUpgradeCost[1] *= 1.35
                 else:
                     moneyOnButtonPress[1] += 3
-                    totalMoneyEarned -= twoCost
-                    twoCost *= 1.25
-            if buy3.collidepoint(event.pos) and totalMoneyEarned >= threeCost:
-                if threeCost < 1500:
+                    totalMoneyEarned -= buttonUpgradeCost[1]
+                    buttonUpgradeCost[1] *= 1.25
+            if buy3.collidepoint(event.pos) and totalMoneyEarned >= buttonUpgradeCost[2]:
+                if buttonUpgradeCost[2] < 1500:
                     moneyOnButtonPress[2] += 5
-                    totalMoneyEarned -= threeCost
-                    threeCost *= 1.5
+                    totalMoneyEarned -= buttonUpgradeCost[2]
+                    buttonUpgradeCost[2] *= 1.5
                 else:
                     moneyOnButtonPress[2] += 10
-                    totalMoneyEarned -= threeCost
-                    threeCost *= 1.4
-            if buy4.collidepoint(event.pos) and totalMoneyEarned >= fourCost:
-                if fourCost < 2000:
+                    totalMoneyEarned -= buttonUpgradeCost[2]
+                    buttonUpgradeCost[2] *= 1.4
+            if buy4.collidepoint(event.pos) and totalMoneyEarned >= buttonUpgradeCost[3]:
+                if buttonUpgradeCost[3] < 2000:
                     moneyOnButtonPress[3] += 30
-                    totalMoneyEarned -= fourCost
-                    fourCost *= 1.8
+                    totalMoneyEarned -= buttonUpgradeCost[3]
+                    buttonUpgradeCost[3] *= 1.8
                 else:
                     moneyOnButtonPress[3] += 40
-                    totalMoneyEarned -= fourCost
-                    fourCost *= 1.6
-            if buy5.collidepoint(event.pos) and totalMoneyEarned >= fiveCost:
-                if fiveCost < 5000:
+                    totalMoneyEarned -= buttonUpgradeCost[3]
+                    buttonUpgradeCost[3] *= 1.6
+            if buy5.collidepoint(event.pos) and totalMoneyEarned >= buttonUpgradeCost[4]:
+                if buttonUpgradeCost[4] < 5000:
                     moneyOnButtonPress[4] += 100
-                    totalMoneyEarned -= fiveCost
-                    fiveCost *= 2
+                    totalMoneyEarned -= buttonUpgradeCost[4]
+                    buttonUpgradeCost[4] *= 2
                 else:
                     moneyOnButtonPress[4] += 200
-                    totalMoneyEarned -= fiveCost
-                    fiveCost *= 1.6
+                    totalMoneyEarned -= buttonUpgradeCost[4]
+                    buttonUpgradeCost[4] *= 1.6
             
             
     screen.fill(background) ## Have our initial background on the screen
@@ -186,11 +152,18 @@ while gameState:
         tempTask, percentFillForI[i], drawBarFilling[i] = draw_Box(buttonColorsOrder[i], verticalPositionOrder[i], moneyOnButtonPress[i], drawBarFilling[i], percentFillForI[i], barFillingSpeed[i])
         tasks.append(tempTask)
 
-    buy1, manBuy1 = newButton(white, 10, oneCost, managerCost[0], manOneOwn)
-    buy2, manBuy2 = newButton(red, 80, twoCost, managerCost[1], manTwoOwn)
-    buy3, manBuy3 = newButton(aqua, 150, threeCost, managerCost[2], manThreeOwn)
-    buy4, manBuy4 = newButton(orange, 220, fourCost, managerCost[3], manFourOwn)
-    buy5, manBuy5 = newButton(navy, 290, fiveCost, managerCost[4], manFiveOwn)
+    buyButtons, managerBuyButtons = [], []
+    for i in range(5):
+        tempBuyButton, tempManagerBuyButton = newButton(buttonColorsOrder[i], horizontalPositionOrder[i], buttonUpgradeCost[0], managerCost[0], managerOwned[0])
+        buyButtons.append(tempBuyButton)
+        managerBuyButtons.append(tempManagerBuyButton)
+
+
+    buy1, manBuy1 = newButton(white, 10, buttonUpgradeCost[0], managerCost[0], managerOwned[0])
+    buy2, manBuy2 = newButton(red, 80, buttonUpgradeCost[1], managerCost[1], managerOwned[1])
+    buy3, manBuy3 = newButton(aqua, 150, buttonUpgradeCost[2], managerCost[2], managerOwned[2])
+    buy4, manBuy4 = newButton(orange, 220, buttonUpgradeCost[3], managerCost[3], managerOwned[3])
+    buy5, manBuy5 = newButton(navy, 290, buttonUpgradeCost[4], managerCost[4], managerOwned[4])
 
     displayMoney = font.render('Money: $'+str(round(totalMoneyEarned,2)), True, white, black)
     screen.blit(displayMoney, (10,5))
