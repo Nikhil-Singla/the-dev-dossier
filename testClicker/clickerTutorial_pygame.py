@@ -80,8 +80,8 @@ gameState = True ## Game Running
 while gameState:
     timer.tick(frameRate) ## Tick at the specified framerate
     for i in range(5):
-        if managerOwned[i] and not drawBarFilling[0]:
-            drawBarFilling[0] = True
+        if managerOwned[i] and not drawBarFilling[i]:
+            drawBarFilling[i] = True
         
     for event in pygame.event.get():
         if event.type == pygame.QUIT: ## Different from quit(). Here, its an event
@@ -92,10 +92,12 @@ while gameState:
                 if tasks[i].collidepoint(event.pos):
                     drawBarFilling[i] = True
                 
+
+            for i in range(5):
                 if managerBuyButtons[i].collidepoint(event.pos) and totalMoneyEarned >= managerCost[i] and not managerOwned[i]:
                     managerOwned[i] = True
                     totalMoneyEarned -= managerCost[i]
-            
+
             
             if buy1.collidepoint(event.pos) and totalMoneyEarned >= buttonUpgradeCost[0]:
                 if buttonUpgradeCost[0] < 500:
@@ -106,7 +108,7 @@ while gameState:
                     moneyOnButtonPress[0] += 2
                     totalMoneyEarned -= buttonUpgradeCost[0]
                     buttonUpgradeCost[0] *= 1.1
-                    
+
             if buy2.collidepoint(event.pos) and totalMoneyEarned >= buttonUpgradeCost[1]:
                 if buttonUpgradeCost[1] < 1000:
                     moneyOnButtonPress[1] += 1.5
@@ -116,6 +118,7 @@ while gameState:
                     moneyOnButtonPress[1] += 3
                     totalMoneyEarned -= buttonUpgradeCost[1]
                     buttonUpgradeCost[1] *= 1.25
+
             if buy3.collidepoint(event.pos) and totalMoneyEarned >= buttonUpgradeCost[2]:
                 if buttonUpgradeCost[2] < 1500:
                     moneyOnButtonPress[2] += 5
@@ -125,6 +128,7 @@ while gameState:
                     moneyOnButtonPress[2] += 10
                     totalMoneyEarned -= buttonUpgradeCost[2]
                     buttonUpgradeCost[2] *= 1.4
+
             if buy4.collidepoint(event.pos) and totalMoneyEarned >= buttonUpgradeCost[3]:
                 if buttonUpgradeCost[3] < 2000:
                     moneyOnButtonPress[3] += 30
@@ -134,6 +138,7 @@ while gameState:
                     moneyOnButtonPress[3] += 40
                     totalMoneyEarned -= buttonUpgradeCost[3]
                     buttonUpgradeCost[3] *= 1.6
+
             if buy5.collidepoint(event.pos) and totalMoneyEarned >= buttonUpgradeCost[4]:
                 if buttonUpgradeCost[4] < 5000:
                     moneyOnButtonPress[4] += 100
@@ -154,16 +159,15 @@ while gameState:
 
     buyButtons, managerBuyButtons = [], []
     for i in range(5):
-        tempBuyButton, tempManagerBuyButton = newButton(buttonColorsOrder[i], horizontalPositionOrder[i], buttonUpgradeCost[0], managerCost[0], managerOwned[0])
+        tempBuyButton, tempManagerBuyButton = newButton(buttonColorsOrder[i], horizontalPositionOrder[i], buttonUpgradeCost[i], managerCost[i], managerOwned[i])
         buyButtons.append(tempBuyButton)
         managerBuyButtons.append(tempManagerBuyButton)
 
-
-    buy1, manBuy1 = newButton(white, 10, buttonUpgradeCost[0], managerCost[0], managerOwned[0])
-    buy2, manBuy2 = newButton(red, 80, buttonUpgradeCost[1], managerCost[1], managerOwned[1])
-    buy3, manBuy3 = newButton(aqua, 150, buttonUpgradeCost[2], managerCost[2], managerOwned[2])
-    buy4, manBuy4 = newButton(orange, 220, buttonUpgradeCost[3], managerCost[3], managerOwned[3])
-    buy5, manBuy5 = newButton(navy, 290, buttonUpgradeCost[4], managerCost[4], managerOwned[4])
+    buy1, _ = newButton(white, 10, buttonUpgradeCost[0], managerCost[0], managerOwned[0])
+    buy2, _ = newButton(red, 80, buttonUpgradeCost[1], managerCost[1], managerOwned[1])
+    buy3, _ = newButton(aqua, 150, buttonUpgradeCost[2], managerCost[2], managerOwned[2])
+    buy4, _ = newButton(orange, 220, buttonUpgradeCost[3], managerCost[3], managerOwned[3])
+    buy5, _ = newButton(navy, 290, buttonUpgradeCost[4], managerCost[4], managerOwned[4])
 
     displayMoney = font.render('Money: $'+str(round(totalMoneyEarned,2)), True, white, black)
     screen.blit(displayMoney, (10,5))
