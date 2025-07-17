@@ -5,6 +5,9 @@
 import pygame  
 pygame.init()
 
+FIRST_ITEM = 0
+SECOND_ITEM = 1
+
 ## Color Palette = (R, G, B) values
 aqua = (0,255,255)
 navy = (0,0,205)
@@ -29,6 +32,10 @@ timer = pygame.time.Clock() ## Help run our game at 60 FPS
 buttonColorsOrder = [white, red, aqua, orange, navy]
 verticalPositionOrder = [100, 200, 300, 400, 500]
 horizontalPositionOrder = [10, 80, 150, 220, 290]
+
+buttonUpgradeScalingFactor = [(1.2, 1.1), (1.35, 1.25), (1.5, 1.4), (1.8, 1.6), (2, 1.6)]
+# Multiplicative scaling factor that decides the cost of the button. The first number is before the lategame threshold is reached, 
+# and the second number is after the lategame threshold is crossed.
 
 ## Game Variables
 
@@ -99,15 +106,16 @@ while gameState:
                     totalMoneyEarned -= managerCost[i]
 
             
+            
             if buy1.collidepoint(event.pos) and totalMoneyEarned >= buttonUpgradeCost[0]:
                 if buttonUpgradeCost[0] < 500:
                     moneyOnButtonPress[0] += 1
                     totalMoneyEarned -= buttonUpgradeCost[0]
-                    buttonUpgradeCost[0] *= 1.2
+                    buttonUpgradeCost[0] *= buttonUpgradeScalingFactor[0][FIRST_ITEM]
                 else:
                     moneyOnButtonPress[0] += 2
                     totalMoneyEarned -= buttonUpgradeCost[0]
-                    buttonUpgradeCost[0] *= 1.1
+                    buttonUpgradeCost[0] *= buttonUpgradeScalingFactor[0][SECOND_ITEM]
 
             if buy2.collidepoint(event.pos) and totalMoneyEarned >= buttonUpgradeCost[1]:
                 if buttonUpgradeCost[1] < 1000:
