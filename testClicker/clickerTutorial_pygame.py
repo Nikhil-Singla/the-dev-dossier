@@ -37,6 +37,15 @@ buttonUpgradeScalingFactor = [(1.2, 1.1), (1.35, 1.25), (1.5, 1.4), (1.8, 1.6), 
 # Multiplicative scaling factor that decides the cost of the button. The first number is before the lategame threshold is reached, 
 # and the second number is after the lategame threshold is crossed.
 
+moneyIncreasePerUpgrade = [(1, 2), (1.5, 3), (5, 10), (30, 40), (100, 200)]
+# Additive factor that increases the output of buttons after upgrade. The first number is for the beginner upgrade, and then the
+# second number takes effect once the late game threshold has been crossed in the cost of upgrades.For Example:
+# Button 1 increases output by 1 per upgrade, till it costs more than 500, then it increases output by 2 per upgrade
+
+lateGameThreshold = [500,1000,1500,2000,5000]
+# Late game threhold. As long as button cost is below this number, that button hasn't reached late game.
+
+
 ## Game Variables
 
 moneyOnButtonPress = [1, 2, 3, 4, 5]    # Upgrade of Box One, Two, Three. . .    Tells about the money gained on button press
@@ -106,56 +115,56 @@ while gameState:
                     totalMoneyEarned -= managerCost[i]
 
             
-            
-            if buy1.collidepoint(event.pos) and totalMoneyEarned >= buttonUpgradeCost[0]:
-                if buttonUpgradeCost[0] < 500:
-                    moneyOnButtonPress[0] += 1
-                    totalMoneyEarned -= buttonUpgradeCost[0]
-                    buttonUpgradeCost[0] *= buttonUpgradeScalingFactor[0][FIRST_ITEM]
-                else:
-                    moneyOnButtonPress[0] += 2
-                    totalMoneyEarned -= buttonUpgradeCost[0]
-                    buttonUpgradeCost[0] *= buttonUpgradeScalingFactor[0][SECOND_ITEM]
+            for i in range(5):
+                if buyButtons[i].collidepoint(event.pos) and totalMoneyEarned >= buttonUpgradeCost[i]:
+                    if buttonUpgradeCost[i] < lateGameThreshold[i]:
+                        moneyOnButtonPress[i] += moneyIncreasePerUpgrade[i][FIRST_ITEM]
+                        totalMoneyEarned -= buttonUpgradeCost[i]
+                        buttonUpgradeCost[i] *= buttonUpgradeScalingFactor[i][FIRST_ITEM]
+                    else:
+                        moneyOnButtonPress[i] += moneyIncreasePerUpgrade[i][SECOND_ITEM]
+                        totalMoneyEarned -= buttonUpgradeCost[i]
+                        buttonUpgradeCost[i] *= buttonUpgradeScalingFactor[i][SECOND_ITEM]
 
-            if buy2.collidepoint(event.pos) and totalMoneyEarned >= buttonUpgradeCost[1]:
-                if buttonUpgradeCost[1] < 1000:
-                    moneyOnButtonPress[1] += 1.5
-                    totalMoneyEarned -= buttonUpgradeCost[1]
-                    buttonUpgradeCost[1] *= 1.35
-                else:
-                    moneyOnButtonPress[1] += 3
-                    totalMoneyEarned -= buttonUpgradeCost[1]
-                    buttonUpgradeCost[1] *= 1.25
+            # if buy2.collidepoint(event.pos) and totalMoneyEarned >= buttonUpgradeCost[1]:
+            #     if buttonUpgradeCost[1] < 1000:
+            #         moneyOnButtonPress[1] += 1.5
+            #         totalMoneyEarned -= buttonUpgradeCost[1]
+            #         buttonUpgradeCost[1] *= 1.35
+            #     else:
+            #         moneyOnButtonPress[1] += 3
+            #         totalMoneyEarned -= buttonUpgradeCost[1]
+            #         buttonUpgradeCost[1] *= 1.25
 
-            if buy3.collidepoint(event.pos) and totalMoneyEarned >= buttonUpgradeCost[2]:
-                if buttonUpgradeCost[2] < 1500:
-                    moneyOnButtonPress[2] += 5
-                    totalMoneyEarned -= buttonUpgradeCost[2]
-                    buttonUpgradeCost[2] *= 1.5
-                else:
-                    moneyOnButtonPress[2] += 10
-                    totalMoneyEarned -= buttonUpgradeCost[2]
-                    buttonUpgradeCost[2] *= 1.4
+            # if buy3.collidepoint(event.pos) and totalMoneyEarned >= buttonUpgradeCost[2]:
+            #     if buttonUpgradeCost[2] < 1500:
+            #         moneyOnButtonPress[2] += 5
+            #         totalMoneyEarned -= buttonUpgradeCost[2]
+            #         buttonUpgradeCost[2] *= 1.5
+            #     else:
+            #         moneyOnButtonPress[2] += 10
+            #         totalMoneyEarned -= buttonUpgradeCost[2]
+            #         buttonUpgradeCost[2] *= 1.4
 
-            if buy4.collidepoint(event.pos) and totalMoneyEarned >= buttonUpgradeCost[3]:
-                if buttonUpgradeCost[3] < 2000:
-                    moneyOnButtonPress[3] += 30
-                    totalMoneyEarned -= buttonUpgradeCost[3]
-                    buttonUpgradeCost[3] *= 1.8
-                else:
-                    moneyOnButtonPress[3] += 40
-                    totalMoneyEarned -= buttonUpgradeCost[3]
-                    buttonUpgradeCost[3] *= 1.6
+            # if buy4.collidepoint(event.pos) and totalMoneyEarned >= buttonUpgradeCost[3]:
+            #     if buttonUpgradeCost[3] < 2000:
+            #         moneyOnButtonPress[3] += 30
+            #         totalMoneyEarned -= buttonUpgradeCost[3]
+            #         buttonUpgradeCost[3] *= 1.8
+            #     else:
+            #         moneyOnButtonPress[3] += 40
+            #         totalMoneyEarned -= buttonUpgradeCost[3]
+            #         buttonUpgradeCost[3] *= 1.6
 
-            if buy5.collidepoint(event.pos) and totalMoneyEarned >= buttonUpgradeCost[4]:
-                if buttonUpgradeCost[4] < 5000:
-                    moneyOnButtonPress[4] += 100
-                    totalMoneyEarned -= buttonUpgradeCost[4]
-                    buttonUpgradeCost[4] *= 2
-                else:
-                    moneyOnButtonPress[4] += 200
-                    totalMoneyEarned -= buttonUpgradeCost[4]
-                    buttonUpgradeCost[4] *= 1.6
+            # if buy5.collidepoint(event.pos) and totalMoneyEarned >= buttonUpgradeCost[4]:
+            #     if buttonUpgradeCost[4] < 5000:
+            #         moneyOnButtonPress[4] += 100
+            #         totalMoneyEarned -= buttonUpgradeCost[4]
+            #         buttonUpgradeCost[4] *= 2
+            #     else:
+            #         moneyOnButtonPress[4] += 200
+            #         totalMoneyEarned -= buttonUpgradeCost[4]
+            #         buttonUpgradeCost[4] *= 1.6
             
             
     screen.fill(background) ## Have our initial background on the screen
@@ -166,16 +175,17 @@ while gameState:
         tasks.append(tempTask)
 
     buyButtons, managerBuyButtons = [], []
+    
     for i in range(5):
         tempBuyButton, tempManagerBuyButton = newButton(buttonColorsOrder[i], horizontalPositionOrder[i], buttonUpgradeCost[i], managerCost[i], managerOwned[i])
         buyButtons.append(tempBuyButton)
         managerBuyButtons.append(tempManagerBuyButton)
 
-    buy1, _ = newButton(white, 10, buttonUpgradeCost[0], managerCost[0], managerOwned[0])
-    buy2, _ = newButton(red, 80, buttonUpgradeCost[1], managerCost[1], managerOwned[1])
-    buy3, _ = newButton(aqua, 150, buttonUpgradeCost[2], managerCost[2], managerOwned[2])
-    buy4, _ = newButton(orange, 220, buttonUpgradeCost[3], managerCost[3], managerOwned[3])
-    buy5, _ = newButton(navy, 290, buttonUpgradeCost[4], managerCost[4], managerOwned[4])
+    # buy1, _ = newButton(white, 10, buttonUpgradeCost[0], managerCost[0], managerOwned[0])
+    # buy2, _ = newButton(red, 80, buttonUpgradeCost[1], managerCost[1], managerOwned[1])
+    # buy3, _ = newButton(aqua, 150, buttonUpgradeCost[2], managerCost[2], managerOwned[2])
+    # buy4, _ = newButton(orange, 220, buttonUpgradeCost[3], managerCost[3], managerOwned[3])
+    # buy5, _ = newButton(navy, 290, buttonUpgradeCost[4], managerCost[4], managerOwned[4])
 
     displayMoney = font.render('Money: $'+str(round(totalMoneyEarned,2)), True, white, black)
     screen.blit(displayMoney, (10,5))
