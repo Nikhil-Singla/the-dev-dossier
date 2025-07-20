@@ -31,8 +31,8 @@ timer = pygame.time.Clock()
 
 # Button Configuration
 buttonColorsOrder = [white, red, aqua, orange, navy]
-verticalPositionOrder = [100, 200, 300, 400, 500]
-horizontalPositionOrder = [10, 80, 150, 220, 290]
+verticalPositionOrder = [100, 200, 300, 400, 500]  # Y Coordinates of the money earning buttons and bar
+horizontalPositionOrder = [10, 80, 150, 220, 290] # X coordinates of the manager buying buttons
 
 # Upgrade Scaling Factors: (pre-lategame, post-lategame)
 buttonUpgradeScalingFactor = [(1.2, 1.1), (1.35, 1.25), (1.5, 1.4), (1.8, 1.6), (2, 1.6)]
