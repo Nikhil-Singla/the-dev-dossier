@@ -112,7 +112,7 @@ models = {
     'Perceptron':         Perceptron(),
 }
 
-# 5) Train & evaluate
+# Train & evaluate
 for name, clf in models.items():
     clf.fit(X_train, y_train)
     y_pred = clf.predict(X_test)
