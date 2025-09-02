@@ -1,5 +1,45 @@
+# 🚧 UNDER CONSTRUCTION 🚧
+
+**This repository is currently under construction.**
+
+We're hard at work building something awesome!  
+Check back soon for updates.
+
+---
+
+###  What’s This Repo About?
+  
+This repository contains the projects that I have developed during my Computer Science journey over the years!
+
+---
+
+### ⏳ Status
+
+- [X] Repo initialization
+- [X] Core functionality
+- [ ] Documentation
+- [ ] Testing
+- [ ] Release draft
+
+---
+
+###  Stay Updated
+
+Feel free to ⭐ this repo to get updates when things land!
+
+---
+
+<!--
+
+###  License
+
+*(If you've already chosen a license, note it here—for example, MIT, Apache 2.0, etc.)*
+
+
+
+
 # My Computer Science Projects
-This repository contains the projects that I have developed during my Computer Science education over the years.
+education over the years.
 
 ## Projects
 - Project 1: Particle System (Interactive particle simulator)
@@ -34,3 +74,4 @@ This repository contains the projects that I have developed during my Computer S
 1. Clone the repository.
 2. Navigate to the project directory.
 3. Run the appropriate file with the correct compiler.
+-->
