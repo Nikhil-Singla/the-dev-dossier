@@ -18,8 +18,8 @@ This repository contains the projects that I have developed during my Computer S
 - [X] Repo initialization
 - [X] Core functionality
 - [ ] Documentation
-- [ ] Testing
-- [ ] Release draft
+- [ ] Categorization
+- [ ] Updated Projects
 
 ---
 
@@ -75,3 +75,4 @@ education over the years.
 2. Navigate to the project directory.
 3. Run the appropriate file with the correct compiler.
 -->
+
