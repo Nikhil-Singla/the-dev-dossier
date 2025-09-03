@@ -1,0 +1,12 @@
+IGN = Ignore
+DOC = Documentation Code
+XXX = Order number of commit (individual to each folder and goes from 001 to 999)
+
+ENV = Environment Setup/Change code
+CFG = Config Setup/Change code
+STYLE = Style changes without changing the logic
+
+FIN = File is finished and the project is over
+BUG = Needs bug fixing
+INC = Incomplete Code
+COM = Needs comments, no status about the code itself
