@@ -6,7 +6,6 @@ CFG = Config Setup/Change code
 ENV = Environment Setup/Change code
 DBG = Used to practice debugging and optimization.
 
-INC = Incomplete Code
 BUG = Needs bug fixing
 FIN = File is finished and the project is over
 COM = Needs comments, no status about the code itself
@@ -17,4 +16,6 @@ VIBES = Done using vibe coding. Believe it or not, AI is here to stay
 
 Format:
 [XXX-<Name of Project>] [Extra tags] Description of changes if needed
+
 Optional Styling Choice: Priority given to the order in which the tags appear.
+Code is Finished if it has FIN tag, and Incomplete otherwise.
