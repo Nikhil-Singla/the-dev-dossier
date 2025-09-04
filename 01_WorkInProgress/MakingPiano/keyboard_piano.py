@@ -5,51 +5,53 @@ from tkinter import messagebox, Toplevel
 # Basic piano behavior
 # ------------------------
 def play_note(note):
+    """Prints to console the note played"""
     print(f"Playing note: {note}")
 
 def close_piano(event=None):
+    """Destroys the root widget in the source script"""
     root.destroy()
 
 # ------------------------
 # Globals for rebinding
 # ------------------------
 active_rebind_entry = None   # The Entry widget currently being edited
-active_function = None       # The function (e.g., "Play Note 1") being rebound
+active_function = None       # The function (e.g., "Play Sound 1") being rebound
 swap_mode = True             # Swap ON by default
 preference_entries = {}      # function_name -> Entry widget
 
 # Function labels (fixed order for Preferences UI)
 FUNCTIONS = [
-    'Play Note 1',
-    'Play Note 2',
-    'Play Note 3',
-    'Play Note 4',
-    'Play Note 5',
-    'Play Note 6',
-    'Play Note 7',
+    'Play Sound 1',
+    'Play Sound 2',
+    'Play Sound 3',
+    'Play Sound 4',
+    'Play Sound 5',
+    'Play Sound 6',
+    'Play Sound 7',
     'Quit Piano'
 ]
 
-# Map function -> musical note (only for Play Note 1..7)
+# Map function -> musical note (only for Play Sound 1..7)
 function_to_note = {
-    'Play Note 1': 'C4',
-    'Play Note 2': 'D4',
-    'Play Note 3': 'E4',
-    'Play Note 4': 'F4',
-    'Play Note 5': 'G4',
-    'Play Note 6': 'A4',
-    'Play Note 7': 'B4'
+    'Play Sound 1': 'C4',
+    'Play Sound 2': 'D4',
+    'Play Sound 3': 'E4',
+    'Play Sound 4': 'F4',
+    'Play Sound 5': 'G4',
+    'Play Sound 6': 'A4',
+    'Play Sound 7': 'B4'
 }
 
 # Initial bindings: function -> key
 func_to_key = {
-    'Play Note 1': 'a',
-    'Play Note 2': 's',
-    'Play Note 3': 'd',
-    'Play Note 4': 'f',
-    'Play Note 5': 'g',
-    'Play Note 6': 'h',
-    'Play Note 7': 'j',
+    'Play Sound 1': 'a',
+    'Play Sound 2': 's',
+    'Play Sound 3': 'd',
+    'Play Sound 4': 'f',
+    'Play Sound 5': 'g',
+    'Play Sound 6': 'h',
+    'Play Sound 7': 'j',
     'Quit Piano':  'Escape'
 }
 
