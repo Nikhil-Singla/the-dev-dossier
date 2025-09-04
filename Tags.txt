@@ -1,12 +1,18 @@
-IGN = Ignore
-DOC = Documentation Code
 XXX = Order number of commit (individual to each folder and goes from 001 to 999)
 
-ENV = Environment Setup/Change code
+IGN = Ignore
+DOC = Documentation Code
 CFG = Config Setup/Change code
-STYLE = Style changes without changing the logic
+ENV = Environment Setup/Change code
 
-FIN = File is finished and the project is over
-BUG = Needs bug fixing
+STYLE = Style changes without changing the logic
+ASSET = Adding assets to the repo
+VIBES = Done using vibe coding. Believe it or not, AI is here to stay
+
 INC = Incomplete Code
+BUG = Needs bug fixing
+FIN = File is finished and the project is over
 COM = Needs comments, no status about the code itself
+
+Format:
+[XXX-<Name of Project>] [Extra tags] Tag description
