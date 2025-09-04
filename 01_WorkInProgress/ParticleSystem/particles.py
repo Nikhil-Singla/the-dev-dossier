@@ -18,11 +18,11 @@ yellow = (255,255,0)
 ## End Palette
 
 ## Screen dimensions
-length = 300 
-breadth = 300
+length_of_particle_window = 600 
+breadth_of_particle_window = 600
 ## Screen dimensions end
 
-screen = pygame.display.set_mode([length, breadth]) ## Resolution
+screen = pygame.display.set_mode([length_of_particle_window, breadth_of_particle_window]) ## Resolution
 pygame.display.set_caption('Particle Simulator')    ## Title of the game
 background = black                                  ## Variable that can be edited later
 frameRate = 60                                      ## Framerate 
@@ -48,8 +48,8 @@ class funcTimer():
         
 class Particle():
     def __init__(self, color):
-        self.x = random.randint(0, length)      ## X Cordinate randomization
-        self.y = random.randint(0, breadth)     ## Y Cordinate randomization
+        self.x = random.randint(0, length_of_particle_window)      ## X Cordinate randomization
+        self.y = random.randint(0, breadth_of_particle_window)     ## Y Cordinate randomization
         self.coords = [self.x, self.y]          ## Store coordinates in Tuple
         self.col = color                        ## Set color according to initialization
 
@@ -68,7 +68,7 @@ class Particle():
         ## Attraction Force with gravity when g < 0
 
     def centralize(self):
-        self.push([int(length/2), int(breadth/2)], max(length, breadth), -0.02)
+        self.push([int(length_of_particle_window/2), int(breadth_of_particle_window/2)], max(length_of_particle_window, breadth_of_particle_window), -0.02)
 
 ## Reference Move Function Code
 """def move(particle1, particle2, g):
@@ -101,7 +101,7 @@ def move(list):
     global g
     for i in range(len(list)):
         for j in range(len(list)):
-            list[i].push(list[j].coords, max(length, breadth), g)
+            list[i].push(list[j].coords, max(length_of_particle_window, breadth_of_particle_window), g)
 
 def average(list):
     sumx = 0
