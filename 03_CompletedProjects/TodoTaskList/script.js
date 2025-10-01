@@ -198,10 +198,10 @@ function toggleTask(taskId) {
 
 /* -----------------------
    RENDER: renderProgress()
-   - Purpose: update the level and XP indicators in the UI for the current category.
+   - Purpose: update the level and XP indicators in the UI for the current category, using a horizontal XP bar.
    - Inputs: uses `currentCategoryId` to find the category object and read level/xp.
-   - Outputs: writes to #levelDisplay, #xpDisplay, and #nextLevelXP.
-   - Side-effects: none.
+   - Outputs: writes to #levelDisplay, #xpDisplay, #nextLevelXP, and sets #xpBar width.
+   - Side-effects: updates aria-valuenow on the progress container for accessibility.
    - Edge-cases: does nothing when no category is selected.
    ----------------------- */
 function renderProgress() {
@@ -209,7 +209,17 @@ function renderProgress() {
     const cat = data.categories.find(c => c.id === currentCategoryId);
     document.getElementById('levelDisplay').textContent = cat.level;
     document.getElementById('xpDisplay').textContent = cat.xp;
-    document.getElementById('nextLevelXP').textContent = cat.level * 5;
+    const xpForNext = cat.level * 5;
+    document.getElementById('nextLevelXP').textContent = xpForNext;
+
+    // Compute percentage fill for the XP bar (cap at 100)
+    const percent = Math.min(100, Math.round((cat.xp / xpForNext) * 100));
+    const xpBar = document.getElementById('xpBar');
+    if (xpBar) xpBar.style.width = percent + '%';
+
+    // Update progressbar aria value (optional)
+    const bar = document.querySelector('.xp-bar');
+    if (bar) bar.setAttribute('aria-valuenow', percent.toString());
 }
 
 /* -----------------------
