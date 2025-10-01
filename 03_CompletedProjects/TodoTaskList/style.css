@@ -65,6 +65,21 @@ section#tasks-section {
   margin-top: 20px;
 }
 
+#controls {
+  margin-top: 16px;
+}
+#resetBtn {
+  background: #c94a4a;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+#resetBtn:hover {
+  opacity: 0.9;
+}
+
 /* Skin: Dark Theme */
 body.skin-dark {
   background: #1e1e1e;
@@ -79,4 +94,3 @@ body.skin-dark #categories {
 body.skin-dark #taskList li.completed {
   color: #666;
 }
-/* Additional skins/themes could be added similarly */

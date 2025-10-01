@@ -4,21 +4,49 @@
 let data = { categories: [] };
 let currentCategoryId = null;
 
-// Load data from localStorage
+/* -----------------------
+   PERSISTENCE: loadData()
+   - Purpose: read saved app state from localStorage and populate `data`.
+   - Inputs: none (reads "taskrpg" key from localStorage).
+   - Outputs: sets the module-scoped `data` variable if saved data exists.
+   - Side-effects: none beyond reading/parsing localStorage.
+   - Notes: silently ignores parse errors (assumes valid JSON).
+   ----------------------- */
 function loadData() {
     const saved = localStorage.getItem('taskrpg');
     if (saved) data = JSON.parse(saved);
 }
+
+/* -----------------------
+   PERSISTENCE: saveData()
+   - Purpose: serialize current `data` and persist to localStorage.
+   - Inputs: uses the module-scoped `data`.
+   - Outputs: writes to localStorage key "taskrpg".
+   - Side-effects: overwrites previous "taskrpg" value in localStorage.
+   ----------------------- */
 function saveData() {
     localStorage.setItem('taskrpg', JSON.stringify(data));
 }
 
-// Generate a simple unique ID (using timestamp)
+/* -----------------------
+   ID GENERATION: generateId()
+   - Purpose: create a simple (non-cryptographic) unique identifier for categories/tasks.
+   - Inputs: none.
+   - Outputs: returns a string based on the current timestamp.
+   - Side-effects: none.
+   - Notes: collisions are extremely unlikely in normal UI usage but possible if called multiple times in the same ms.
+   ----------------------- */
 function generateId() {
     return Date.now().toString();
 }
 
-// Render the category list on the left
+/* -----------------------
+   RENDER: renderCategories()
+   - Purpose: draw the category list in the left-hand UI.
+   - Inputs: reads `data.categories` and `currentCategoryId`.
+   - Outputs: updates the DOM element with id "categoryList".
+   - Side-effects: attaches click handlers to each created list item that call selectCategory().
+   ----------------------- */
 function renderCategories() {
     const categoryList = document.getElementById('categoryList');
     categoryList.innerHTML = '';
@@ -32,7 +60,13 @@ function renderCategories() {
     });
 }
 
-// Select a category to view/edit its tasks
+/* -----------------------
+   NAVIGATION: selectCategory(id)
+   - Purpose: set the active category for the UI and update visible details.
+   - Inputs: id (string) - the category id to select.
+   - Outputs: updates module-scoped `currentCategoryId`.
+   - Side-effects: re-renders categories, tasks, and progress displays.
+   ----------------------- */
 function selectCategory(id) {
     currentCategoryId = id;
     renderCategories();
@@ -40,7 +74,14 @@ function selectCategory(id) {
     renderProgress();
 }
 
-// Add a new category
+/* -----------------------
+   MUTATION: addCategory()
+   - Purpose: create a new category from the UI input and persist it.
+   - Inputs: reads the #newCategoryInput element value.
+   - Outputs: appends a new category object to `data.categories`.
+   - Side-effects: saves to localStorage, clears the input, and re-renders category list.
+   - Validation: ignores empty/whitespace-only names.
+   ----------------------- */
 function addCategory() {
     const input = document.getElementById('newCategoryInput');
     const name = input.value.trim();
@@ -58,7 +99,14 @@ function addCategory() {
     renderCategories();
 }
 
-// Render the task list for the current category
+/* -----------------------
+   RENDER: renderTasks()
+   - Purpose: show tasks for the currently selected category in the main pane.
+   - Inputs: reads `currentCategoryId` and `data.categories`.
+   - Outputs: updates #categoryTitle and #taskList in the DOM.
+   - Side-effects: attaches click handlers to task items that toggle completion via toggleTask().
+   - Edge-cases: if no category selected, clears task list and prompts user.
+   ----------------------- */
 function renderTasks() {
     const title = document.getElementById('categoryTitle');
     const taskList = document.getElementById('taskList');
@@ -87,7 +135,14 @@ function renderTasks() {
     });
 }
 
-// Add a new task to the current category
+/* -----------------------
+   MUTATION: addTask()
+   - Purpose: add a new task under the currently selected category.
+   - Inputs: reads #newTaskInput and #newTaskDaily checkbox; requires currentCategoryId to be set.
+   - Outputs: pushes a new task object into the category's tasks array.
+   - Side-effects: saves data to localStorage, clears inputs, re-renders tasks.
+   - Validation: ignores empty task text or when no category is selected.
+   ----------------------- */
 function addTask() {
     const input = document.getElementById('newTaskInput');
     const dailyCheckbox = document.getElementById('newTaskDaily');
@@ -108,7 +163,14 @@ function addTask() {
     renderTasks();
 }
 
-// Toggle task done/undone; award XP if marking done
+/* -----------------------
+   MUTATION: toggleTask(taskId)
+   - Purpose: toggle a task between done/undone; award XP when marking done.
+   - Inputs: taskId (string) identifying the task within the current category.
+   - Outputs: updates task.done, task.lastCompleted, category xp/level as needed.
+   - Side-effects: persists changes, re-renders tasks and progress; may show alert on level up.
+   - Rules: marking done increments xp by 1; level up occurs when xp >= level * 5.
+   ----------------------- */
 function toggleTask(taskId) {
     const cat = data.categories.find(c => c.id === currentCategoryId);
     const task = cat.tasks.find(t => t.id === taskId);
@@ -118,7 +180,7 @@ function toggleTask(taskId) {
         task.done = true;
         task.lastCompleted = new Date().toDateString();
         cat.xp++;
-        // Check for level up (every 5 XP)
+        // Check for level up (every 5 XP per level)
         const xpForNext = cat.level * 5;
         if (cat.xp >= xpForNext) {
             cat.level++;
@@ -126,7 +188,7 @@ function toggleTask(taskId) {
             unlockSkins(cat.level);
         }
     } else {
-        // Uncheck task (done -> undone); no XP deduction
+        // Uncheck task (done -> undone); no XP deduction by design
         task.done = false;
     }
     saveData();
@@ -134,7 +196,14 @@ function toggleTask(taskId) {
     renderProgress();
 }
 
-// Update the progress display (level and XP)
+/* -----------------------
+   RENDER: renderProgress()
+   - Purpose: update the level and XP indicators in the UI for the current category.
+   - Inputs: uses `currentCategoryId` to find the category object and read level/xp.
+   - Outputs: writes to #levelDisplay, #xpDisplay, and #nextLevelXP.
+   - Side-effects: none.
+   - Edge-cases: does nothing when no category is selected.
+   ----------------------- */
 function renderProgress() {
     if (!currentCategoryId) return;
     const cat = data.categories.find(c => c.id === currentCategoryId);
@@ -143,7 +212,14 @@ function renderProgress() {
     document.getElementById('nextLevelXP').textContent = cat.level * 5;
 }
 
-// Unlock skins when reaching certain levels
+/* -----------------------
+   UNLOCKS: unlockSkins(level)
+   - Purpose: enable UI skin options based on category level milestones.
+   - Inputs: level (number) - the newly reached level.
+   - Outputs: manipulates the DOM <option> disabled property for available skins.
+   - Side-effects: toggles availability of the "dark" option when level >= 2.
+   - Notes: This is UI-only; actual style changes are applied via changeSkin().
+   ----------------------- */
 function unlockSkins(level) {
     const skinSelector = document.getElementById('skinSelector');
     if (!skinSelector) return;
@@ -154,13 +230,26 @@ function unlockSkins(level) {
     }
 }
 
-// Apply the selected skin/theme
+/* -----------------------
+   UI: changeSkin()
+   - Purpose: apply the selected skin by toggling a CSS class on <body>.
+   - Inputs: reads value of #skinSelector.
+   - Outputs: sets document.body.className to "skin-<value>" or clears it.
+   - Side-effects: affects page appearance via CSS.
+   ----------------------- */
 function changeSkin() {
     const skin = document.getElementById('skinSelector').value;
     document.body.className = skin ? 'skin-' + skin : '';
 }
 
-// Reset daily tasks on a new day
+/* -----------------------
+   DAILY MAINTENANCE: dailyResetCheck()
+   - Purpose: reset tasks that are marked "daily" if they were completed on a prior day.
+   - Inputs: compares each task.lastCompleted to today's date string.
+   - Outputs: sets task.done = false for daily tasks not completed today.
+   - Side-effects: persists changes and re-renders tasks if any were reset.
+   - Notes: idempotent if called multiple times on the same day.
+   ----------------------- */
 function dailyResetCheck() {
     const today = new Date().toDateString();
     let changed = false;
@@ -178,12 +267,40 @@ function dailyResetCheck() {
     }
 }
 
-// Initialization: load data and set up event handlers
+/* -----------------------
+   RESET: resetAll()
+   - Purpose: clear application data from localStorage/sessionStorage and do a full page reload.
+   - Inputs: none.
+   - Outputs: removes "taskrpg" key from localStorage and clears sessionStorage.
+   - Side-effects: forces a location.reload() which resets in-memory state and the UI.
+   - Notes: this is a hard reset for client-side state (does not affect HttpOnly cookies or server state).
+   ----------------------- */
+function resetAll() {
+    // Clear app storage
+    localStorage.removeItem('taskrpg'); // remove app data
+    // Optionally clear sessionStorage
+    sessionStorage.clear();
+    // Reload to start fresh
+    location.reload();
+}
+
+/* -----------------------
+   BOOTSTRAP: init()
+   - Purpose: initialize the app on DOMContentLoaded: load data, bind UI handlers, and render initial state.
+   - Inputs: none (reads DOM elements by id).
+   - Outputs: registers event listeners and triggers initial render functions.
+   - Side-effects: attaches listeners to skin selector, add buttons, and reset button; runs daily reset check.
+   ----------------------- */
 function init() {
     loadData();
     document.getElementById('skinSelector').addEventListener('change', changeSkin);
     document.getElementById('addCategoryBtn').addEventListener('click', addCategory);
     document.getElementById('addTaskBtn').addEventListener('click', addTask);
+
+    // Reset button hook
+    const resetBtn = document.getElementById('resetBtn');
+    if (resetBtn) resetBtn.addEventListener('click', resetAll);
+
     renderCategories();
     renderTasks();
     renderProgress();
