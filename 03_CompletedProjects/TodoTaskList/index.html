@@ -7,57 +7,75 @@
   <link rel="stylesheet" href="style.css">
 </head>
 
+<!-- Level Up Popup -->
+<div id="levelUpPopup" class="popup" aria-hidden="true">
+  <div class="popup-content">
+    <h2 id="popupMessage">🎉 Level Up! 🎉</h2>
+    <button id="closePopupBtn">Close</button>
+  </div>
+</div>
+
+<!-- Confetti Canvas -->
+<canvas id="confettiCanvas"></canvas>
+
+
 <body>
 
   <div id="container">
     
-    <header><h1>TIME FOR TASKS</h1></header>
+    <header><h1>TIME FOR TASKS !!</h1></header>
         
-    <main>
-      <aside id="categories">
-        <h2>Categories</h2>
-        <ul id="categoryList"></ul>
-        <input type="text" id="newCategoryInput" placeholder="New Category">
-        <button id="addCategoryBtn">Add Category</button>
-      </aside>
+<main>
+  <aside id="categories">
+    <h2>Categories</h2>
+    <ul id="categoryList"></ul>
+    <input type="text" id="newCategoryInput" placeholder="New Category">
+    <button id="addCategoryBtn">Add Category</button>
+  </aside>
 
-      <section id="tasks-section">
-        <h2 id="categoryTitle">Select or add a category</h2>
+  <section id="tasks-section">
+    <h2 id="categoryTitle">Select or add a category</h2>
 
-        <ul id="taskList"></ul>
+    <ul id="taskList"></ul>
 
-        <div id="taskControls">
-          <input type="text" id="newTaskInput" placeholder="New Task">
-          <label><input type="checkbox" id="newTaskDaily"> Daily</label>
-          <button id="addTaskBtn">Add Task</button>
+    <div id="taskControls">
+      <input type="text" id="newTaskInput" placeholder="New Task">
+      <label><input type="checkbox" id="newTaskDaily"> Daily</label>
+      <button id="addTaskBtn">Add Task</button>
+    </div>
+
+    <div id="progress">
+      <div class="level-line">Level: <span id="levelDisplay">1</span></div>
+
+      <div class="xp-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <div id="xpBar" class="xp-fill" style="width: 0%;"></div>
+        <div class="xp-label">
+          <span id="xpDisplay">0</span> / <span id="nextLevelXP">5</span> XP
         </div>
+      </div>
+    </div>
 
-        <!-- PROGRESS: XP BAR -->
-        <div id="progress">
-          <div class="level-line">Level: <span id="levelDisplay">1</span></div>
+    <div id="skins">
+      <label for="skinSelector">Skin:</label>
+      <select id="skinSelector">
+        <option value="">Default</option>
+        <option value="dark" disabled>Dark (unlock at lvl 2)</option>
+      </select>
+    </div>
 
-          <div class="xp-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-            <div id="xpBar" class="xp-fill" style="width: 0%;"></div>
-            <div class="xp-label">
-              <span id="xpDisplay">0</span> / <span id="nextLevelXP">5</span> XP
-            </div>
-          </div>
-        </div>
+    <div id="controls">
+      <button id="dailyResetBtn">Daily Reset</button>
+      <button id="resetBtn" title="Delete cookies & progress, then reload">Reset Progress</button>
+    </div>
+  </section>
 
-        <div id="skins">
-          <label for="skinSelector">Skin:</label>
-          <select id="skinSelector">
-            <option value="">Default</option>
-            <option value="dark" disabled>Dark (unlock at lvl 2)</option>
-          </select>
-        </div>
+  <aside id="badgeCaseContainer">
+    <h2>Badge Case</h2>
+    <div id="badgeCase"></div>
+  </aside>
+</main>
 
-        <div id="controls">
-          <button id="resetBtn" title="Delete cookies & progress, then reload">Reset Progress</button>
-        </div>
-      </section>
-    </main>
-  </div>
+    </div>
 
   <div id="overlay" aria-hidden="true"></div>
 

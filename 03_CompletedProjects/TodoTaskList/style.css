@@ -23,6 +23,90 @@ main {
   display: flex;
   flex: 1;
 }
+
+#badgeCaseContainer {
+  padding: 10px;
+  background: #fafafa;
+  border-left: 1px solid #ddd;
+  /* allow tooltips to overflow but no unnecessary scrollbars */
+  overflow-x: hidden;
+  overflow-y: auto;
+  flex-shrink: 0;            /* prevent column from shrinking weirdly */
+  width: 240px;              /* pick a fixed width that fits 5 badges */
+  box-sizing: border-box;    /* include padding in the width */
+}
+
+#badgeCaseContainer h2 {
+  text-align: center;            /* center the text */
+  font-size: 20px;               /* larger font size for heading */
+  font-weight: 700;              /* bold heading */
+  color: #333;                   /* darker color for emphasis */
+  margin-bottom: 12px;           /* spacing below heading */
+  letter-spacing: 1px;           /* subtle spacing for style */
+  text-transform: uppercase;     /* optional: gamified look */
+}
+
+
+#badgeCase {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* exactly 4 per row */
+  gap: 8px;
+  margin-top: 10px;
+  justify-items: center;     /* center each badge in its grid cell */
+}
+
+#badgeCase img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  opacity: 0.3; /* locked badges */
+}
+
+#badgeCase img.unlocked {
+  opacity: 1; /* highlight unlocked */
+}
+
+.badge-tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  width: 180px;
+  background: #333;
+  color: #fff;
+  text-align: center;
+  font-size: 12px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  position: fixed;      /* key change: fixed to escape container */
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  white-space: normal;
+  transition: opacity 0.3s ease;
+}
+
+/* Triangle arrow stays the same */
+.tooltip-text::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+}
+
+.badge-tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+
+}
+
 aside#categories {
   width: 220px;
   background: #f5f5f5;
@@ -31,6 +115,7 @@ aside#categories {
 }
 #categories h2 {
   margin-top: 0;
+  border: #000;
 }
 #categoryList {
   list-style: none;
@@ -40,18 +125,21 @@ aside#categories {
 #categoryList li {
   padding: 8px 6px;
   cursor: pointer;
-  border-bottom: 1px solid #ececec;
+  border-bottom: 1px solid #000;
   font-weight: 600;
 }
 #categoryList li.active {
-  background: #eee;
+  background: #4ab6ff;
 }
+
+
 #categories input, #categories button {
   width: 100%;
   margin-top: 8px;
   box-sizing: border-box;
   padding: 6px;
 }
+
 section#tasks-section {
   flex: 1;
   padding: 20px 28px;
@@ -186,6 +274,19 @@ section#tasks-section {
   opacity: 0.95;
 }
 
+#dailyResetBtn {
+  background: yellowgreen;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+#dailyResetBtn:hover {
+  opacity: 0.95;
+}
+
+
 body.skin-dark {
   background: #1e1e1e;
   color: #eee;
@@ -209,3 +310,84 @@ body.skin-dark #taskList li {
   color: #eaeaea;
 }
 body.skin-dark #taskList li::before { background: #2a2a2a; }
+
+#categoryList li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 8px;
+}
+
+.category-name {
+  flex: 1;
+  cursor: pointer;
+}
+
+.category-icons {
+  display: flex;
+  gap: 6px;
+}
+
+.icon-btn {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+.icon-btn:hover {
+  opacity: 1;
+}
+
+/* Popup overlay */
+.popup {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.popup-content {
+  background: #fff;
+  padding: 20px 30px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+  text-align: center;
+  animation: popIn 0.3s ease;
+}
+
+.popup-content h2 {
+  margin-bottom: 16px;
+  font-size: 22px;
+  color: #333;
+}
+
+.popup-content button {
+  background: #4ab6ff;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.popup-content button:hover {
+  background: #2e9fe8;
+}
+
+@keyframes popIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Confetti Canvas */
+#confettiCanvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 1999;
+}

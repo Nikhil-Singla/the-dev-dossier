@@ -1,8 +1,23 @@
 // script.js
 
-// Data structure: { categories: [ {id, name, tasks: [ {id, text, done, daily, lastCompleted } ], xp, level } ] }
 let data = { categories: [] };
 let currentCategoryId = null;
+const BADGE_COUNT = 16; // change to match number of badge images in Assets
+
+/* -----------------------
+   TASK COLORS
+   ----------------------- */
+const baseShades = ["#ff8a65", "#4dabf5", "#81c784", "#ffd54f", "#ba68c8", "#f06292", "#90a4ae"];
+
+// Fisher-Yates shuffle
+function shuffleArray(arr) {
+  const copy = arr.slice();
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
 
 /* -----------------------
    PERSISTENCE: loadData()
@@ -12,9 +27,10 @@ let currentCategoryId = null;
    - Side-effects: none beyond reading/parsing localStorage.
    - Notes: silently ignores parse errors (assumes valid JSON).
    ----------------------- */
+   
 function loadData() {
-    const saved = localStorage.getItem('taskrpg');
-    if (saved) data = JSON.parse(saved);
+  const saved = localStorage.getItem("taskrpg");
+  if (saved) data = JSON.parse(saved);
 }
 
 /* -----------------------
@@ -25,7 +41,7 @@ function loadData() {
    - Side-effects: overwrites previous "taskrpg" value in localStorage.
    ----------------------- */
 function saveData() {
-    localStorage.setItem('taskrpg', JSON.stringify(data));
+  localStorage.setItem("taskrpg", JSON.stringify(data));
 }
 
 /* -----------------------
@@ -37,8 +53,67 @@ function saveData() {
    - Notes: collisions are extremely unlikely in normal UI usage but possible if called multiple times in the same ms.
    ----------------------- */
 function generateId() {
-    return Date.now().toString();
+  return Date.now().toString();
 }
+
+/* -----------------------
+   RENDER: renderBadges()
+   - Purpose: display badges for the selected category with hover tooltips showing congratulations.
+   - Inputs: currentCategoryId, data.categories.
+   - Outputs: renders badges into #badgeCase and shows tooltip on hover.
+   - Side-effects: attaches mouseenter/mouseleave events for tooltip positioning.
+   ----------------------- */
+function renderBadges() {
+  const badgeCase = document.getElementById('badgeCase');
+  if (!badgeCase) return;
+  badgeCase.innerHTML = '';
+
+  if (!currentCategoryId) return;
+
+  const cat = data.categories.find(c => c.id === currentCategoryId);
+  if (!cat) return;
+
+  for (let i = 0; i < BADGE_COUNT; i++) {
+    const wrapper = document.createElement('div');
+    wrapper.classList.add('badge-tooltip');
+    wrapper.style.position = 'relative';
+
+    const img = document.createElement('img');
+    img.src = `Assets/badges/b${i + 1}.png`;
+    img.alt = `Badge ${i + 1}`;
+
+    if (cat.level >= i + 1) {
+      img.classList.add('unlocked');
+
+      // Tooltip element
+      const tooltip = document.createElement('span');
+      tooltip.classList.add('tooltip-text');
+      tooltip.textContent = `🎉 Congratulations on unlocking Badge ${i + 1}!`;
+
+      // Append tooltip to body for fixed positioning
+      document.body.appendChild(tooltip);
+
+      // Show tooltip on hover
+      wrapper.addEventListener('mouseenter', () => {
+        const rect = img.getBoundingClientRect();
+        tooltip.style.top = `${rect.top - tooltip.offsetHeight - 6}px`; // above the badge
+        tooltip.style.left = `${rect.left + rect.width / 2 - tooltip.offsetWidth / 2}px`;
+        tooltip.style.visibility = 'visible';
+        tooltip.style.opacity = 1;
+      });
+
+      // Hide tooltip on mouse leave
+      wrapper.addEventListener('mouseleave', () => {
+        tooltip.style.visibility = 'hidden';
+        tooltip.style.opacity = 0;
+      });
+    }
+
+    wrapper.appendChild(img);
+    badgeCase.appendChild(wrapper);
+  }
+}
+
 
 /* -----------------------
    RENDER: renderCategories()
@@ -48,17 +123,106 @@ function generateId() {
    - Side-effects: attaches click handlers to each created list item that call selectCategory().
    ----------------------- */
 function renderCategories() {
-    const categoryList = document.getElementById('categoryList');
-    categoryList.innerHTML = '';
-    data.categories.forEach(cat => {
-        const li = document.createElement('li');
-        li.textContent = cat.name;
-        li.dataset.id = cat.id;
-        if (cat.id === currentCategoryId) li.classList.add('active');
-        li.addEventListener('click', () => selectCategory(cat.id));
-        categoryList.appendChild(li);
+  const categoryList = document.getElementById('categoryList');
+  categoryList.innerHTML = '';
+
+  data.categories.forEach(cat => {
+    const li = document.createElement('li');
+    li.dataset.id = cat.id;
+
+    // Highlight if active
+    li.classList.toggle('active', cat.id === currentCategoryId);
+
+    // Category name (clickable to select/deselect)
+    const span = document.createElement('span');
+    span.textContent = cat.name;
+    span.classList.add('category-name');
+    span.addEventListener('click', () => selectCategory(cat.id));
+    li.appendChild(span);
+
+    // Container for icons
+    const iconsDiv = document.createElement('div');
+    iconsDiv.classList.add('category-icons');
+
+    // Reload button (reset tasks in this category)
+    const reloadBtn = document.createElement('img');
+    reloadBtn.src = 'Assets/icons/reload.png';
+    reloadBtn.alt = 'Reset tasks';
+    reloadBtn.title = 'Reset all tasks in this category'; // Tooltip
+    reloadBtn.classList.add('icon-btn');
+    reloadBtn.addEventListener('click', (e) => {
+    e.stopPropagation(); // don’t trigger selectCategory
+    resetCategoryTasks(cat.id);
     });
+    iconsDiv.appendChild(reloadBtn);
+
+    // Trash button (delete category)
+    const trashBtn = document.createElement('img');
+    trashBtn.src = 'Assets/icons/trash.png';
+    trashBtn.alt = 'Delete category';
+    trashBtn.title = 'Delete this category'; // Tooltip
+    trashBtn.classList.add('icon-btn');
+    trashBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    deleteCategory(cat.id);
+    });
+    iconsDiv.appendChild(trashBtn);
+
+    li.appendChild(iconsDiv);
+    categoryList.appendChild(li);
+  });
 }
+
+/* -----------------------
+   MUTATION: resetCategoryTasks(categoryId)
+   - Purpose: reset all tasks in a given category back to undone.
+   - Inputs: categoryId (string) – the id of the category to reset.
+   - Outputs: modifies each task.done = false inside the category.
+   - Side-effects: persists changes to localStorage; re-renders task list.
+   - Notes: does not remove XP or affect other categories.
+   ----------------------- */
+function resetCategoryTasks(categoryId) {
+  const cat = data.categories.find(c => c.id === categoryId);
+  if (!cat) return;
+  let changed = false;
+  cat.tasks.forEach(task => {
+    if (task.done) {
+      task.done = false;
+      changed = true;
+    }
+  });
+  if (changed) {
+    saveData();
+    renderTasks();
+  }
+}
+
+/* -----------------------
+   MUTATION: deleteCategory(categoryId)
+   - Purpose: remove an entire category and its tasks from the data.
+   - Inputs: categoryId (string) – the id of the category to delete.
+   - Outputs: filters `data.categories` to exclude the target.
+   - Side-effects: prompts user confirmation; clears currentCategoryId
+                  if the deleted one was selected; persists changes and
+                  re-renders categories, tasks, and progress.
+   - Notes: irreversible client-side deletion; no server state affected.
+   ----------------------- */
+function deleteCategory(categoryId) {
+  if (!confirm("Are you sure you want to delete this category and all its tasks?")) return;
+
+  data.categories = data.categories.filter(c => c.id !== categoryId);
+
+  // If the deleted category was selected, clear selection
+  if (currentCategoryId === categoryId) {
+    currentCategoryId = null;
+  }
+
+  saveData();
+  renderCategories();
+  renderTasks();
+  renderProgress();
+}
+
 
 /* -----------------------
    NAVIGATION: selectCategory(id)
@@ -68,10 +232,11 @@ function renderCategories() {
    - Side-effects: re-renders categories, tasks, and progress displays.
    ----------------------- */
 function selectCategory(id) {
-    currentCategoryId = id;
-    renderCategories();
-    renderTasks();
-    renderProgress();
+  currentCategoryId = id;
+  renderCategories();
+  renderTasks();
+  renderProgress();
+  renderBadges();
 }
 
 /* -----------------------
@@ -83,20 +248,24 @@ function selectCategory(id) {
    - Validation: ignores empty/whitespace-only names.
    ----------------------- */
 function addCategory() {
-    const input = document.getElementById('newCategoryInput');
-    const name = input.value.trim();
-    if (!name) return;
-    const cat = {
-        id: generateId(),
-        name: name,
-        tasks: [],
-        xp: 0,
-        level: 1
-    };
-    data.categories.push(cat);
-    saveData();
-    input.value = '';
-    renderCategories();
+  const input = document.getElementById("newCategoryInput");
+  const name = input.value.trim();
+  if (!name) return;
+
+  const cat = {
+    id: generateId(),
+    name: name,
+    tasks: [],
+    xp: 0,
+    level: 1,
+    colorOrder: shuffleArray(baseShades), // shuffled shades for this category
+    colorIndex: 0 // current position in the cycle
+  };
+
+  data.categories.push(cat);
+  saveData();
+  input.value = "";
+  renderCategories();
 }
 
 /* -----------------------
@@ -108,31 +277,37 @@ function addCategory() {
    - Edge-cases: if no category selected, clears task list and prompts user.
    ----------------------- */
 function renderTasks() {
-    const title = document.getElementById('categoryTitle');
-    const taskList = document.getElementById('taskList');
-    if (!currentCategoryId) {
-        title.textContent = 'Select or add a category';
-        taskList.innerHTML = '';
-        return;
+  const title = document.getElementById("categoryTitle");
+  const taskList = document.getElementById("taskList");
+  if (!currentCategoryId) {
+    title.textContent = "Select or add a category";
+    taskList.innerHTML = "";
+    return;
+  }
+  const cat = data.categories.find((c) => c.id === currentCategoryId);
+  title.textContent = cat.name;
+  taskList.innerHTML = "";
+  cat.tasks.forEach((task) => {
+    const li = document.createElement("li");
+    li.textContent = task.text;
+    li.dataset.id = task.id;
+
+    // Apply stored color
+    if (task.color) {
+      li.style.borderLeft = `6px solid ${task.color}`;
     }
-    const cat = data.categories.find(c => c.id === currentCategoryId);
-    title.textContent = cat.name;
-    taskList.innerHTML = '';
-    cat.tasks.forEach(task => {
-        const li = document.createElement('li');
-        li.textContent = task.text;
-        li.dataset.id = task.id;
-        if (task.done) li.classList.add('completed');
-        // Indicate daily tasks
-        if (task.daily) {
-            const span = document.createElement('span');
-            span.textContent = ' (Daily)';
-            span.style.color = 'green';
-            li.appendChild(span);
-        }
-        li.addEventListener('click', () => toggleTask(task.id));
-        taskList.appendChild(li);
-    });
+
+    if (task.done) li.classList.add("completed");
+
+    if (task.daily) {
+      const span = document.createElement("span");
+      span.textContent = " (Daily)";
+      span.style.color = "green";
+      li.appendChild(span);
+    }
+    li.addEventListener("click", () => toggleTask(task.id));
+    taskList.appendChild(li);
+  });
 }
 
 /* -----------------------
@@ -144,24 +319,138 @@ function renderTasks() {
    - Validation: ignores empty task text or when no category is selected.
    ----------------------- */
 function addTask() {
-    const input = document.getElementById('newTaskInput');
-    const dailyCheckbox = document.getElementById('newTaskDaily');
+    const input = document.getElementById("newTaskInput");
+    const dailyCheckbox = document.getElementById("newTaskDaily");
     const text = input.value.trim();
     if (!text || !currentCategoryId) return;
-    const cat = data.categories.find(c => c.id === currentCategoryId);
+
+    const cat = data.categories.find((c) => c.id === currentCategoryId);
+
+    // Pick color from category's order
+    const color = cat.colorOrder[cat.colorIndex];
+    cat.colorIndex = (cat.colorIndex + 1) % cat.colorOrder.length;
+
     const task = {
-        id: generateId(),
-        text: text,
-        done: false,
-        daily: dailyCheckbox.checked,
-        lastCompleted: null
+    id: generateId(),
+    text: text,
+    done: false,
+    daily: dailyCheckbox.checked,
+    lastCompleted: null,
+    color: color
     };
+
     cat.tasks.push(task);
     saveData();
     input.value = '';
     dailyCheckbox.checked = false;
     renderTasks();
 }
+
+/* -----------------------
+   UI: showLevelUpPopup()
+   - Purpose: Display a popup with confetti and a dismiss button on level up.
+   - Inputs: category name and new level.
+   - Outputs: Shows a modal popup and runs confetti animation.
+   - Side-effects: Pauses background interaction until popup is closed.
+   ----------------------- */
+function showLevelUpPopup(categoryName, level) {
+  const popup = document.getElementById('levelUpPopup');
+  const message = document.getElementById('popupMessage');
+  const closeBtn = document.getElementById('closePopupBtn');
+
+  message.textContent = `🎉 Congratulations! "${categoryName}" reached level ${level}! 🎉`;
+  popup.style.display = 'flex';
+  popup.setAttribute('aria-hidden', 'false');
+
+  // Start confetti
+  startConfetti();
+
+  // Close popup function
+  function closePopup() {
+    popup.style.display = 'none';
+    popup.setAttribute('aria-hidden', 'true');
+    stopConfetti();
+    // Remove event listeners after close
+    popup.removeEventListener('click', outsideClickHandler);
+    closeBtn.removeEventListener('click', closePopup);
+  }
+
+  // Close on button click
+  closeBtn.addEventListener('click', closePopup);
+
+  // Close when clicking outside the popup-content
+  function outsideClickHandler(e) {
+    if (e.target === popup) {
+      closePopup();
+    }
+  }
+  popup.addEventListener('click', outsideClickHandler);
+}
+
+/* -----------------------
+   UI: startConfetti()
+   - Purpose: Begin a lightweight confetti animation on the screen.
+   - Inputs: None.
+   - Outputs: Animates colorful confetti falling across the viewport.
+   - Side-effects: Continuously updates a canvas element until stopped.
+   ----------------------- */
+let confettiInterval;
+function startConfetti() {
+  const canvas = document.getElementById('confettiCanvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const confetti = Array.from({length: 150}, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height - canvas.height,
+    r: Math.random() * 6 + 4,
+    d: Math.random() * 150,
+    color: `hsl(${Math.random() * 360}, 70%, 60%)`,
+    tilt: Math.floor(Math.random() * 10) - 10
+  }));
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    confetti.forEach((c, i) => {
+      ctx.beginPath();
+      ctx.lineWidth = c.r;
+      ctx.strokeStyle = c.color;
+      ctx.moveTo(c.x + c.tilt + c.r/2, c.y);
+      ctx.lineTo(c.x + c.tilt, c.y + c.r/2);
+      ctx.stroke();
+    });
+    update();
+  }
+
+  function update() {
+    confetti.forEach(c => {
+      c.y += Math.cos(c.d) + 2 + c.r/2;
+      c.x += Math.sin(c.d);
+      if (c.y > canvas.height) {
+        c.x = Math.random() * canvas.width;
+        c.y = -10;
+      }
+    });
+  }
+
+  confettiInterval = setInterval(draw, 20);
+}
+
+/* -----------------------
+   UI: stopConfetti()
+   - Purpose: Stop the confetti animation and clear the canvas.
+   - Inputs: None.
+   - Outputs: Clears the confetti canvas and halts animation.
+   - Side-effects: Removes all visual confetti from the screen.
+   ----------------------- */
+function stopConfetti() {
+  clearInterval(confettiInterval);
+  const canvas = document.getElementById('confettiCanvas');
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
 
 /* -----------------------
    MUTATION: toggleTask(taskId)
@@ -171,29 +460,38 @@ function addTask() {
    - Side-effects: persists changes, re-renders tasks and progress; may show alert on level up.
    - Rules: marking done increments xp by 1; level up occurs when xp >= level * 5.
    ----------------------- */
-function toggleTask(taskId) {
-    const cat = data.categories.find(c => c.id === currentCategoryId);
-    const task = cat.tasks.find(t => t.id === taskId);
+function toggleTask(taskId) 
+{
+    const cat = data.categories.find((c) => c.id === currentCategoryId);
+    const task = cat.tasks.find((t) => t.id === taskId);
+
     if (!task) return;
-    if (!task.done) {
+    if (!task.done) 
+    {
         // Mark task done
         task.done = true;
         task.lastCompleted = new Date().toDateString();
         cat.xp++;
+
         // Check for level up (every 5 XP per level)
         const xpForNext = cat.level * 5;
-        if (cat.xp >= xpForNext) {
+
+        if (cat.xp >= xpForNext) 
+        {
             cat.level++;
-            alert(`Category "${cat.name}" reached level ${cat.level}!`);
+            showLevelUpPopup(cat.name, cat.level);
             unlockSkins(cat.level);
         }
-    } else {
+    } 
+    else 
+    {
         // Uncheck task (done -> undone); no XP deduction by design
         task.done = false;
     }
-    saveData();
-    renderTasks();
-    renderProgress();
+  saveData();
+  renderTasks();
+  renderProgress();
+  renderBadges();
 }
 
 /* -----------------------
@@ -206,11 +504,11 @@ function toggleTask(taskId) {
    ----------------------- */
 function renderProgress() {
     if (!currentCategoryId) return;
-    const cat = data.categories.find(c => c.id === currentCategoryId);
-    document.getElementById('levelDisplay').textContent = cat.level;
-    document.getElementById('xpDisplay').textContent = cat.xp;
+    const cat = data.categories.find((c) => c.id === currentCategoryId);
+    document.getElementById("levelDisplay").textContent = cat.level;
+    document.getElementById("xpDisplay").textContent = cat.xp;
     const xpForNext = cat.level * 5;
-    document.getElementById('nextLevelXP').textContent = xpForNext;
+    document.getElementById("nextLevelXP").textContent = xpForNext;
 
     // Compute percentage fill for the XP bar (cap at 100)
     const percent = Math.min(100, Math.round((cat.xp / xpForNext) * 100));
@@ -248,8 +546,8 @@ function unlockSkins(level) {
    - Side-effects: affects page appearance via CSS.
    ----------------------- */
 function changeSkin() {
-    const skin = document.getElementById('skinSelector').value;
-    document.body.className = skin ? 'skin-' + skin : '';
+    const skin = document.getElementById("skinSelector").value;
+    document.body.className = skin ? "skin-" + skin : "";
 }
 
 /* -----------------------
@@ -265,16 +563,16 @@ function dailyResetCheck() {
     let changed = false;
     data.categories.forEach(cat => {
         cat.tasks.forEach(task => {
-            if (task.daily && task.done && task.lastCompleted !== today) {
-                task.done = false;
-                changed = true;
-            }
-        });
+      if (task.daily && task.done && task.lastCompleted !== today) {
+        task.done = false;
+        changed = true;
+      }
     });
-    if (changed) {
-        saveData();
-        renderTasks();
-    }
+  });
+  if (changed) {
+    saveData();
+    renderTasks();
+  }
 }
 
 /* -----------------------
@@ -295,14 +593,38 @@ function resetAll() {
 }
 
 /* -----------------------
+   RESET: dailyResetNow()
+   - Purpose: force all daily tasks back to undone.
+   - Inputs: none.
+   - Outputs: modifies task.done for daily tasks.
+   - Side-effects: persists to storage, re-renders tasks.
+   ----------------------- */
+function dailyResetNow() {
+  let changed = false;
+  data.categories.forEach(cat => {
+    cat.tasks.forEach(task => {
+      if (task.daily && task.done) {
+        task.done = false;
+        changed = true;
+      }
+    });
+  });
+  if (changed) {
+    saveData();
+    renderTasks();
+  }
+}
+
+/* -----------------------
    BOOTSTRAP: init()
    - Purpose: initialize the app on DOMContentLoaded: load data, bind UI handlers, and render initial state.
    - Inputs: none (reads DOM elements by id).
    - Outputs: registers event listeners and triggers initial render functions.
    - Side-effects: attaches listeners to skin selector, add buttons, and reset button; runs daily reset check.
    ----------------------- */
-function init() {
-    loadData();
+
+   function init() {
+  loadData();
     document.getElementById('skinSelector').addEventListener('change', changeSkin);
     document.getElementById('addCategoryBtn').addEventListener('click', addCategory);
     document.getElementById('addTaskBtn').addEventListener('click', addTask);
@@ -311,10 +633,21 @@ function init() {
     const resetBtn = document.getElementById('resetBtn');
     if (resetBtn) resetBtn.addEventListener('click', resetAll);
 
-    renderCategories();
-    renderTasks();
-    renderProgress();
-    dailyResetCheck();
+    const dailyResetBtn = document.getElementById('dailyResetBtn');
+    if (dailyResetBtn) {
+        dailyResetBtn.addEventListener('click', function (e) {
+        if (e && typeof e.preventDefault === 'function') e.preventDefault();
+        dailyResetNow();
+        });
+    }
+
+
+
+  renderCategories();
+  renderBadges();
+  renderTasks();
+  renderProgress();
+  dailyResetCheck();
 }
 
 document.addEventListener('DOMContentLoaded', init);
