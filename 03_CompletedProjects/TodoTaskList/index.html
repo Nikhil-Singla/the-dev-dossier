@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <title>Gamified ToDo</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div id="container">
+    
+    <header><h1>TIME FOR TASKS</h1></header>
+        
+        <main>
+            <aside id="categories">
+                <h2>Categories</h2>
+                <ul id="categoryList"></ul>
+                <input type="text" id="newCategoryInput" placeholder="New Category">
+                <button id="addCategoryBtn">Add Category</button>
+            </aside>
+
+            <section id="tasks-section">
+                
+                <h2 id="categoryTitle">Select or add a category</h2>
+                
+                <ul id="taskList"></ul>
+                
+                <input type="text" id="newTaskInput" placeholder="New Task">
+                
+                <label><input type="checkbox" id="newTaskDaily"> Daily</label>
+                
+                <button id="addTaskBtn">Add Task</button>
+                
+                <div id="progress">
+                    Level: <span id="levelDisplay">1</span>
+                    XP: <span id="xpDisplay">0</span> / <span id="nextLevelXP">5</span>
+                </div>
+                
+                <div id="skins">
+                    <label for="skinSelector">Skin:</label>
+                    
+                    <select id="skinSelector">
+                        <option value="">Default</option>
+                        <option value="dark" disabled>Dark (unlock at lvl 2)</option>
+                    </select>
+                </div>
+        
+            </section>
+        
+        </main>
+  </div>
+  
+  <script src="script.js"></script>
+
+</body>
+</html>
