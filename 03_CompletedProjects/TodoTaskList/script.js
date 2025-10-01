@@ -7,7 +7,15 @@ const BADGE_COUNT = 16; // change to match number of badge images in Assets
 /* -----------------------
    TASK COLORS
    ----------------------- */
-const baseShades = ["#ff8a65", "#4dabf5", "#81c784", "#ffd54f", "#ba68c8", "#f06292", "#90a4ae"];
+const baseShades = [
+  "#ff8a65",
+  "#4dabf5",
+  "#81c784",
+  "#ffd54f",
+  "#ba68c8",
+  "#f06292",
+  "#90a4ae",
+];
 
 // Fisher-Yates shuffle
 function shuffleArray(arr) {
@@ -27,7 +35,7 @@ function shuffleArray(arr) {
    - Side-effects: none beyond reading/parsing localStorage.
    - Notes: silently ignores parse errors (assumes valid JSON).
    ----------------------- */
-   
+
 function loadData() {
   const saved = localStorage.getItem("taskrpg");
   if (saved) data = JSON.parse(saved);
@@ -64,47 +72,51 @@ function generateId() {
    - Side-effects: attaches mouseenter/mouseleave events for tooltip positioning.
    ----------------------- */
 function renderBadges() {
-  const badgeCase = document.getElementById('badgeCase');
+  const badgeCase = document.getElementById("badgeCase");
   if (!badgeCase) return;
-  badgeCase.innerHTML = '';
+  badgeCase.innerHTML = "";
 
   if (!currentCategoryId) return;
 
-  const cat = data.categories.find(c => c.id === currentCategoryId);
+  const cat = data.categories.find((c) => c.id === currentCategoryId);
   if (!cat) return;
 
   for (let i = 0; i < BADGE_COUNT; i++) {
-    const wrapper = document.createElement('div');
-    wrapper.classList.add('badge-tooltip');
-    wrapper.style.position = 'relative';
+    const wrapper = document.createElement("div");
+    wrapper.classList.add("badge-tooltip");
+    wrapper.style.position = "relative";
 
-    const img = document.createElement('img');
+
+    
+    const img = document.createElement("img");
     img.src = `Assets/badges/b${i + 1}.png`;
     img.alt = `Badge ${i + 1}`;
 
     if (cat.level >= i + 1) {
-      img.classList.add('unlocked');
+      img.classList.add("unlocked");
 
       // Tooltip element
-      const tooltip = document.createElement('span');
-      tooltip.classList.add('tooltip-text');
+      const tooltip = document.createElement("span");
+      tooltip.classList.add("tooltip-text");
       tooltip.textContent = `🎉 Congratulations on unlocking Badge ${i + 1}!`;
 
       // Append tooltip to body for fixed positioning
       document.body.appendChild(tooltip);
 
       // Show tooltip on hover
-      wrapper.addEventListener('mouseenter', () => {
+      wrapper.addEventListener("mouseenter", () => {
         const rect = img.getBoundingClientRect();
         tooltip.style.top = `${rect.top - tooltip.offsetHeight - 6}px`; // above the badge
-        tooltip.style.left = `${rect.left + rect.width / 2 - tooltip.offsetWidth / 2}px`;
-        tooltip.style.visibility = 'visible';
+        tooltip.style.left = `${
+          rect.left + rect.width / 2 - tooltip.offsetWidth / 2
+        }px`;
+        tooltip.style.visibility = "visible";
         tooltip.style.opacity = 1;
       });
 
       // Hide tooltip on mouse leave
-      wrapper.addEventListener('mouseleave', () => {
-        tooltip.style.visibility = 'hidden';
+      wrapper.addEventListener("mouseleave", () => {
+        tooltip.style.visibility = "hidden";
         tooltip.style.opacity = 0;
       });
     }
@@ -114,7 +126,6 @@ function renderBadges() {
   }
 }
 
-
 /* -----------------------
    RENDER: renderCategories()
    - Purpose: draw the category list in the left-hand UI.
@@ -123,48 +134,48 @@ function renderBadges() {
    - Side-effects: attaches click handlers to each created list item that call selectCategory().
    ----------------------- */
 function renderCategories() {
-  const categoryList = document.getElementById('categoryList');
-  categoryList.innerHTML = '';
+  const categoryList = document.getElementById("categoryList");
+  categoryList.innerHTML = "";
 
-  data.categories.forEach(cat => {
-    const li = document.createElement('li');
+  data.categories.forEach((cat) => {
+    const li = document.createElement("li");
     li.dataset.id = cat.id;
 
     // Highlight if active
-    li.classList.toggle('active', cat.id === currentCategoryId);
+    li.classList.toggle("active", cat.id === currentCategoryId);
 
     // Category name (clickable to select/deselect)
-    const span = document.createElement('span');
+    const span = document.createElement("span");
     span.textContent = cat.name;
-    span.classList.add('category-name');
-    span.addEventListener('click', () => selectCategory(cat.id));
+    span.classList.add("category-name");
+    span.addEventListener("click", () => selectCategory(cat.id));
     li.appendChild(span);
 
     // Container for icons
-    const iconsDiv = document.createElement('div');
-    iconsDiv.classList.add('category-icons');
+    const iconsDiv = document.createElement("div");
+    iconsDiv.classList.add("category-icons");
 
     // Reload button (reset tasks in this category)
-    const reloadBtn = document.createElement('img');
-    reloadBtn.src = 'Assets/icons/reload.png';
-    reloadBtn.alt = 'Reset tasks';
-    reloadBtn.title = 'Reset all tasks in this category'; // Tooltip
-    reloadBtn.classList.add('icon-btn');
-    reloadBtn.addEventListener('click', (e) => {
-    e.stopPropagation(); // don’t trigger selectCategory
-    resetCategoryTasks(cat.id);
+    const reloadBtn = document.createElement("img");
+    reloadBtn.src = "Assets/icons/reload.png";
+    reloadBtn.alt = "Reset tasks";
+    reloadBtn.title = "Reset all tasks in this category"; // Tooltip
+    reloadBtn.classList.add("icon-btn");
+    reloadBtn.addEventListener("click", (e) => {
+      e.stopPropagation(); // don’t trigger selectCategory
+      resetCategoryTasks(cat.id);
     });
     iconsDiv.appendChild(reloadBtn);
 
     // Trash button (delete category)
-    const trashBtn = document.createElement('img');
-    trashBtn.src = 'Assets/icons/trash.png';
-    trashBtn.alt = 'Delete category';
-    trashBtn.title = 'Delete this category'; // Tooltip
-    trashBtn.classList.add('icon-btn');
-    trashBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    deleteCategory(cat.id);
+    const trashBtn = document.createElement("img");
+    trashBtn.src = "Assets/icons/trash.png";
+    trashBtn.alt = "Delete category";
+    trashBtn.title = "Delete this category"; // Tooltip
+    trashBtn.classList.add("icon-btn");
+    trashBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      deleteCategory(cat.id);
     });
     iconsDiv.appendChild(trashBtn);
 
@@ -182,10 +193,10 @@ function renderCategories() {
    - Notes: does not remove XP or affect other categories.
    ----------------------- */
 function resetCategoryTasks(categoryId) {
-  const cat = data.categories.find(c => c.id === categoryId);
+  const cat = data.categories.find((c) => c.id === categoryId);
   if (!cat) return;
   let changed = false;
-  cat.tasks.forEach(task => {
+  cat.tasks.forEach((task) => {
     if (task.done) {
       task.done = false;
       changed = true;
@@ -208,9 +219,12 @@ function resetCategoryTasks(categoryId) {
    - Notes: irreversible client-side deletion; no server state affected.
    ----------------------- */
 function deleteCategory(categoryId) {
-  if (!confirm("Are you sure you want to delete this category and all its tasks?")) return;
+  if (
+    !confirm("Are you sure you want to delete this category and all its tasks?")
+  )
+    return;
 
-  data.categories = data.categories.filter(c => c.id !== categoryId);
+  data.categories = data.categories.filter((c) => c.id !== categoryId);
 
   // If the deleted category was selected, clear selection
   if (currentCategoryId === categoryId) {
@@ -222,7 +236,6 @@ function deleteCategory(categoryId) {
   renderTasks();
   renderProgress();
 }
-
 
 /* -----------------------
    NAVIGATION: selectCategory(id)
@@ -259,7 +272,7 @@ function addCategory() {
     xp: 0,
     level: 1,
     colorOrder: shuffleArray(baseShades), // shuffled shades for this category
-    colorIndex: 0 // current position in the cycle
+    colorIndex: 0, // current position in the cycle
   };
 
   data.categories.push(cat);
@@ -319,31 +332,31 @@ function renderTasks() {
    - Validation: ignores empty task text or when no category is selected.
    ----------------------- */
 function addTask() {
-    const input = document.getElementById("newTaskInput");
-    const dailyCheckbox = document.getElementById("newTaskDaily");
-    const text = input.value.trim();
-    if (!text || !currentCategoryId) return;
+  const input = document.getElementById("newTaskInput");
+  const dailyCheckbox = document.getElementById("newTaskDaily");
+  const text = input.value.trim();
+  if (!text || !currentCategoryId) return;
 
-    const cat = data.categories.find((c) => c.id === currentCategoryId);
+  const cat = data.categories.find((c) => c.id === currentCategoryId);
 
-    // Pick color from category's order
-    const color = cat.colorOrder[cat.colorIndex];
-    cat.colorIndex = (cat.colorIndex + 1) % cat.colorOrder.length;
+  // Pick color from category's order
+  const color = cat.colorOrder[cat.colorIndex];
+  cat.colorIndex = (cat.colorIndex + 1) % cat.colorOrder.length;
 
-    const task = {
+  const task = {
     id: generateId(),
     text: text,
     done: false,
     daily: dailyCheckbox.checked,
     lastCompleted: null,
-    color: color
-    };
+    color: color,
+  };
 
-    cat.tasks.push(task);
-    saveData();
-    input.value = '';
-    dailyCheckbox.checked = false;
-    renderTasks();
+  cat.tasks.push(task);
+  saveData();
+  input.value = "";
+  dailyCheckbox.checked = false;
+  renderTasks();
 }
 
 /* -----------------------
@@ -354,29 +367,29 @@ function addTask() {
    - Side-effects: Pauses background interaction until popup is closed.
    ----------------------- */
 function showLevelUpPopup(categoryName, level) {
-  const popup = document.getElementById('levelUpPopup');
-  const message = document.getElementById('popupMessage');
-  const closeBtn = document.getElementById('closePopupBtn');
+  const popup = document.getElementById("levelUpPopup");
+  const message = document.getElementById("popupMessage");
+  const closeBtn = document.getElementById("closePopupBtn");
 
   message.textContent = `🎉 Congratulations! "${categoryName}" reached level ${level}! 🎉`;
-  popup.style.display = 'flex';
-  popup.setAttribute('aria-hidden', 'false');
+  popup.style.display = "flex";
+  popup.setAttribute("aria-hidden", "false");
 
   // Start confetti
   startConfetti();
 
   // Close popup function
   function closePopup() {
-    popup.style.display = 'none';
-    popup.setAttribute('aria-hidden', 'true');
+    popup.style.display = "none";
+    popup.setAttribute("aria-hidden", "true");
     stopConfetti();
     // Remove event listeners after close
-    popup.removeEventListener('click', outsideClickHandler);
-    closeBtn.removeEventListener('click', closePopup);
+    popup.removeEventListener("click", outsideClickHandler);
+    closeBtn.removeEventListener("click", closePopup);
   }
 
   // Close on button click
-  closeBtn.addEventListener('click', closePopup);
+  closeBtn.addEventListener("click", closePopup);
 
   // Close when clicking outside the popup-content
   function outsideClickHandler(e) {
@@ -384,7 +397,7 @@ function showLevelUpPopup(categoryName, level) {
       closePopup();
     }
   }
-  popup.addEventListener('click', outsideClickHandler);
+  popup.addEventListener("click", outsideClickHandler);
 }
 
 /* -----------------------
@@ -396,18 +409,18 @@ function showLevelUpPopup(categoryName, level) {
    ----------------------- */
 let confettiInterval;
 function startConfetti() {
-  const canvas = document.getElementById('confettiCanvas');
-  const ctx = canvas.getContext('2d');
+  const canvas = document.getElementById("confettiCanvas");
+  const ctx = canvas.getContext("2d");
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
-  const confetti = Array.from({length: 150}, () => ({
+  const confetti = Array.from({ length: 150 }, () => ({
     x: Math.random() * canvas.width,
     y: Math.random() * canvas.height - canvas.height,
     r: Math.random() * 6 + 4,
     d: Math.random() * 150,
     color: `hsl(${Math.random() * 360}, 70%, 60%)`,
-    tilt: Math.floor(Math.random() * 10) - 10
+    tilt: Math.floor(Math.random() * 10) - 10,
   }));
 
   function draw() {
@@ -416,16 +429,16 @@ function startConfetti() {
       ctx.beginPath();
       ctx.lineWidth = c.r;
       ctx.strokeStyle = c.color;
-      ctx.moveTo(c.x + c.tilt + c.r/2, c.y);
-      ctx.lineTo(c.x + c.tilt, c.y + c.r/2);
+      ctx.moveTo(c.x + c.tilt + c.r / 2, c.y);
+      ctx.lineTo(c.x + c.tilt, c.y + c.r / 2);
       ctx.stroke();
     });
     update();
   }
 
   function update() {
-    confetti.forEach(c => {
-      c.y += Math.cos(c.d) + 2 + c.r/2;
+    confetti.forEach((c) => {
+      c.y += Math.cos(c.d) + 2 + c.r / 2;
       c.x += Math.sin(c.d);
       if (c.y > canvas.height) {
         c.x = Math.random() * canvas.width;
@@ -446,11 +459,10 @@ function startConfetti() {
    ----------------------- */
 function stopConfetti() {
   clearInterval(confettiInterval);
-  const canvas = document.getElementById('confettiCanvas');
-  const ctx = canvas.getContext('2d');
+  const canvas = document.getElementById("confettiCanvas");
+  const ctx = canvas.getContext("2d");
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
-
 
 /* -----------------------
    MUTATION: toggleTask(taskId)
@@ -460,34 +472,29 @@ function stopConfetti() {
    - Side-effects: persists changes, re-renders tasks and progress; may show alert on level up.
    - Rules: marking done increments xp by 1; level up occurs when xp >= level * 5.
    ----------------------- */
-function toggleTask(taskId) 
-{
-    const cat = data.categories.find((c) => c.id === currentCategoryId);
-    const task = cat.tasks.find((t) => t.id === taskId);
+function toggleTask(taskId) {
+  const cat = data.categories.find((c) => c.id === currentCategoryId);
+  const task = cat.tasks.find((t) => t.id === taskId);
 
-    if (!task) return;
-    if (!task.done) 
-    {
-        // Mark task done
-        task.done = true;
-        task.lastCompleted = new Date().toDateString();
-        cat.xp++;
+  if (!task) return;
+  if (!task.done) {
+    // Mark task done
+    task.done = true;
+    task.lastCompleted = new Date().toDateString();
+    cat.xp++;
 
-        // Check for level up (every 5 XP per level)
-        const xpForNext = cat.level * 5;
+    // Check for level up (every 5 XP per level)
+    const xpForNext = cat.level * 5;
 
-        if (cat.xp >= xpForNext) 
-        {
-            cat.level++;
-            showLevelUpPopup(cat.name, cat.level);
-            unlockSkins(cat.level);
-        }
-    } 
-    else 
-    {
-        // Uncheck task (done -> undone); no XP deduction by design
-        task.done = false;
+    if (cat.xp >= xpForNext) {
+      cat.level++;
+      showLevelUpPopup(cat.name, cat.level);
+      unlockSkins(cat.level);
     }
+  } else {
+    // Uncheck task (done -> undone); no XP deduction by design
+    task.done = false;
+  }
   saveData();
   renderTasks();
   renderProgress();
@@ -503,21 +510,21 @@ function toggleTask(taskId)
    - Edge-cases: does nothing when no category is selected.
    ----------------------- */
 function renderProgress() {
-    if (!currentCategoryId) return;
-    const cat = data.categories.find((c) => c.id === currentCategoryId);
-    document.getElementById("levelDisplay").textContent = cat.level;
-    document.getElementById("xpDisplay").textContent = cat.xp;
-    const xpForNext = cat.level * 5;
-    document.getElementById("nextLevelXP").textContent = xpForNext;
+  if (!currentCategoryId) return;
+  const cat = data.categories.find((c) => c.id === currentCategoryId);
+  document.getElementById("levelDisplay").textContent = cat.level;
+  document.getElementById("xpDisplay").textContent = cat.xp;
+  const xpForNext = cat.level * 5;
+  document.getElementById("nextLevelXP").textContent = xpForNext;
 
-    // Compute percentage fill for the XP bar (cap at 100)
-    const percent = Math.min(100, Math.round((cat.xp / xpForNext) * 100));
-    const xpBar = document.getElementById('xpBar');
-    if (xpBar) xpBar.style.width = percent + '%';
+  // Compute percentage fill for the XP bar (cap at 100)
+  const percent = Math.min(100, Math.round((cat.xp / xpForNext) * 100));
+  const xpBar = document.getElementById("xpBar");
+  if (xpBar) xpBar.style.width = percent + "%";
 
-    // Update progressbar aria value (optional)
-    const bar = document.querySelector('.xp-bar');
-    if (bar) bar.setAttribute('aria-valuenow', percent.toString());
+  // Update progressbar aria value (optional)
+  const bar = document.querySelector(".xp-bar");
+  if (bar) bar.setAttribute("aria-valuenow", percent.toString());
 }
 
 /* -----------------------
@@ -529,13 +536,13 @@ function renderProgress() {
    - Notes: This is UI-only; actual style changes are applied via changeSkin().
    ----------------------- */
 function unlockSkins(level) {
-    const skinSelector = document.getElementById('skinSelector');
-    if (!skinSelector) return;
-    // Example: unlock 'Dark' theme at level 2
-    if (level >= 2) {
-        const option = document.querySelector('#skinSelector option[value="dark"]');
-        if (option) option.disabled = false;
-    }
+  const skinSelector = document.getElementById("skinSelector");
+  if (!skinSelector) return;
+  // Example: unlock 'Dark' theme at level 2
+  if (level >= 2) {
+    const option = document.querySelector('#skinSelector option[value="dark"]');
+    if (option) option.disabled = false;
+  }
 }
 
 /* -----------------------
@@ -546,8 +553,8 @@ function unlockSkins(level) {
    - Side-effects: affects page appearance via CSS.
    ----------------------- */
 function changeSkin() {
-    const skin = document.getElementById("skinSelector").value;
-    document.body.className = skin ? "skin-" + skin : "";
+  const skin = document.getElementById("skinSelector").value;
+  document.body.className = skin ? "skin-" + skin : "";
 }
 
 /* -----------------------
@@ -559,10 +566,10 @@ function changeSkin() {
    - Notes: idempotent if called multiple times on the same day.
    ----------------------- */
 function dailyResetCheck() {
-    const today = new Date().toDateString();
-    let changed = false;
-    data.categories.forEach(cat => {
-        cat.tasks.forEach(task => {
+  const today = new Date().toDateString();
+  let changed = false;
+  data.categories.forEach((cat) => {
+    cat.tasks.forEach((task) => {
       if (task.daily && task.done && task.lastCompleted !== today) {
         task.done = false;
         changed = true;
@@ -584,12 +591,12 @@ function dailyResetCheck() {
    - Notes: this is a hard reset for client-side state (does not affect HttpOnly cookies or server state).
    ----------------------- */
 function resetAll() {
-    // Clear app storage
-    localStorage.removeItem('taskrpg'); // remove app data
-    // Optionally clear sessionStorage
-    sessionStorage.clear();
-    // Reload to start fresh
-    location.reload();
+  // Clear app storage
+  localStorage.removeItem("taskrpg"); // remove app data
+  // Optionally clear sessionStorage
+  sessionStorage.clear();
+  // Reload to start fresh
+  location.reload();
 }
 
 /* -----------------------
@@ -601,8 +608,8 @@ function resetAll() {
    ----------------------- */
 function dailyResetNow() {
   let changed = false;
-  data.categories.forEach(cat => {
-    cat.tasks.forEach(task => {
+  data.categories.forEach((cat) => {
+    cat.tasks.forEach((task) => {
       if (task.daily && task.done) {
         task.done = false;
         changed = true;
@@ -623,25 +630,27 @@ function dailyResetNow() {
    - Side-effects: attaches listeners to skin selector, add buttons, and reset button; runs daily reset check.
    ----------------------- */
 
-   function init() {
+function init() {
   loadData();
-    document.getElementById('skinSelector').addEventListener('change', changeSkin);
-    document.getElementById('addCategoryBtn').addEventListener('click', addCategory);
-    document.getElementById('addTaskBtn').addEventListener('click', addTask);
+  document
+    .getElementById("skinSelector")
+    .addEventListener("change", changeSkin);
+  document
+    .getElementById("addCategoryBtn")
+    .addEventListener("click", addCategory);
+  document.getElementById("addTaskBtn").addEventListener("click", addTask);
 
-    // Reset button hook
-    const resetBtn = document.getElementById('resetBtn');
-    if (resetBtn) resetBtn.addEventListener('click', resetAll);
+  // Reset button hook
+  const resetBtn = document.getElementById("resetBtn");
+  if (resetBtn) resetBtn.addEventListener("click", resetAll);
 
-    const dailyResetBtn = document.getElementById('dailyResetBtn');
-    if (dailyResetBtn) {
-        dailyResetBtn.addEventListener('click', function (e) {
-        if (e && typeof e.preventDefault === 'function') e.preventDefault();
-        dailyResetNow();
-        });
-    }
-
-
+  const dailyResetBtn = document.getElementById("dailyResetBtn");
+  if (dailyResetBtn) {
+    dailyResetBtn.addEventListener("click", function (e) {
+      if (e && typeof e.preventDefault === "function") e.preventDefault();
+      dailyResetNow();
+    });
+  }
 
   renderCategories();
   renderBadges();
@@ -650,4 +659,4 @@ function dailyResetNow() {
   dailyResetCheck();
 }
 
-document.addEventListener('DOMContentLoaded', init);
+document.addEventListener("DOMContentLoaded", init);
