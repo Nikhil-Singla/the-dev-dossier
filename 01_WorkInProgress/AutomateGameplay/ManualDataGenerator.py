@@ -1,5 +1,6 @@
 import os
 import json
+import time
 import pyautogui
 from pynput import mouse
 
@@ -50,7 +51,17 @@ def on_click(x, y, button, pressed):
         
         startingIndex += 1
 
-# Start listening for mouse clicks
-print("Listening for mouse clicks... (Press Ctrl+C to stop)")
-with mouse.Listener(on_click=on_click) as listener:
+try:
+    # Start listening for mouse clicks
+    print("Listening for mouse clicks... (Press Ctrl+C to stop)")
+    
+    listener = mouse.Listener(on_click=on_click)
+    listener.start()  # Non-blocking
+
+    while listener.is_alive():
+        time.sleep(0.1)  # Keeps the main thread alive
+
+except KeyboardInterrupt:
+    print("\nKeyboard interrupt received. Stopping listener.")
+    listener.stop()
     listener.join()
