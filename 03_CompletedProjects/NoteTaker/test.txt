@@ -1,0 +1,13 @@
+This is how it appears when I write the notes in one go in the first run.
+
+Now I will write the notes after giving proper space. It should appear in the text file
+
+Now this is after I pressed ctrl+enter to already append the notes. If done properly, there should be a para gap between the two sets of notes.
+
+This is my second attempt for the first run.
+
+Now I have closed and reopened the file.
+
+There should still be only a para of gap as this is my first attempt of the second  running programme
+
+
