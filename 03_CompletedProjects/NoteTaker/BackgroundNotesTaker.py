@@ -1,18 +1,30 @@
 import tkinter as tk
-from tkinter import filedialog
+from tkinter import filedialog, Button, RIGHT
+
+# Currently selected output file
+selected_file = None
 
 # Select File Dialog Box
-selected_file = filedialog.askopenfilename(title="Select a file")
+def select_file():
+    """Function to be called when the button is pressed."""
 
-# Testing/Debugging
-# if selected_file:
-#     print(selected_file)
-# else:
-#     exit()
+    global selected_file
+
+    # Open file picker dialog
+    selected_file = filedialog.askopenfilename(title="Select a file")
+    
+    # Update window title if a file was actually selected
+    if selected_file:
+        root.title("/".join(selected_file.split("/")[-2:]))
+
+    # File dialogs steal focus on Windows; restore it manually
+    # Use after() to wait until Tk finishes processing the dialog
+    root.after(0, text_widget.focus_set)
 
 # Stop execution if file is missing
-if not selected_file:
-    exit()
+def test_selected_file(input_file):
+    # Just a simple guard so we don't write to nothing
+    return bool(input_file)
 
 # What happens when you press Ctrl+Enter
 def on_ctrl_enter(event):
@@ -22,22 +34,23 @@ def on_ctrl_enter(event):
     # Grab text from widget box
     content = text_widget.get("1.0", "end-1c")
     
-    # Only output if there's actual content  
-    if content.strip():  
+    # Only output if there's actual content
+    if content.strip():
 
-        # Write to the selected file in append, and add a newline at the end.
+        # Bail out quietly if no file is selected
+        if not test_selected_file(selected_file):
+            return "break"
+
+        # Append content to the selected file
         with open(selected_file, "a") as f:
             f.write(content)
-            f.write('\n\n')
+            f.write("\n\n")
 
-        # Debugging grabbed text
-        # print(text)
-        
         # Clear out the text in widget
         text_widget.delete("1.0", tk.END)
-    
-    # Prevent default behavior
-    return "break"  
+
+    # Prevent default newline behavior
+    return "break"
 
 # Create main window
 root = tk.Tk()
@@ -49,15 +62,19 @@ root.attributes('-topmost', True)  # Keep window on top
 frame = tk.Frame(root, background="black")
 frame.pack(fill=tk.BOTH, expand=True)
 
+# Button to select / change output file
+button = Button(frame, text='Select File', command=select_file)
+button.pack(side=RIGHT, padx=10)
+
 # Create text widget
-text_widget = tk.Text(frame, wrap=tk.WORD, font=("Arial", 12), bg = '#232628', fg="white")
+text_widget = tk.Text(frame, wrap=tk.WORD, font=("Arial", 12), bg='#232628', fg="white", insertbackground='white')
 text_widget.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
 
-# Bind keys
+# Bind Ctrl+Enter to write-to-file action
 text_widget.bind("<Control-Return>", on_ctrl_enter)
 
-# Focus on text widget
-text_widget.focus()
+# Focus text widget on startup
+text_widget.focus_set()
 
 # Start GUI loop
 root.mainloop()
